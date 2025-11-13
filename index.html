@@ -495,9 +495,14 @@
         <section id="staffing-modeler" class="mb-20 pt-20">
             <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
                 <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-2 text-center">Interactive Staffing Tier Modeler</h3>
-                <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+                <p class="text-center text-gray-600 dark:text-gray-400 mb-2 max-w-2xl mx-auto">
                     Use this slider to see how payroll, revenue, and service capacity scale with each staffing tier.
                 </p>
+                <div class="text-center mb-8">
+                    <span class="inline-block bg-brand-highlight/10 text-brand-highlight dark:bg-brand-highlight-light/20 dark:text-brand-highlight-light px-4 py-2 rounded-lg font-semibold text-lg">
+                        <span id="current-tier-label">Tier 2 — Baseline Full Operations</span>
+                    </span>
+                </div>
 
                 <!-- Slider -->
                 <div class="mb-8">
@@ -541,6 +546,39 @@
                         </div>
                     </div>
                     
+                    <!-- Capacity Overview & Service Coverage -->
+                    <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg lg:col-span-3">
+                        <div class="flex items-center justify-between mb-4 flex-wrap gap-4">
+                            <div class="flex items-center">
+                                <i data-lucide="gauge" class="w-6 h-6 text-brand-base dark:text-brand-light mr-3"></i>
+                                <h5 class="text-xl font-semibold text-brand-dark dark:text-brand-light">Capacity Overview</h5>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-sm text-brand-base dark:text-brand-light font-medium block">Designed Capacity</span>
+                                <div id="tier-capacity-label" class="text-2xl font-bold text-brand-dark dark:text-brand-light">~60%</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Service Coverage Badges -->
+                        <div class="mb-6">
+                            <h6 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">Service Coverage:</h6>
+                            <div class="flex flex-wrap gap-3">
+                                <div class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm">
+                                    <i data-lucide="calendar" class="w-4 h-4 text-brand-wood"></i>
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Weekend: <span id="coverage-weekend" class="font-bold text-brand-dark dark:text-brand-light">None</span></span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm">
+                                    <i data-lucide="sunrise" class="w-4 h-4 text-brand-highlight"></i>
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">FlexShift Z: <span id="coverage-early" class="font-bold text-brand-dark dark:text-brand-light">No</span></span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm">
+                                    <i data-lucide="home" class="w-4 h-4 text-brand-secondary"></i>
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Home Care: <span id="coverage-home" class="font-bold text-brand-dark dark:text-brand-light">No</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Services Unlocked (FULL WIDTH, UPGRADED) -->
                     <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg lg:col-span-3">
                         <div class="flex items-center mb-4">
@@ -627,6 +665,16 @@
                     Select a <strong class="text-brand-dark dark:text-brand-light">Staffing Tier</strong> above to set your payroll cost. Then, use the slider below to model how <strong class="text-brand-secondary">Total Capacity Utilization</strong> (including over-capacity, on-call, and hybrid services) impacts your finances.
                 </p>
 
+                <!-- Occupancy Warning (conditional) -->
+                <div id="occupancy-warning" class="hidden mb-4 bg-orange-50 dark:bg-orange-900/20 border-l-4 border-orange-500 p-4 rounded">
+                    <div class="flex items-center">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-orange-600 dark:text-orange-400 mr-3 flex-shrink-0"></i>
+                        <p class="text-sm text-orange-700 dark:text-orange-300">
+                            <strong>Above recommended capacity:</strong> You are operating above the designed capacity for the current staffing tier. Consider increasing staffing or managing patient load.
+                        </p>
+                    </div>
+                </div>
+
                 <!-- Occupancy Slider (UPDATED) -->
                 <div class="mb-8">
                     <div class="flex justify-between items-center mb-2">
@@ -692,15 +740,24 @@
 
         <!-- First Year Projection Models (UPDATED) -->
         <section id="launch-projections" class="mb-20 pt-20">
-            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">First-Year Launch Projection Models</h3>
+            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">First-Year Launch Projection Models</h3>
+            <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto">
+                These are <strong class="text-brand-highlight">scenario-based projections</strong> for the first year of operations. Model A uses your selected staffing tier with varying discounts. Model B shows a fixed ramp-up path independent of the tier slider.
+            </p>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Model A -->
                 <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 flex flex-col">
                     <div class="min-h-[110px]">
-                        <h4 class="text-2xl font-bold text-brand-highlight mb-3">Model A: Staggered Discount</h4>
-                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1">Constant 60% Occupancy</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Payroll based on selected <strong id="model-a-tier-label" class="text-brand-highlight">Tier 2</strong></p>
+                        <div class="flex items-start justify-between mb-3">
+                            <h4 class="text-2xl font-bold text-brand-highlight">Model A: Discounted Launch</h4>
+                            <span class="tooltip">
+                                <i data-lucide="info" class="w-5 h-5 text-gray-400 dark:text-gray-500 cursor-help"></i>
+                                <span class="tooltiptext">Model A shows a fixed-staffing scenario using your currently selected tier. It varies only the discount rate over time while maintaining 60% occupancy throughout the year.</span>
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-1"><strong>Scenario:</strong> Constant 60% occupancy with discount phases</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Uses payroll from <strong id="model-a-tier-label" class="text-brand-highlight">Tier 2</strong> (dynamically linked to slider)</p>
                     </div>
 
                     <div class="space-y-6">
@@ -749,10 +806,16 @@
                 <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border-2 border-brand-secondary flex flex-col">
                     <div class="min-h-[110px]">
                         <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <h4 class="text-2xl font-bold text-brand-secondary mb-1">Model B: Realistic Ramp-Up</h4>
-                                <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">40%→50%→60% Occupancy</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Staffing ramps from Tier 0 → Tier 2</p>
+                            <div class="flex-1">
+                                <div class="flex items-start gap-2 mb-1">
+                                    <h4 class="text-2xl font-bold text-brand-secondary">Model B: Ramp-Up Scenario</h4>
+                                    <span class="tooltip">
+                                        <i data-lucide="info" class="w-5 h-5 text-gray-400 dark:text-gray-500 cursor-help"></i>
+                                        <span class="tooltiptext">Model B shows a realistic growth path with both occupancy and staffing ramping up over time. This model is independent of your tier slider selection and always uses Tier 0→1→2.</span>
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-1"><strong>Scenario:</strong> Gradual ramp-up (40%→50%→60%) with discount phases</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Staffing grows Tier 0 → Tier 1 → Tier 2 (fixed, not linked to slider)</p>
                             </div>
                             <span class="text-xs font-bold bg-brand-secondary/20 text-brand-secondary px-3 py-1 rounded-full mt-1 flex-shrink-0">RECOMMENDED</span>
                         </div>
@@ -889,6 +952,61 @@
         <!-- Other Data Section -->
         <section id="data-tables" class="mb-20 pt-20">
             <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">Core Data & Assumptions</h3>
+            
+            <!-- Model Assumptions Card -->
+            <div class="mb-8 bg-gradient-to-br from-brand-extralight to-white dark:from-brand-dark/50 dark:to-gray-800 p-8 rounded-2xl shadow-xl border-2 border-brand-base/30 dark:border-brand-light/30">
+                <div class="flex items-center mb-6">
+                    <i data-lucide="calculator" class="w-8 h-8 text-brand-base dark:text-brand-light mr-4"></i>
+                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">Model Assumptions</h4>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm">
+                        <h5 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">Operating Parameters</h5>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex justify-between">
+                                <span>Working days/month:</span>
+                                <strong class="text-brand-dark dark:text-brand-light">22 days</strong>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Max beds (full ops):</span>
+                                <strong class="text-brand-dark dark:text-brand-light">7 beds</strong>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Max daily revenue:</span>
+                                <strong class="text-brand-dark dark:text-brand-light">137,305 BDT</strong>
+                            </li>
+                            <li class="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
+                                <span>Max monthly revenue:</span>
+                                <strong class="text-brand-secondary">3,020,710 BDT</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm">
+                        <h5 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">Session Mix & Pricing</h5>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex justify-between">
+                                <span>Foundation sessions:</span>
+                                <strong class="text-brand-dark dark:text-brand-light">20%</strong>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Standard sessions:</span>
+                                <strong class="text-brand-dark dark:text-brand-light">50%</strong>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Premium sessions:</span>
+                                <strong class="text-brand-dark dark:text-brand-light">25%</strong>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Express sessions:</span>
+                                <strong class="text-brand-dark dark:text-brand-light">5%</strong>
+                            </li>
+                            <li class="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2 text-xs text-gray-600 dark:text-gray-400">
+                                Pricing varies by department (Neuro, MSK, Peds) and session type
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Visit Mix Doughnut Chart -->
@@ -1242,6 +1360,24 @@
             };
         });
 
+        // Tier naming labels
+        const TIER_NAMES = [
+            "Minimum Viable Opening Team",
+            "Stable Launch Team",
+            "Baseline Full Operations",
+            "Expanded Operations & Early Mornings",
+            "Full Ecosystem (Weekends + Home Care)"
+        ];
+
+        // Service coverage for each tier
+        const TIER_SERVICE_COVERAGE = [
+            { weekend: "None", earlyMorning: "No", homeCare: "No" },
+            { weekend: "None", earlyMorning: "No", homeCare: "No" },
+            { weekend: "None", earlyMorning: "No", homeCare: "No" },
+            { weekend: "Partial", earlyMorning: "Yes", homeCare: "Limited" },
+            { weekend: "Full", earlyMorning: "Yes", homeCare: "Dedicated" }
+        ];
+
         // Detailed Tier Services (PU/MM Flair)
         const TIER_SERVICES_HTML = [
             // Tier 0
@@ -1357,6 +1493,11 @@
         
         // Staffing Tier Elements
         const staffingSlider = document.getElementById('staffing-tier-slider');
+        const currentTierLabelEl = document.getElementById('current-tier-label');
+        const tierCapacityLabelEl = document.getElementById('tier-capacity-label');
+        const coverageWeekendEl = document.getElementById('coverage-weekend');
+        const coverageEarlyEl = document.getElementById('coverage-early');
+        const coverageHomeEl = document.getElementById('coverage-home');
         const staffFtEl = document.getElementById('staff-ft');
         const staffPtEl = document.getElementById('staff-pt');
         const staffTotalEl = document.getElementById('staff-total');
@@ -1374,6 +1515,7 @@
         const occupancySlider = document.getElementById('occupancy-slider');
         const occupancyValueEl = document.getElementById('occupancy-value');
         const occupancyRecommendationEl = document.getElementById('occupancy-recommendation');
+        const occupancyWarningEl = document.getElementById('occupancy-warning');
         const occupancyLockToggle = document.getElementById('occupancy-lock-toggle');
         const occupancyLockIcon = document.getElementById('occupancy-lock-icon');
         const dailyRevenueEl = document.getElementById('daily-revenue');
@@ -1804,6 +1946,18 @@
         const updateStaffingTier = (tierIndex) => {
             currentStaffingTier = TIER_DATA[tierIndex];
             
+            // Update tier label with name
+            currentTierLabelEl.textContent = `Tier ${currentStaffingTier.tier} — ${TIER_NAMES[tierIndex]}`;
+            
+            // Update capacity overview
+            tierCapacityLabelEl.textContent = `~${currentStaffingTier.capacity}%`;
+            
+            // Update service coverage badges
+            const coverage = TIER_SERVICE_COVERAGE[tierIndex];
+            coverageWeekendEl.textContent = coverage.weekend;
+            coverageEarlyEl.textContent = coverage.earlyMorning;
+            coverageHomeEl.textContent = coverage.homeCare;
+            
             // Update text readouts
             staffFtEl.textContent = currentStaffingTier.ft;
             staffPtEl.textContent = currentStaffingTier.pt;
@@ -1846,39 +2000,24 @@
             updateLaunchProjections();
         };
 
-        // Update Occupancy Slider Style
+        // Update Occupancy Slider Style (Simplified)
         const updateOccupancySliderStyle = () => {
-            const { capacity, softLimit, hardLimit } = currentStaffingTier;
+            const { softLimit, hardLimit } = currentStaffingTier;
             const max = parseInt(occupancySlider.max, 10);
             
-            const capacityPct = (capacity / max) * 100;
             const softPct = (softLimit / max) * 100;
             const hardPct = (hardLimit / max) * 100;
             
             const green = currentTheme === 'dark' ? '#3cb06f' : '#167a42'; // brand-light / brand-base
             const orange = '#f97316'; // brand-secondary
             const red = '#ef4444'; // brand-red
-            const gray = currentTheme === 'dark' ? '#4b5563' : '#d1d5db'; // gray-600 / gray-300
 
-            let gradient = `linear-gradient(to right, ${green} ${capacityPct}%, ${gray} ${capacityPct}%)`;
-
-            // Add "stretch" and "redline" zones
-            if (softLimit < max) {
-                // Gradient for multi-color track
-                gradient = `linear-gradient(to right, ${green} ${capacityPct}%, ${orange} ${softPct}%, ${red} ${hardPct}%, ${gray} ${hardPct}%)`;
-
-                // Handle case where capacity and softlimit are different
-                if (capacityPct < softPct) {
-                     gradient = `linear-gradient(to right, ${green} ${capacityPct}%, ${orange} ${capacityPct}%, ${orange} ${softPct}%, ${red} ${softPct}%, ${red} ${hardPct}%, ${gray} ${hardPct}%)`;
-                }
-
-                // Simpler gradient based on a single "safe" zone
-                gradient = `linear-gradient(to right, ${green} ${softPct}%, ${orange} ${hardPct}%, ${red} 100%)`;
-            }
+            // Simple three-zone gradient: safe (green) → stretch (orange) → danger (red)
+            const gradient = `linear-gradient(to right, ${green} 0%, ${green} ${softPct}%, ${orange} ${softPct}%, ${orange} ${hardPct}%, ${red} ${hardPct}%, ${red} 100%)`;
             
             occupancySlider.style.background = gradient;
 
-            // Update thumb color
+            // Update thumb color based on current value
             occupancySlider.classList.remove('thumb-orange', 'thumb-red');
             if (currentOccupancy > hardLimit) {
                 occupancySlider.classList.add('thumb-red');
@@ -1912,6 +2051,15 @@
 
             // Update recommendation text
             occupancyRecommendationEl.textContent = `Recommended: ~${capacity}%`;
+            
+            // Show/hide warning if above soft limit
+            if (occupancyWarningEl) {
+                if (currentOccupancy > softLimit) {
+                    occupancyWarningEl.classList.remove('hidden');
+                } else {
+                    occupancyWarningEl.classList.add('hidden');
+                }
+            }
             
             // Update recommendation color & text color
             occupancyValueEl.classList.remove('text-brand-highlight', 'text-brand-secondary', 'dark:text-brand-secondary-light', 'text-brand-red', 'dark:text-brand-red-light');
