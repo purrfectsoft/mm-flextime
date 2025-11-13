@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="en" class="light" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motion Mechanics - FlexTime™ Model</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+
+    <style>
+        /* Custom Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            padding-top: 5rem; /* Offset for sticky header */
+        }
+
+        /* Set base color scheme for dark mode */
+        :root.dark {
+            color-scheme: dark;
+        }
+
+        /* Styling for the FlexShift Z hover effect */
+        .flex-shift-z-container {
+            position: relative;
+            display: inline-block;
+            font-weight: 900;
+            font-style: italic;
+            transform: skew(-8deg);
+            letter-spacing: -1px;
+            cursor: default; /* Show default cursor on hover */
+        }
+        .flex-shift-z {
+            color: #f97316; /* text-brand-secondary */
+            transition: all 0.3s ease;
+        }
+        .flex-shift-z-suffix {
+            color: #f97316; /* text-brand-secondary */
+            opacity: 0;
+            position: absolute;
+            left: 95%; /* Start slightly overlapped */
+            top: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-weight: 900; /* Match the 'Z' */
+            font-style: italic; /* Match the 'Z' */
+            pointer-events: none; /* Don't capture hover events */
+        }
+        .flex-shift-z-container:hover .flex-shift-z-suffix {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        html.dark .flex-shift-z,
+        html.dark .flex-shift-z-suffix {
+            color: #fdba74; /* dark:text-brand-secondary-light */
+        }
+
+        /* FlexShift C Styling */
+        .flex-shift-c {
+            color: #f97316; /* text-brand-secondary */
+            font-weight: 800;
+            text-shadow: 0 0 8px rgba(249, 115, 22, 0.3);
+        }
+        html.dark .flex-shift-c {
+            color: #fdba74; /* dark:text-brand-secondary-light */
+            text-shadow: 0 0 10px rgba(253, 186, 116, 0.2);
+        }
+
+
+        /* Custom slider styles (standard properties) */
+        input[type="range"] {
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #d1d5db; /* bg-gray-300 */
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s, background .3s ease;
+        }
+        
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #2563eb; /* bg-blue-600 - will be overridden by tailwind */
+            cursor: pointer;
+            border: 4px solid #ffffff; /* border-white */
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            transition: background .3s ease;
+        }
+
+        /* Firefox thumb style */
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            border: 4px solid #ffffff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            transition: background .3s ease;
+        }
+        
+        html.dark input[type="range"] {
+            background: #4b5563; /* dark:bg-gray-600 */
+        }
+
+        html.dark input[type="range"]::-webkit-slider-thumb {
+            border-color: #1f2937; /* dark:border-gray-800 */
+        }
+
+        html.dark input[type="range"]::-moz-range-thumb {
+            border-color: #1f2937; /* dark:border-gray-800 */
+        }
+
+        /* Occupancy slider thumb colors */
+        input[type="range"].thumb-orange::-webkit-slider-thumb { background: #f97316; }
+        input[type="range"].thumb-orange::-moz-range-thumb { background: #f97316; }
+        input[type="range"].thumb-red::-webkit-slider-thumb { background: #ef4444; }
+        input[type="range"].thumb-red::-moz-range-thumb { background: #ef4444; }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 280px;
+            background-color: #111827; /* bg-gray-900 */
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 1;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -140px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.875rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        html.dark .tooltip .tooltiptext {
+            background-color: #f9fafb; /* dark:bg-gray-50 */
+            color: #111827; /* dark:text-gray-900 */
+        }
+
+        /* Active Nav Link */
+        .nav-active {
+            color: #2563eb !important; /* brand-highlight */
+            font-weight: 700 !important;
+        }
+        html.dark .nav-active {
+            color: #60a5fa !important; /* dark:brand-highlight-light */
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 100;
+        }
+        #back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Dynamic Payroll Table Styles */
+        .dept-row th, .dept-row td {
+            background-color: #f3f4f6; /* bg-gray-100 */
+            font-weight: 700;
+            color: #1f2937; /* text-gray-800 */
+            border-top: 2px solid #d1d5db; /* border-gray-300 */
+            border-bottom: 1px solid #d1d5db; /* border-gray-300 */
+        }
+        html.dark .dept-row th, html.dark .dept-row td {
+            background-color: #374151; /* dark:bg-gray-700 */
+            color: #f9fafb; /* dark:text-gray-50 */
+            border-top: 2px solid #4b5563; /* dark:border-gray-600 */
+            border-bottom: 1px solid #4b5563; /* dark:border-gray-600 */
+        }
+        .subtotal-row td {
+            font-weight: 700;
+            background-color: #f9fafb; /* bg-gray-50 */
+            border-top: 1px dashed #d1d5db; /* border-gray-300 */
+        }
+        html.dark .subtotal-row td {
+            background-color: #1f2937; /* dark:bg-gray-800 */
+            border-top: 1px dashed #4b5563; /* dark:border-gray-600 */
+        }
+        .grand-total-row td {
+            font-weight: 900;
+            font-size: 1.125rem; /* text-lg */
+            background-color: #e7f7ed; /* brand-extralight */
+            color: #0d4826; /* brand-dark */
+            border-top: 2px solid #167a42; /* border-brand-base */
+        }
+        html.dark .grand-total-row td {
+            background-color: #0d4826; /* brand-dark */
+            color: #ffffff; /* text-white */
+            border-top: 2px solid #3cb06f; /* border-brand-light */
+        }
+    </style>
+
+    <script>
+        // Set theme from localStorage or system preference
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Custom Tailwind Config
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // Motion Mechanics (Primary) - Professional Green
+                        'brand-dark': '#0d4826',
+                        'brand-base': '#167a42',
+                        'brand-light': '#3cb06f',
+                        'brand-extralight': '#e7f7ed',
+                        
+                        // Purrfect Universe (Radical Highlights)
+                        'brand-secondary': '#f97316', // Radical Orange
+                        'brand-secondary-light': '#fdba74', // Radical Orange Light
+                        'brand-wood': '#854d0e', // Wood Brown
+                        'brand-highlight': '#2563eb', // Highlight Blue
+                        'brand-highlight-light': '#60a5fa', // Highlight Blue Light
+                        'brand-red': '#ef4444', // Radical Red
+                        'brand-red-light': '#f87171', // Radical Red Light
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 fixed top-0 left-0 right-0 z-50 h-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#home" class="flex items-center space-x-3 flex-shrink-0">
+                    <img 
+                        src="assets/images/pu-logo-tp.png" 
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        alt="Purrfect Universe Logo" 
+                        class="h-10 w-10"
+                    >
+                    <div 
+                        style="display:none;"
+                        class="h-10 w-10 rounded-full bg-brand-wood flex items-center justify-center text-white font-bold text-xl"
+                    >P</div>
+
+                    <img 
+                        src="assets/images/mm-logo-tp.png" 
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
+                        alt="Motion Mechanics Logo" 
+                        class="h-12"
+                    >
+                    <span style="display:none;" class="text-2xl font-bold text-brand-dark dark:text-brand-light">Motion Mechanics</span>
+                </a>
+                
+                <!-- Desktop Nav -->
+                <nav class="hidden lg:flex items-center space-x-2 main-nav">
+                    <a href="#model" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Service Model</a>
+                    <a href="#staffing-modeler" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Staffing Modeler</a>
+                    <a href="#payroll-framework" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Payroll</a>
+                    <a href="#projections" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Capacity Modeler</a>
+                    <a href="#launch-projections" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Launch Models</a>
+                    <a href="#future-projections" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Future Projections</a>
+                    <a href="#access-care" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">AccessCare™</a>
+                    <a href="#data-tables" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Core Data</a>
+                
+                    <!-- Dark Mode Toggle (Desktop) -->
+                    <button id="theme-toggle" type="button" class="ml-4 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors">
+                        <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607l-.707-.707a1 1 0 010-1.414 1 1 0 011.414 0l.707.707a1 1 0 01-1.414 1.414zM4.95 15.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414zM1.414 6.364l.707.707a1 1 0 010 1.414 1 1 0 01-1.414 0l-.707-.707a1 1 0 011.414-1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" type="button" class="lg:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                    <span class="sr-only">Open main menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 shadow-lg fixed top-20 left-0 right-0 z-40">
+            <nav class="flex flex-col space-y-2 px-4 main-nav">
+                <a href="#model" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Service Model</a>
+                <a href="#staffing-modeler" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Staffing Modeler</a>
+                <a href="#payroll-framework" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Payroll</a>
+                <a href="#projections" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Capacity Modeler</a>
+                <a href="#launch-projections" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Launch Models</a>
+                <a href="#future-projections" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Future Projections</a>
+                <a href="#access-care" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">AccessCare™</a>
+                <a href="#data-tables" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Core Data</a>
+                
+                <!-- Dark Mode Toggle (Mobile) -->
+                <button id="theme-toggle-mobile" type="button" class="mt-4 w-full flex justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors">
+                    <svg id="theme-toggle-dark-icon-mobile" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon-mobile" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607l-.707-.707a1 1 0 010-1.414 1 1 0 011.414 0l.707.707a1 1 0 01-1.414 1.414zM4.95 15.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414zM1.414 6.364l.707.707a1 1 0 010 1.414 1 1 0 01-1.414 0l-.707-.707a1 1 0 011.414-1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+
+        <!-- Hero Section -->
+        <section id="home" class="text-center mb-20 md:mb-24 pt-16">
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-dark dark:text-brand-light mb-6">
+                FlexTime™ Operations
+            </h1>
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-secondary mb-8">
+                & Financial Model
+            </h2>
+            <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                A strategic proposal for premium, accessible, and sustainable physiotherapy care in Bangladesh.
+            </p>
+        </section>
+
+        <!-- Executive Overview -->
+        <section id="overview" class="mb-20 pt-20">
+            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">Executive Overview</h3>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center mb-10">
+                Motion Mechanics introduces <strong class="font-bold text-brand-secondary">FlexTime™</strong>, a modern framework for high-quality, sustainable care. Our system integrates five core pillars:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Pillar 1: Operations -->
+                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700
+                            hover:shadow-2xl hover:scale-[1.03] hover:border-brand-secondary dark:hover:border-brand-secondary
+                            transition-all duration-300 ease-in-out">
+                    <i data-lucide="zap" class="w-10 h-10 text-brand-secondary mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Multi-Shift Operations</h4>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Structured shifts (Z, A, B, C), including the <strong class="text-brand-wood dark:text-brand-wood">Night Relief Lab™</strong>, to expand access for all patient schedules.
+                    </p>
+                </div>
+                
+                <!-- Pillar 2: Session Model -->
+                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700
+                            hover:shadow-2xl hover:scale-[1.03] hover:border-brand-wood dark:hover:border-brand-wood
+                            transition-all duration-300 ease-in-out">
+                    <i data-lucide="package-plus" class="w-10 h-10 text-brand-wood mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Diversified Session Model</h4>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        A four-tier session model (Foundation, Standard, Premium, Express) aligned with clinical value and patient needs.
+                    </p>
+                </div>
+
+                <!-- Pillar 3: Staffing -->
+                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700
+                            hover:shadow-2xl hover:scale-[1.03] hover:border-brand-highlight dark:hover:border-brand-highlight
+                            transition-all duration-300 ease-in-out">
+                    <i data-lucide="users" class="w-10 h-10 text-brand-highlight mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Scalable Tiered Staffing</h4>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        An interactive 5-tier staffing model that balances payroll costs with service capacity and future growth.
+                    </p>
+                </div>
+
+                <!-- Pillar 4: AccessCare -->
+                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700
+                            md:col-start-1 lg:col-start-auto
+                            hover:shadow-2xl hover:scale-[1.03] hover:border-brand-secondary dark:hover:border-brand-secondary
+                            transition-all duration-300 ease-in-out">
+                    <i data-lucide="heart-handshake" class="w-10 h-10 text-brand-secondary mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">AccessCare™ Program</h4>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        A compassionate, subsidized program to ensure equitable care is woven into our sustainable model.
+                    </p>
+                </div>
+
+                <!-- Pillar 5: Financials -->
+                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700
+                            md:col-start-auto lg:col-span-2
+                            hover:shadow-2xl hover:scale-[1.03] hover:border-brand-wood dark:hover:border-brand-wood
+                            transition-all duration-300 ease-in-out">
+                    <div class="flex items-start space-x-4">
+                        <i data-lucide="bar-chart-3" class="w-10 h-10 text-brand-wood mb-4 group-hover:scale-110 transition-transform flex-shrink-0"></i>
+                        <div>
+                            <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Data-Driven Financials</h4>
+                            <p class="text-gray-600 dark:text-gray-400">
+                                Interactive models for staffing tiers, occupancy rates, and launch projections provide a clear, dynamic financial backbone for decision-making.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FlexTime™ Service Model (UPDATED) -->
+        <section id="model" class="mb-20 pt-20">
+            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">FlexTime™ Service Model</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- FlexShift Z (Future) -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border-2 border-dashed border-brand-highlight/50 dark:border-brand-highlight/70">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="text-2xl font-bold text-brand-highlight">
+                            FlexShift 
+                            <span class="flex-shift-z-container">
+                                <span class="flex-shift-z">Z</span>
+                                <span class="flex-shift-z-suffix">ero</span>
+                            </span>
+                        </h4>
+                        <span class="text-xs font-semibold bg-brand-highlight/20 text-brand-highlight px-2 py-0.5 rounded-full">FUTURE (Tier 3+)</span>
+                    </div>
+                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">06:00 – 09:00</p>
+                    <p class="text-gray-600 dark:text-gray-400 mt-2">Early morning block for dedicated professionals and pre-work/school sessions.</p>
+                </div>
+                
+                <!-- FlexStart -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                    <h4 class="text-2xl font-bold text-brand-wood dark:text-brand-wood">FlexStart</h4>
+                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">09:00 – 10:00</p>
+                    <p class="text-gray-600 dark:text-gray-400 mt-2">Internal staff preparation, calibration, and emergency early-day cases.</p>
+                </div>
+
+                <!-- FlexShift A -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">FlexShift A</h4>
+                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">10:00 – 13:00</p>
+                    <p class="text-gray-600 dark:text-gray-400 mt-2">Morning care block emphasizing Neuro and Pediatric cases.</p>
+                </div>
+
+                <!-- FlexShift B -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">FlexShift B</h4>
+                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">14:00 – 17:00</p>
+                    <p class="text-gray-600 dark:text-gray-400 mt-2">Afternoon block for evaluations, long-duration cases, and clinical training.</p>
+                </div>
+
+                <!-- Commute Gap (MOVED) -->
+                <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-2xl shadow-inner border border-gray-100 dark:border-gray-700 flex items-center justify-center">
+                    <div class="text-center">
+                        <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light">Commute Gap</h4>
+                        <p class="text-lg font-medium text-gray-700 dark:text-gray-300">17:00 – 19:00</p>
+                        <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm">Improves staff safety and reduces congestion alignment.</p>
+                    </div>
+                </div>
+                
+                <!-- FlexShift C (STYLED) -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light flex-shift-c">FlexShift C</h4>
+                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">19:00 – 22:00</p>
+                    <p class="text-gray-600 dark:text-gray-400 mt-2">Evening block for office-goers and acute pain. Includes the <strong class="text-brand-secondary">Night Relief Lab™</strong>.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Interactive Staffing Tier Modeler -->
+        <section id="staffing-modeler" class="mb-20 pt-20">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+                <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-2 text-center">Interactive Staffing Tier Modeler</h3>
+                <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+                    Use this slider to see how payroll, revenue, and service capacity scale with each staffing tier.
+                </p>
+
+                <!-- Slider -->
+                <div class="mb-8">
+                    <div class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 px-1">
+                        <span>Tier 0 (Basic)</span>
+                        <span>Tier 1</span>
+                        <span>Tier 2 (Baseline)</span>
+                        <span>Tier 3</span>
+                        <span>Tier 4 (Full Ops)</span>
+                    </div>
+                    <input id="staffing-tier-slider" type="range" min="0" max="4" value="2" step="1" class="w-full h-3 bg-brand-extralight rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700 thumb-brand-highlight"
+                    >
+                </div>
+
+                <!-- Readouts -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Staffing & Payroll (FULL WIDTH) -->
+                    <div class="col-span-1 lg:col-span-3">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <!-- FT Staff -->
+                            <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
+                                <span class="text-sm text-brand-base dark:text-brand-light font-medium">Full-Time Staff</span>
+                                <div id="staff-ft" class="text-3xl font-bold text-brand-dark dark:text-brand-light">17</div>
+                            </div>
+                            <!-- PT Staff -->
+                            <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
+                                <span class="text-sm text-brand-base dark:text-brand-light font-medium">Part-Time Staff</span>
+                                <div id="staff-pt" class="text-3xl font-bold text-brand-dark dark:text-brand-light">9</div>
+                            </div>
+                            <!-- Total Staff -->
+                            <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
+                                <span class="text-sm text-brand-base dark:text-brand-light font-medium">Total Staff</span>
+                                <div id="staff-total" class="text-3xl font-bold text-brand-dark dark:text-brand-light">26</div>
+                            </div>
+                            <!-- Monthly Payroll -->
+                            <div class="bg-brand-wood/10 dark:bg-brand-wood/20 p-4 rounded-lg text-center">
+                                <span class="text-sm text-brand-wood dark:text-brand-wood font-medium">Monthly Payroll</span>
+                                <div id="staff-payroll" class="text-2xl md:text-xl lg:text-2xl font-bold text-brand-wood dark:text-brand-wood">927,750</div>
+                                <span class="text-sm text-brand-wood dark:text-brand-wood">BDT</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Services Unlocked (FULL WIDTH, UPGRADED) -->
+                    <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg lg:col-span-3">
+                        <div class="flex items-center mb-4">
+                            <i data-lucide="unlock" class="w-6 h-6 text-brand-dark dark:text-brand-light mr-3"></i>
+                            <h5 class="text-xl font-semibold text-brand-dark dark:text-brand-light">Services Unlocked at <span id="services-tier-label" class="text-brand-highlight">Tier 2</span></h5>
+                        </div>
+                        <div id="services-unlocked" class="text-gray-700 dark:text-gray-300 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                            <!-- JS will populate this -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tier Financials -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Payroll vs Revenue Chart -->
+                    <div class="md:col-span-2 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+                        <h5 class="text-lg font-semibold text-brand-dark dark:text-brand-light mb-4">
+                            Tier Financials (at Assumed Occupancy)
+                            <span class="tooltip">
+                                <i data-lucide="info" class="w-4 h-4 text-gray-400 dark:text-gray-500 inline-block ml-1 cursor-help"></i>
+                                <span class="tooltiptext">Expected Revenue is modeled using full-price sessions at 22 working days/month and the assumed occupancy for this tier.</span>
+                            </span>
+                        </h5>
+                        <!-- Chart container with fixed height -->
+                        <div class="relative h-72">
+                            <canvas id="staffingTierChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Net Margin Card -->
+                    <div class="flex flex-col justify-center space-y-4 bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg">
+                        <div class="text-center">
+                            <span class="text-sm text-brand-base dark:text-brand-light font-medium">Assumed Occupancy</span>
+                            <div id="assumed-occupancy" class="text-3xl font-bold text-brand-dark dark:text-brand-light">~60%</div>
+                        </div>
+                        <div class="text-center border-t border-b border-brand-base/20 dark:border-brand-light/20 py-4">
+                            <span class="text-sm text-brand-base dark:text-brand-light font-medium">Expected Net Operating Margin</span>
+                            <div id="net-margin-bdt" class="text-3xl font-bold text-brand-dark dark:text-brand-light">≈ 884,676</div>
+                            <span class="text-brand-base dark:text-brand-light">BDT / month</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-sm text-brand-base dark:text-brand-light font-medium">Operating Margin %</span>
+                            <div id="net-margin-pct" class="text-3xl font-bold text-brand-dark dark:text-brand-light">~48.8%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Payroll Framework (NEW) -->
+        <section id="payroll-framework" class="mb-20 pt-20">
+            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">Dynamic Payroll Framework</h3>
+            <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+                This table is linked to the <strong class="text-brand-highlight">Staffing Tier Modeler</strong>. Change the tier to see a detailed payroll breakdown.
+            </p>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-700">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">Department</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">Role</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">Type</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">Count</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">Salary (BDT)</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">Subtotal (BDT)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dynamic-payroll-table-body" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- JS will populate this -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Interactive Financial Projections (UPDATED) -->
+        <section id="projections" class="mb-20 pt-20">
+            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">Dynamic Capacity Modeler</h3>
+            
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+                <p class="text-center text-gray-600 dark:text-gray-400 mb-6 max-w-3xl mx-auto">
+                    Select a <strong class="text-brand-dark dark:text-brand-light">Staffing Tier</strong> above to set your payroll cost. Then, use the slider below to model how <strong class="text-brand-secondary">Total Capacity Utilization</strong> (including over-capacity, on-call, and hybrid services) impacts your finances.
+                </p>
+
+                <!-- Occupancy Slider (UPDATED) -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-2">
+                        <label for="occupancy-slider" class="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                            Total Capacity Utilization: 
+                            <span id="occupancy-value" class="text-2xl font-bold text-brand-highlight">60%</span>
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <span id="occupancy-recommendation" class="text-sm font-medium bg-brand-extralight text-brand-base dark:bg-brand-dark/50 dark:text-brand-light px-3 py-1 rounded-full">
+                                Recommended for Tier 2
+                            </span>
+                            <!-- Occupancy Lock Toggle (NEW) -->
+                            <button id="occupancy-lock-toggle" type="button" class="text-gray-400 dark:text-gray-500 hover:text-brand-highlight dark:hover:text-brand-highlight-light focus:outline-none p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <i id="occupancy-lock-icon" data-lucide="unlock" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <input id="occupancy-slider" type="range" min="0" max="150" value="60" step="1" class="w-full h-3 bg-brand-extralight rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700 thumb-brand-highlight"
+                    >
+                </div>
+
+                <!-- Financial Metrics Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    <!-- Daily Revenue -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+                        <span class="text-sm text-gray-600 dark:text-gray-300 font-medium">Daily Revenue</span>
+                        <div id="daily-revenue" class="text-3xl font-bold text-brand-secondary-light">82,383</div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
+                    </div>
+                    <!-- Monthly Revenue -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+                        <span class="text-sm text-gray-600 dark:text-gray-300 font-medium">Monthly Revenue</span>
+                        <div id="monthly-revenue" class="text-3xl font-bold text-brand-secondary">1,812,426</div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
+                    </div>
+                    <!-- Monthly Profit -->
+                    <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
+                        <span class="text-sm text-brand-base dark:text-brand-light font-medium">Monthly Profit</span>
+                        <div id="monthly-profit" class="text-3xl font-bold text-brand-base dark:text-brand-light">+884,676</div>
+                        <span class="text-xs text-brand-base dark:text-brand-light">BDT</span>
+                    </div>
+                    <!-- Monthly Profit % -->
+                    <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
+                        <span class="text-sm text-brand-base dark:text-brand-light font-medium">Profit Margin</span>
+                        <div id="monthly-profit-percent" class="text-3xl font-bold text-brand-base dark:text-brand-light">+48.8%</div>
+                        <span class="text-xs text-brand-base dark:text-brand-light">vs Revenue</span>
+                    </div>
+                    <!-- Annual Revenue -->
+                    <div class="col-span-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+                        <span class="text-sm text-gray-600 dark:text-gray-300 font-medium">Annual Revenue</span>
+                        <div id="annual-revenue" class="text-3xl md:text-2xl lg:text-3xl font-bold text-brand-secondary">21,749,112</div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
+                    </div>
+                    <!-- Annual Profit -->
+                    <div class="col-span-2 bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
+                        <span class="text-sm text-brand-base dark:text-brand-light font-medium">Annual Profit (vs Payroll)</span>
+                        <div id="annual-profit" class="text-3xl md:text-2xl lg:text-3xl font-bold text-brand-base dark:text-brand-light">+10,616,112</div>
+                        <span class="text-xs text-brand-base dark:text-brand-light">BDT</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- First Year Projection Models (UPDATED) -->
+        <section id="launch-projections" class="mb-20 pt-20">
+            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">First-Year Launch Projection Models</h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Model A -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 flex flex-col">
+                    <div class="min-h-[110px]">
+                        <h4 class="text-2xl font-bold text-brand-highlight mb-3">Model A: Staggered Discount</h4>
+                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1">Constant 60% Occupancy</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Payroll based on selected <strong id="model-a-tier-label" class="text-brand-highlight">Tier 2</strong></p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Phase 1 -->
+                        <div>
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="font-semibold text-brand-dark dark:text-brand-light">Months 1-3 (30% Discount)</span>
+                                <span id="model-a-p1-profit" class="font-bold text-brand-base dark:text-brand-light text-lg">+10.49 lakh</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                <div id="model-a-p1-bar" class="bg-brand-base h-2.5 rounded-full" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        <!-- Phase 2 -->
+                        <div>
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="font-semibold text-brand-dark dark:text-brand-light">Months 4-6 (20% Discount)</span>
+                                <span id="model-a-p2-profit" class="font-bold text-brand-base dark:text-brand-light text-lg">+15.95 lakh</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                <div id="model-a-p2-bar" class="bg-brand-base h-2.5 rounded-full" style="width: 40%"></div>
+                            </div>
+                        </div>
+                        <!-- Phase 3 -->
+                        <div>
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="font-semibold text-brand-dark dark:text-brand-light">Months 7-12 (Full Price)</span>
+                                <span id="model-a-p3-profit" class="font-bold text-brand-base dark:text-brand-light text-lg">+53.08 lakh</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                <div id="model-a-p3-bar" class="bg-brand-base h-2.5 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                        <div class="text-center bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg">
+                            <span class="text-lg font-medium text-brand-base dark:text-brand-light">Total First-Year Profit</span>
+                            <div id="model-a-total-profit" class="text-4xl font-extrabold text-brand-dark dark:text-brand-light mt-1">79.52 lakh</div>
+                            <span id="model-a-avg-profit" class="text-sm font-medium text-brand-base dark:text-brand-light">(Avg. 6.63 lakh / month)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Model B (NOW DYNAMIC) -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border-2 border-brand-secondary flex flex-col">
+                    <div class="min-h-[110px]">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h4 class="text-2xl font-bold text-brand-secondary mb-1">Model B: Realistic Ramp-Up</h4>
+                                <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">40%→50%→60% Occupancy</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Staffing ramps from Tier 0 → Tier 2</p>
+                            </div>
+                            <span class="text-xs font-bold bg-brand-secondary/20 text-brand-secondary px-3 py-1 rounded-full mt-1 flex-shrink-0">RECOMMENDED</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Phase 1 -->
+                        <div>
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="font-semibold text-brand-dark dark:text-brand-light">M 1-3 (40% Occ, 30% Disc, Tier 0)</span>
+                                <span id="model-b-p1-profit" class="font-bold text-red-600 dark:text-red-400 text-lg">–2.46 lakh</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                <div id="model-b-p1-bar" class="bg-red-600 dark:bg-red-400 h-2.5 rounded-full" style="width: 10%"></div>
+                            </div>
+                        </div>
+                        <!-- Phase 2 -->
+                        <div>
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="font-semibold text-brand-dark dark:text-brand-light">M 4-6 (50% Occ, 20% Disc, Tier 1)</span>
+                                <span id="model-b-p2-profit" class="font-bold text-brand-base dark:text-brand-light text-lg">+8.40 lakh</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                <div id="model-b-p2-bar" class="bg-brand-base h-2.5 rounded-full" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        <!-- Phase 3 -->
+                        <div>
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="font-semibold text-brand-dark dark:text-brand-light">M 7-12 (60% Occ, Full Price, Tier 2)</span>
+                                <span id="model-b-p3-profit" class="font-bold text-brand-base dark:text-brand-light text-lg">+53.08 lakh</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                <div id="model-b-p3-bar" class="bg-brand-base h-2.5 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                        <div class="text-center bg-brand-secondary/10 dark:bg-brand-secondary/20 p-6 rounded-lg">
+                            <span class="text-lg font-medium text-brand-secondary dark:text-brand-secondary-light">Total First-Year Profit</span>
+                            <div id="model-b-total-profit" class="text-4xl font-extrabold text-brand-secondary mt-1">59.02 lakh</div>
+                            <span class="text-sm font-medium text-brand-secondary dark:text-brand-secondary-light">(After initial ramp-up)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Year 2+ Dynamic Projections (UPDATED) -->
+        <section id="future-projections" class="mb-20 pt-20">
+            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">Year 2+ Dynamic Projections</h3>
+            <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+                These projections are fully dynamic. They are based on the <strong id="proj-tier-label" class="text-brand-base dark:text-brand-light font-semibold">Tier 2</strong> staffing model and a sustained <strong id="proj-occupancy-label" class="text-brand-secondary font-semibold">60% Capacity</strong>.
+            </p>
+            
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Projected Monthly Profit -->
+                    <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg text-center">
+                        <span class="text-lg font-medium text-brand-base dark:text-brand-light">Projected Monthly Profit</span>
+                        <div id="proj-monthly-profit" class="text-5xl font-extrabold text-brand-base dark:text-brand-light my-2">+884,676</div>
+                        <span class="text-base text-brand-base dark:text-brand-light">BDT / month</span>
+                    </div>
+                    <!-- Projected Annual Revenue -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg text-center">
+                        <span class="text-lg font-medium text-gray-600 dark:text-gray-300">Projected Annual Revenue</span>
+                        <div id="proj-annual-revenue" class="text-5xl font-extrabold text-brand-secondary my-2">21,749,112</div>
+                        <span class="text-base text-gray-500 dark:text-gray-400">BDT / year</span>
+                    </div>
+                    <!-- Projected Annual Profit -->
+                    <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg text-center">
+                        <span class="text-lg font-medium text-brand-base dark:text-brand-light">Projected Annual Profit</span>
+                        <div id="proj-annual-profit" class="text-5xl font-extrabold text-brand-base dark:text-brand-light my-2">+10,616,112</div>
+                        <span class="text-base text-brand-base dark:text-brand-light">BDT / year</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AccessCare Program -->
+        <section id="access-care" class="mb-20 pt-20">
+            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">AccessCare™ Program</h3>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center mb-10">
+                A structured, sustainable system for ensuring care accessibility is a core pillar of our mission.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Program Pillar 1: Slots -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                    <i data-lucide="calendar-plus" class="w-10 h-10 text-brand-highlight mb-4"></i>
+                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Daily Subsidized Slots</h4>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        <strong class="text-2xl font-bold text-brand-highlight">8 sessions/day</strong> (~9% of total capacity) are reserved for the AccessCare™ program.
+                    </p>
+                </div>
+                <!-- Program Pillar 2: Value -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                    <i data-lucide="percent" class="w-10 h-10 text-brand-secondary mb-4"></i>
+                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Discount Value</h4>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        A <strong class="text-2xl font-bold text-brand-secondary">30% discount</strong> is applied to Standard Sessions for all eligible beneficiaries.
+                    </p>
+                </div>
+                <!-- Program Pillar 3: Eligibility -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 md:col-span-2 lg:col-span-1">
+                    <i data-lucide="users" class="w-10 h-10 text-brand-wood mb-4"></i>
+                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Eligible Beneficiaries</h4>
+                    <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
+                        <li>Students & Teachers</li>
+                        <li>Single-parent households</li>
+                        <li>Chronic care patients (>12 sessions)</li>
+                        <li>Community health referrals</li>
+                    </ul>
+                </div>
+                <!-- Program Pillar 4: Impact -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                    <i data-lucide="trending-down" class="w-10 h-10 text-brand-base dark:text-brand-light mb-4"></i>
+                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Financial Impact</h4>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Represents ~1.3 million BDT/year in subsidized care. The business remains <strong class="text-brand-base dark:text-brand-light">highly profitable</strong> at all modeled occupancy levels.
+                    </p>
+                </div>
+                <!-- Program Pillar 5: Purpose -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 md:col-span-2">
+                    <i data-lucide="shield-check" class="w-10 h-10 text-brand-highlight mb-4"></i>
+                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Purpose and Brand Value</h4>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Ensures equitable access to premium care, reinforces our social responsibility, and builds deep, lasting community trust and brand loyalty.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Other Data Section -->
+        <section id="data-tables" class="mb-20 pt-20">
+            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">Core Data & Assumptions</h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Visit Mix Doughnut Chart -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light mb-6 text-center">Expected Visit Mix</h4>
+                    <div class="max-w-xs mx-auto">
+                        <canvas id="visitMixChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Pricing Tables -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">Session Pricing Modeler</h4>
+                    
+                    <!-- Discount Toggle -->
+                    <div class="mb-6 flex justify-center rounded-lg shadow-sm" role="group">
+                        <button type="button" id="price-toggle-0" class="price-toggle-btn bg-brand-base text-white px-4 py-2 text-sm font-medium rounded-l-lg border border-brand-base">
+                            Full Price
+                        </button>
+                        <button type="button" id="price-toggle-20" class="price-toggle-btn bg-white dark:bg-gray-700 text-brand-base dark:text-brand-light px-4 py-2 text-sm font-medium border-t border-b border-brand-base hover:bg-gray-50 dark:hover:bg-gray-600">
+                            20% Off
+                        </button>
+                        <button type="button" id="price-toggle-30" class="price-toggle-btn bg-white dark:bg-gray-700 text-brand-base dark:text-brand-light px-4 py-2 text-sm font-medium rounded-r-lg border border-brand-base hover:bg-gray-50 dark:hover:bg-gray-600">
+                            30% Off
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <!-- Neuro Pricing -->
+                        <div>
+                            <h5 class="text-lg font-semibold text-brand-wood dark:text-brand-wood mb-2">Neurology</h5>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Foundation</span>
+                                    <div id="price-neuro-foundation" class="font-bold text-lg text-gray-800 dark:text-gray-200">2000</div>
+                                </div>
+                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Standard</span>
+                                    <div id="price-neuro-standard" class="font-bold text-lg text-gray-800 dark:text-gray-200">1400</div>
+                                </div>
+                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Premium</span>
+                                    <div id="price-neuro-premium" class="font-bold text-lg text-gray-800 dark:text-gray-200">2400</div>
+                                </div>
+                                <div class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-brand-secondary">Express (C)</span>
+                                    <div id="price-neuro-express" class="font-bold text-lg text-brand-secondary">1000</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MSK Pricing -->
+                        <div>
+                            <h5 class="text-lg font-semibold text-brand-wood dark:text-brand-wood mb-2">MSK (Musculoskeletal)</h5>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Foundation</span>
+                                    <div id="price-msk-foundation" class="font-bold text-lg text-gray-800 dark:text-gray-200">1500</div>
+                                </div>
+                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Standard</span>
+                                    <div id="price-msk-standard" class="font-bold text-lg text-gray-800 dark:text-gray-200">900</div>
+                                </div>
+                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Premium</span>
+                                    <div id="price-msk-premium" class="font-bold text-lg text-gray-800 dark:text-gray-200">1600</div>
+                                </div>
+                                <div class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-brand-secondary">Express (C)</span>
+                                    <div id="price-msk-express" class="font-bold text-lg text-brand-secondary">800</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pediatrics Pricing -->
+                        <div>
+                            <h5 class="text-lg font-semibold text-brand-wood dark:text-brand-wood mb-2">Pediatrics</h5>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Foundation</span>
+                                    <div id="price-peds-foundation" class="font-bold text-lg text-gray-800 dark:text-gray-200">1800</div>
+                                </div>
+                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Standard (45m)</span>
+                                    <div id="price-peds-standard" class="font-bold text-lg text-gray-800 dark:text-gray-200">1200</div>
+                                </div>
+                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Premium</span>
+                                    <div id="price-peds-premium" class="font-bold text-lg text-gray-800 dark:text-gray-200">2000</div>
+                                </div>
+                                <div class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center">
+                                    <span class="text-xs text-brand-secondary">Express (C)</span>
+                                    <div id="price-peds-express" class="font-bold text-lg text-brand-secondary">900</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategic Advantages -->
+        <section id="advantages" class="mb-20 pt-20">
+            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">Strategic Advantages</h3>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                <div class="flex items-start space-x-3">
+                    <i data-lucide="check-circle-2" class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
+                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong class="font-semibold text-brand-dark dark:text-white">Consistent Coverage:</strong> Predictable multi-shift operations ensure reliable patient care.</p>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i data-lucide="check-circle-2" class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
+                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong class="font-semibold text-brand-dark dark:text-white">Expanded Access:</strong> Evening and future morning hours cater to professionals and students.</p>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i data-lucide="check-circle-2" class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
+                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong class="font-semibold text-brand-dark dark:text-white">Premium Offerings:</strong> Differentiated session types (Premium, Express) increase perceived value.</p>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i data-lucide="check-circle-2" class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
+                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong class="font-semibold text-brand-dark dark:text-white">Scalable Architecture:</strong> Tiered staffing with floaters allows for flexible, demand-based growth.</p>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i data-lucide="check-circle-2" class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
+                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong class="font-semibold text-brand-dark dark:text-white">Sustainable Revenue:</strong> Model is profitable even at low-to-mid occupancy rates.</p>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i data-lucide="check-circle-2" class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
+                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong class="font-semibold text-brand-dark dark:text-white">Community Trust:</strong> The AccessCare™ program builds a strong, positive public-facing brand.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark dark:bg-black mt-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+            <p class="text-brand-light dark:text-gray-400">&copy; <span id="footer-year"></span> Motion Mechanics & Purrfect Universe. All rights reserved.</p>
+            <p class="text-sm text-brand-light/70 dark:text-gray-500 mt-1">Strategic Proposal v1.5 — Dynamic Financial Model</p>
+        </div>
+    </footer>
+
+    <!-- QoL: Back to Top Button -->
+    <a href="#home" id="back-to-top" class="bg-brand-highlight dark:bg-brand-highlight-light text-white dark:text-brand-dark p-3 rounded-full shadow-lg hover:bg-brand-highlight/80 dark:hover:bg-brand-highlight-light/80 transition-all duration-300">
+        <i data-lucide="arrow-up" class="w-6 h-6"></i>
+    </a>
+
+
+    <script>
+        // --- CONSTANTS & DATA ---
+        
+        // Financial Constants
+        const MAX_DAILY_REVENUE = 137305; // At 100% Occupancy, Full Price
+        const DAYS_PER_MONTH = 22;
+        const MONTHS_PER_YEAR = 12;
+        const MAX_MONTHLY_REVENUE = MAX_DAILY_REVENUE * DAYS_PER_MONTH; // 3,020,710
+        const MAX_ANNUAL_REVENUE = MAX_MONTHLY_REVENUE * MONTHS_PER_YEAR;
+
+        // Salary Ladder
+        const SALARY_LADDER = {
+            lead: { ft: 77500, pt: null },
+            senior: { ft: 52500, pt: 26250 },
+            specialist: { ft: 35000, pt: 17500 },
+            associate: { ft: 18500, pt: 9250 }
+        };
+
+        // NEW: Detailed Tier Staffing Composition
+        const TIER_STAFF_COMPOSITION = [
+            // Tier 0 (Total: 14)
+            {
+                dept: "Clinical",
+                roles: [
+                    { name: "Senior", type: "FT", count: 1, salary: SALARY_LADDER.senior.ft },
+                    { name: "Specialist", type: "FT", count: 2, salary: SALARY_LADDER.specialist.ft },
+                    { name: "Associate", type: "FT", count: 2, salary: SALARY_LADDER.associate.ft },
+                    { name: "Specialist", type: "PT", count: 2, salary: SALARY_LADDER.specialist.pt },
+                    { name: "Associate", type: "PT", count: 1, salary: SALARY_LADDER.associate.pt }
+                ]
+            },
+            {
+                dept: "Support",
+                roles: [
+                    { name: "Reception", type: "FT", count: 2, salary: SALARY_LADDER.associate.ft },
+                    { name: "Med Assist", type: "FT", count: 2, salary: SALARY_LADDER.associate.ft },
+                    { name: "Reception", type: "PT", count: 1, salary: SALARY_LADDER.associate.pt },
+                    { name: "Gym", type: "FT", count: 1, salary: SALARY_LADDER.associate.ft }
+                ]
+            },
+            // Tier 1 (Total: 21)
+            {
+                dept: "Clinical",
+                roles: [
+                    { name: "Lead", type: "FT", count: 1, salary: SALARY_LADDER.lead.ft },
+                    { name: "Senior", type: "FT", count: 2, salary: SALARY_LADDER.senior.ft },
+                    { name: "Specialist", type: "FT", count: 3, salary: SALARY_LADDER.specialist.ft },
+                    { name: "Associate", type: "FT", count: 2, salary: SALARY_LADDER.associate.ft },
+                    { name: "Senior", type: "PT", count: 1, salary: SALARY_LADDER.senior.pt },
+                    { name: "Specialist", type: "PT", count: 2, salary: SALARY_LADDER.specialist.pt },
+                    { name: "Associate", type: "PT", count: 2, salary: SALARY_LADDER.associate.pt }
+                ]
+            },
+            {
+                dept: "Support",
+                roles: [
+                    { name: "Reception", type: "FT", count: 3, salary: SALARY_LADDER.associate.ft },
+                    { name: "Med Assist", type: "FT", count: 2, salary: SALARY_LADDER.associate.ft },
+                    { name: "Reception", type: "PT", count: 1, salary: SALARY_LADDER.associate.pt },
+                    { name: "Med Assist", type: "PT", count: 1, salary: SALARY_LADDER.associate.pt },
+                    { name: "Gym", type: "FT", count: 1, salary: SALARY_LADDER.associate.ft }
+                ]
+            },
+            {
+                dept: "Floater",
+                roles: [
+                    { name: "Senior", type: "FT", count: 1, salary: SALARY_LADDER.senior.ft }
+                ]
+            },
+            // Tier 2 (Total: 26)
+            {
+                dept: "Clinical",
+                roles: [
+                    { name: "Lead", type: "FT", count: 1, salary: SALARY_LADDER.lead.ft },
+                    { name: "Senior", type: "FT", count: 3, salary: SALARY_LADDER.senior.ft },
+                    { name: "Specialist", type: "FT", count: 3, salary: SALARY_LADDER.specialist.ft },
+                    { name: "Associate", type: "FT", count: 3, salary: SALARY_LADDER.associate.ft },
+                    { name: "Senior", type: "PT", count: 1, salary: SALARY_LADDER.senior.pt },
+                    { name: "Specialist", type: "PT", count: 3, salary: SALARY_LADDER.specialist.pt },
+                    { name: "Associate", type: "PT", count: 2, salary: SALARY_LADDER.associate.pt }
+                ]
+            },
+            {
+                dept: "Support",
+                roles: [
+                    { name: "Reception", type: "FT", count: 3, salary: SALARY_LADDER.associate.ft },
+                    { name: "Med Assist", type: "FT", count: 3, salary: SALARY_LADDER.associate.ft },
+                    { name: "Reception", type: "PT", count: 1, salary: SALARY_LADDER.associate.pt },
+                    { name: "Med Assist", type: "PT", count: 2, salary: SALARY_LADDER.associate.pt },
+                    { name: "Gym", type: "FT", count: 1, salary: SALARY_LADDER.associate.ft }
+                ]
+            },
+            {
+                dept: "Floater",
+                roles: [
+                    { name: "Senior", type: "FT", count: 1, salary: SALARY_LADDER.senior.ft },
+                    { name: "Specialist", type: "FT", count: 1, salary: SALARY_LADDER.specialist.ft }
+                ]
+            },
+            // Tier 3 (Total: 28)
+            {
+                dept: "Clinical",
+                roles: [
+                    { name: "Lead", type: "FT", count: 1, salary: SALARY_LADDER.lead.ft },
+                    { name: "Senior", type: "FT", count: 4, salary: SALARY_LADDER.senior.ft },
+                    { name: "Specialist", type: "FT", count: 4, salary: SALARY_LADDER.specialist.ft },
+                    { name: "Associate", type: "FT", count: 4, salary: SALARY_LADDER.associate.ft },
+                    { name: "Senior", type: "PT", count: 2, salary: SALARY_LADDER.senior.pt },
+                    { name: "Specialist", type: "PT", count: 2, salary: SALARY_LADDER.specialist.pt }
+                ]
+            },
+            {
+                dept: "Support",
+                roles: [
+                    { name: "Reception", type: "FT", count: 3, salary: SALARY_LADDER.associate.ft },
+                    { name: "Med Assist", type: "FT", count: 3, salary: SALARY_LADDER.associate.ft },
+                    { name: "Reception", type: "PT", count: 1, salary: SALARY_LADDER.associate.pt },
+                    { name: "Med Assist", type: "PT", count: 1, salary: SALARY_LADDER.associate.pt },
+                    { name: "Gym", type: "FT", count: 2, salary: SALARY_LADDER.associate.ft }
+                ]
+            },
+            {
+                dept: "Floater",
+                roles: [
+                    { name: "Senior", type: "FT", count: 1, salary: SALARY_LADDER.senior.ft },
+                    { name: "Specialist", type: "FT", count: 1, salary: SALARY_LADDER.specialist.ft }
+                ]
+            },
+            // Tier 4 (Total: 38)
+            {
+                dept: "Clinical",
+                roles: [
+                    { name: "Lead", type: "FT", count: 2, salary: SALARY_LADDER.lead.ft },
+                    { name: "Senior", type: "FT", count: 5, salary: SALARY_LADDER.senior.ft },
+                    { name: "Specialist", type: "FT", count: 5, salary: SALARY_LADDER.specialist.ft },
+                    { name: "Associate", type: "FT", count: 5, salary: SALARY_LADDER.associate.ft },
+                    { name: "Senior", type: "PT", count: 2, salary: SALARY_LADDER.senior.pt },
+                    { name: "Specialist", type: "PT", count: 4, salary: SALARY_LADDER.specialist.pt },
+                    { name: "Associate", type: "PT", count: 2, salary: SALARY_LADDER.associate.pt }
+                ]
+            },
+            {
+                dept: "Support",
+                roles: [
+                    { name: "Reception", type: "FT", count: 4, salary: SALARY_LADDER.associate.ft },
+                    { name: "Med Assist", type: "FT", count: 4, salary: SALARY_LADDER.associate.ft },
+                    { name: "Reception", type: "PT", count: 2, salary: SALARY_LADDER.associate.pt },
+                    { name: "Med Assist", type: "PT", count: 1, salary: SALARY_LADDER.associate.pt },
+                    { name: "Gym", type: "FT", count: 2, salary: SALARY_LADDER.associate.ft }
+                ]
+            },
+            {
+                dept: "Floater",
+                roles: [
+                    { name: "Senior", type: "FT", count: 2, salary: SALARY_LADDER.senior.ft },
+                    { name: "Specialist", type: "FT", count: 1, salary: SALARY_LADDER.specialist.ft }
+                ]
+            }
+        ];
+
+        // NEW: Function to calculate precise totals from composition
+        const calculateTierData = (tierIndex) => {
+            let ft = 0, pt = 0, payroll = 0;
+            let tierComposition = [];
+
+            // This logic assumes TIER_STAFF_COMPOSITION is structured correctly
+            // e.g., Tier 0 roles are at indices 0,1. Tier 1 at 2,3,4 etc.
+            // A better way is to filter by a 'tier' property if we add it
+            if (tierIndex === 0) tierComposition = TIER_STAFF_COMPOSITION.slice(0, 2);
+            if (tierIndex === 1) tierComposition = TIER_STAFF_COMPOSITION.slice(2, 5);
+            if (tierIndex === 2) tierComposition = TIER_STAFF_COMPOSITION.slice(5, 8);
+            if (tierIndex === 3) tierComposition = TIER_STAFF_COMPOSITION.slice(8, 11);
+            if (tierIndex === 4) tierComposition = TIER_STAFF_COMPOSITION.slice(11, 14);
+
+            tierComposition.forEach(dept => {
+                dept.roles.forEach(role => {
+                    if (role.type === "FT") ft += role.count;
+                    if (role.type === "PT") pt += role.count;
+                    payroll += role.count * role.salary;
+                });
+            });
+            return { ft, pt, total: ft + pt, payroll };
+        };
+
+        // Staffing Tier Data (Payroll & Capacity)
+        // (Original TIER_DATA)
+        const ORIGINAL_TIER_DATA = [
+            { tier: 0, revenue: 906000, capacity: 30, softLimit: 40, hardLimit: 60 },
+            { tier: 1, revenue: 1360000, capacity: 45, softLimit: 60, hardLimit: 80 },
+            { tier: 2, revenue: 1812426, capacity: 60, softLimit: 80, hardLimit: 100 }, // Using 60% of max revenue
+            { tier: 3, revenue: 2265533, capacity: 75, softLimit: 100, hardLimit: 120 }, // 75%
+            { tier: 4, revenue: 2718639, capacity: 90, softLimit: 120, hardLimit: 150 } // 90%
+        ];
+
+        // NEW: Generate TIER_DATA by combining original data with precise calculations
+        const TIER_DATA = ORIGINAL_TIER_DATA.map((item, index) => {
+            const calculated = calculateTierData(index);
+            return {
+                ...item,
+                ...calculated,
+                tier: index // ensure tier index is set
+            };
+        });
+
+        // Detailed Tier Services (PU/MM Flair)
+        const TIER_SERVICES_HTML = [
+            // Tier 0
+            `<div>
+                <h6 class="font-semibold text-brand-base dark:text-brand-light mb-1">MM Professional Extensions:</h6>
+                <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
+                    <li>Basic <strong>Shifts A, B, C</strong> operational</li>
+                    <li>Core Neuro, MSK, & Peds services</li>
+                    <li>Standard <strong>~50% bed capacity</strong></li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-semibold text-brand-secondary dark:text-brand-secondary-light mb-1">PU Radical Innovations:</h6>
+                <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
+                    <li><strong class="text-brand-secondary">Night Relief Lab™</strong> (Express) active</li>
+                    <li>Limited redundancy; "all-hands" culture</li>
+                </ul>
+            </div>`,
+            // Tier 1
+            `<div>
+                <h6 class="font-semibold text-brand-base dark:text-brand-light mb-1">MM Professional Extensions:</h6>
+                <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
+                    <li>Stable <strong>50-60% bed capacity</strong></li>
+                    <li>Stronger coverage for <strong>Shift C (Evening)</strong></li>
+                    <li>Improved staff leave/emergency coverage</li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-semibold text-brand-secondary dark:text-brand-secondary-light mb-1">PU Radical Innovations:</h6>
+                <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
+                    <li>Dedicated <strong class="text-brand-wood">Floater Staff</strong> introduced</li>
+                    <li>Cross-departmental training begins</li>
+                </ul>
+            </div>`,
+            // Tier 2 (Baseline)
+            `<div>
+                <h6 class="font-semibold text-brand-base dark:text-brand-light mb-1">MM Professional Extensions:</h6>
+                <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
+                    <li>Full <strong>FlexTime™ Model</strong> operational</li>
+                    <li>All <strong>7 beds</strong> fully staffed & active</li>
+                    <li>Dedicated <strong>Rehab Gym</strong> support</li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-semibold text-brand-secondary dark:text-brand-secondary-light mb-1">PU Radical Innovations:</h6>
+                <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
+                    <li><strong class="text-brand-highlight">AccessCare™ Program</strong> fully launched</li>
+                    <li>Robust <strong>Floater System (2 staff)</strong> for quality control & redundancy</li>
+                </ul>
+            </div>`,
+            // Tier 3
+            `<div>
+                <h6 class="font-semibold text-brand-base dark:text-brand-light mb-1">MM Professional Extensions:</h6>
+                <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
+                    <li><strong>Partial Weekend</strong> operations (Sat)</li>
+                    <li>Basic <strong>Home Care</strong> services initiated</li>
+                    <li>Full staffing for all core shifts</li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-semibold text-brand-secondary dark:text-brand-secondary-light mb-1">PU Radical Innovations:</h6>
+                <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
+                    <li>Radical <strong class="text-brand-highlight">FlexShift Z (06:00-09:00)</strong> unlocked</li>
+                    <li>Targeted service for early-bird professionals</li>
+                </ul>
+            </div>`,
+            // Tier 4
+            `<div>
+                <h6 class="font-semibold text-brand-base dark:text-brand-light mb-1">MM Professional Extensions:</h6>
+                <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
+                    <li><strong>Full Weekend</strong> operations (Sat/Sun)</li>
+                    <li>Dedicated <strong>Home Care / On-call</strong> team</li>
+                    <li>Expanded corporate wellness programs</li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-semibold text-brand-secondary dark:text-brand-secondary-light mb-1">PU Radical Innovations:</h6>
+                <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
+                    <li><strong>Full FlexShift Z</strong> integration</li>
+                    <li><strong class="text-brand-secondary">24/7 On-Call</strong> service potential</li>
+                    <li>Advanced <strong class="text-brand-wood">Floater Team (3+)</strong> for R&D and training</li>
+                </ul>
+            </div>`
+        ];
+
+        // Base Pricing Data
+        const BASE_PRICES = {
+            neuro: { foundation: 2000, standard: 1400, premium: 2400, express: 1000 },
+            msk: { foundation: 1500, standard: 900, premium: 1600, express: 800 },
+            peds: { foundation: 1800, standard: 1200, premium: 2000, express: 900 }
+        };
+
+        // --- GLOBAL VARIABLES ---
+        let currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        let visitMixChart;
+        let staffingTierChart;
+        let currentStaffingTier = TIER_DATA[2]; // Start at baseline Tier 2
+        let currentOccupancy = 60; // Start at 60%
+        let isOccupancyLocked = false; // Occupancy lock
+
+        // --- DOM ELEMENTS ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleBtnMobile = document.getElementById('theme-toggle-mobile');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+        const darkIconMobile = document.getElementById('theme-toggle-dark-icon-mobile');
+        const lightIconMobile = document.getElementById('theme-toggle-light-icon-mobile');
+        const mobileMenuBtn = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const backToTopBtn = document.getElementById('back-to-top');
+        const mainNavLinks = document.querySelectorAll('.main-nav a');
+        const navSections = document.querySelectorAll('section[id]');
+        
+        // Staffing Tier Elements
+        const staffingSlider = document.getElementById('staffing-tier-slider');
+        const staffFtEl = document.getElementById('staff-ft');
+        const staffPtEl = document.getElementById('staff-pt');
+        const staffTotalEl = document.getElementById('staff-total');
+        const staffPayrollEl = document.getElementById('staff-payroll');
+        const servicesTierLabelEl = document.getElementById('services-tier-label');
+        const servicesUnlockedEl = document.getElementById('services-unlocked');
+        const assumedOccupancyEl = document.getElementById('assumed-occupancy');
+        const netMarginBdtEl = document.getElementById('net-margin-bdt');
+        const netMarginPctEl = document.getElementById('net-margin-pct');
+        
+        // NEW: Dynamic Payroll Table
+        const dynamicPayrollTableBody = document.getElementById('dynamic-payroll-table-body');
+
+        // Occupancy Modeler Elements
+        const occupancySlider = document.getElementById('occupancy-slider');
+        const occupancyValueEl = document.getElementById('occupancy-value');
+        const occupancyRecommendationEl = document.getElementById('occupancy-recommendation');
+        const occupancyLockToggle = document.getElementById('occupancy-lock-toggle');
+        const occupancyLockIcon = document.getElementById('occupancy-lock-icon');
+        const dailyRevenueEl = document.getElementById('daily-revenue');
+        const monthlyRevenueEl = document.getElementById('monthly-revenue');
+        const monthlyProfitEl = document.getElementById('monthly-profit');
+        const monthlyProfitPercentEl = document.getElementById('monthly-profit-percent');
+        const annualRevenueEl = document.getElementById('annual-revenue');
+        const annualProfitEl = document.getElementById('annual-profit');
+
+        // Year 2+ Projection Elements
+        const projTierLabel = document.getElementById('proj-tier-label');
+        const projOccupancyLabel = document.getElementById('proj-occupancy-label');
+        const projMonthlyProfit = document.getElementById('proj-monthly-profit');
+        const projAnnualRevenue = document.getElementById('proj-annual-revenue');
+        const projAnnualProfit = document.getElementById('proj-annual-profit');
+
+        // Price Toggle Elements
+        const priceToggleButtons = document.querySelectorAll('.price-toggle-btn');
+        
+        // Dynamic Launch Model A Elements
+        const modelATierLabel = document.getElementById('model-a-tier-label');
+        const modelAP1Profit = document.getElementById('model-a-p1-profit');
+        const modelAP2Profit = document.getElementById('model-a-p2-profit');
+        const modelAP3Profit = document.getElementById('model-a-p3-profit');
+        const modelAP1Bar = document.getElementById('model-a-p1-bar');
+        const modelAP2Bar = document.getElementById('model-a-p2-bar');
+        const modelAP3Bar = document.getElementById('model-a-p3-bar');
+        const modelATotalProfit = document.getElementById('model-a-total-profit');
+        const modelAAvgProfit = document.getElementById('model-a-avg-profit');
+
+        // Dynamic Launch Model B Elements
+        const modelBP1Profit = document.getElementById('model-b-p1-profit');
+        const modelBP2Profit = document.getElementById('model-b-p2-profit');
+        const modelBP3Profit = document.getElementById('model-b-p3-profit');
+        const modelBP1Bar = document.getElementById('model-b-p1-bar');
+        const modelBP2Bar = document.getElementById('model-b-p2-bar');
+        const modelBP3Bar = document.getElementById('model-b-p3-bar');
+        const modelBTotalProfit = document.getElementById('model-b-total-profit');
+
+
+        // --- UTILITY FUNCTIONS ---
+        
+        // Format as BDT string, rounding to nearest whole number
+        const formatBDT = (num) => {
+            const roundedNum = Math.round(num);
+            return new Intl.NumberFormat('en-IN').format(roundedNum);
+        };
+        
+        // Format as Lakh/Crore
+        const formatBDTShort = (num) => {
+            const roundedNum = Math.round(num);
+            if (roundedNum < 0) {
+                return `–${formatBDTShort(-roundedNum)}`;
+            }
+            if (roundedNum >= 10000000) { // Crore
+                return `${(roundedNum / 10000000).toFixed(2)} cr`;
+            }
+            if (roundedNum >= 100000) { // Lakh
+                return `${(roundedNum / 100000).toFixed(2)} lakh`;
+            }
+            return formatBDT(roundedNum);
+        };
+
+        // Round to nearest 10
+        const roundToNearest10 = (num) => {
+            return Math.round(num / 10) * 10;
+        }
+
+        // Format as BDT string with + or -
+        const formatProfit = (num) => {
+            const roundedNum = Math.round(num);
+            const prefix = roundedNum >= 0 ? '+' : '';
+            return prefix + new Intl.NumberFormat('en-IN').format(roundedNum);
+        };
+
+        // Format percentage
+        const formatPercent = (num) => {
+            const prefix = num >= 0 ? '+' : '';
+            return prefix + num.toFixed(1) + '%';
+        };
+
+        // Get Chart.js options
+        const getChartOptions = (theme) => {
+            const gridColor = theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+            const labelColor = theme === 'dark' ? '#d1d5db' : '#374151'; // gray-300 / gray-700
+            
+            return {
+                // Doughnut-specific options
+                doughnut: {
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: labelColor,
+                                font: { size: 14 }
+                            }
+                        }
+                    },
+                    cutout: '50%',
+                },
+                // Bar-specific options
+                bar: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${formatBDT(context.raw)} BDT`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: labelColor, font: { size: 14, weight: '600' } }
+                        },
+                        y: {
+                            grid: { color: gridColor, drawBorder: false },
+                            ticks: { 
+                                color: labelColor, 
+                                callback: function(value) {
+                                    return `${value / 1000}k`;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        };
+
+
+        // --- THEME TOGGLE LOGIC ---
+        const toggleTheme = () => {
+            // Toggle local storage
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
+            currentTheme = isDark ? 'dark' : 'light';
+            
+            // Toggle icons
+            updateThemeIcons(isDark);
+            
+            // Update charts
+            updateChartsTheme();
+            
+            // Re-style occupancy slider
+            updateOccupancySliderStyle();
+        };
+
+        const updateThemeIcons = (isDark) => {
+            // Desktop
+            darkIcon.classList.toggle('hidden', !isDark);
+            lightIcon.classList.toggle('hidden', isDark);
+            // Mobile
+            darkIconMobile.classList.toggle('hidden', !isDark);
+            lightIconMobile.classList.toggle('hidden', isDark);
+        };
+
+        const updateChartsTheme = () => {
+            const newOptions = getChartOptions(currentTheme);
+            
+            // Update Visit Mix Chart
+            if (visitMixChart) {
+                visitMixChart.options.plugins.legend.labels.color = newOptions.doughnut.plugins.legend.labels.color;
+                visitMixChart.update();
+            }
+
+            // Update Staffing Tier Chart
+            if (staffingTierChart) {
+                const barOptions = newOptions.bar;
+                if (staffingTierChart.options.scales.x) { // Check if axes exist
+                    staffingTierChart.options.scales.x.ticks.color = barOptions.scales.x.ticks.color;
+                    staffingTierChart.options.scales.x.grid.color = barOptions.scales.x.grid.color;
+                }
+                if (staffingTierChart.options.scales.y) {
+                    staffingTierChart.options.scales.y.ticks.color = barOptions.scales.y.ticks.color;
+                    staffingTierChart.options.scales.y.grid.color = barOptions.scales.y.grid.color;
+                }
+                staffingTierChart.update();
+            }
+        };
+
+        // --- CHART RENDERING ---
+
+        // Render Visit Mix Doughnut Chart
+        const renderVisitMixChart = () => {
+            const ctx = document.getElementById('visitMixChart');
+            if (!ctx) return;
+
+            const options = getChartOptions(currentTheme).doughnut;
+            
+            visitMixChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Foundation (20%)', 'Standard (50%)', 'Premium (25%)', 'Express (5%)'],
+                    datasets: [{
+                        data: [20, 50, 25, 5],
+                        backgroundColor: [
+                            '#854d0e', // brand-wood
+                            '#167a42', // brand-base
+                            '#3cb06f', // brand-light
+                            '#f97316'  // brand-secondary
+                        ],
+                        borderColor: currentTheme === 'dark' ? '#1f2937' : '#ffffff',
+                        borderWidth: 4,
+                    }]
+                },
+                options: options
+            });
+        };
+
+        // Render Staffing Tier Bar Chart
+        const renderStaffingTierChart = () => {
+            const ctx = document.getElementById('staffingTierChart');
+            if (!ctx) return;
+
+            const options = getChartOptions(currentTheme).bar;
+            const data = TIER_DATA[staffingSlider.value];
+
+            staffingTierChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Monthly Payroll', 'Expected Revenue'],
+                    datasets: [
+                        {
+                            label: 'Amount (BDT)',
+                            data: [data.payroll, data.revenue],
+                            backgroundColor: [
+                                '#854d0e', // brand-wood
+                                '#167a42', // brand-base
+                            ],
+                            borderRadius: 6,
+                            borderWidth: 0
+                        }
+                    ]
+                },
+                options: options
+            });
+        };
+
+        // --- APPLICATION LOGIC ---
+
+        // NEW: Update Dynamic Payroll Table
+        const updateDynamicPayrollTable = (tierIndex) => {
+            if (!dynamicPayrollTableBody) return;
+            dynamicPayrollTableBody.innerHTML = ''; // Clear table
+
+            let tierComposition = [];
+            if (tierIndex === 0) tierComposition = TIER_STAFF_COMPOSITION.slice(0, 2);
+            if (tierIndex === 1) tierComposition = TIER_STAFF_COMPOSITION.slice(2, 5);
+            if (tierIndex === 2) tierComposition = TIER_STAFF_COMPOSITION.slice(5, 8);
+            if (tierIndex === 3) tierComposition = TIER_STAFF_COMPOSITION.slice(8, 11);
+            if (tierIndex === 4) tierComposition = TIER_STAFF_COMPOSITION.slice(11, 14);
+
+            let grandTotalFt = 0;
+            let grandTotalPt = 0;
+            let grandTotalPayroll = 0;
+
+            tierComposition.forEach(dept => {
+                let deptSubtotalFt = 0;
+                let deptSubtotalPt = 0;
+                let deptSubtotalPayroll = 0;
+
+                // Dept Header Row
+                const deptRow = document.createElement('tr');
+                deptRow.className = 'dept-row';
+                deptRow.innerHTML = `
+                    <th class="px-6 py-3 text-left text-sm" colspan="6">${dept.dept}</th>
+                `;
+                dynamicPayrollTableBody.appendChild(deptRow);
+
+                // Roles
+                dept.roles.forEach(role => {
+                    const subtotal = role.count * role.salary;
+                    if (role.type === "FT") deptSubtotalFt += role.count;
+                    if (role.type === "PT") deptSubtotalPt += role.count;
+                    deptSubtotalPayroll += subtotal;
+
+                    const roleRow = document.createElement('tr');
+                    roleRow.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${role.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">${role.type}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right">${role.count}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right">${formatBDT(role.salary)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right">${formatBDT(subtotal)}</td>
+                    `;
+                    dynamicPayrollTableBody.appendChild(roleRow);
+                });
+
+                // Dept Subtotal Row
+                const subtotalRow = document.createElement('tr');
+                subtotalRow.className = 'subtotal-row';
+                subtotalRow.innerHTML = `
+                    <td class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300" colspan="3">Department Subtotal (FT: ${deptSubtotalFt}, PT: ${deptSubtotalPt})</td>
+                    <td class="px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white">${deptSubtotalFt + deptSubtotalPt}</td>
+                    <td class="px-6 py-3 text-right text-sm font-semibold text-gray-700 dark:text-gray-300"></td>
+                    <td class="px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white">${formatBDT(deptSubtotalPayroll)}</td>
+                `;
+                dynamicPayrollTableBody.appendChild(subtotalRow);
+
+                grandTotalFt += deptSubtotalFt;
+                grandTotalPt += deptSubtotalPt;
+                grandTotalPayroll += deptSubtotalPayroll;
+            });
+
+            // Grand Total Row
+            const grandTotalRow = document.createElement('tr');
+            grandTotalRow.className = 'grand-total-row';
+            grandTotalRow.innerHTML = `
+                <td class="px-6 py-4 text-left" colspan="3">Grand Total (FT: ${grandTotalFt}, PT: ${grandTotalPt})</td>
+                <td class="px-6 py-4 text-right">${grandTotalFt + grandTotalPt}</td>
+                <td class="px-6 py-4 text-right"></td>
+                <td class="px-6 py-4 text-right">${formatBDT(grandTotalPayroll)}</td>
+            `;
+            dynamicPayrollTableBody.appendChild(grandTotalRow);
+        };
+
+
+        // Update Pricing Table
+        const updatePricingTable = (discountRate = 0) => {
+            // Update button styles
+            priceToggleButtons.forEach(btn => {
+                const rate = btn.id.split('-')[2]; // '0', '20', or '30'
+                const isActive = (rate === (discountRate * 100).toString());
+                
+                btn.classList.toggle('bg-brand-base', isActive);
+                btn.classList.toggle('text-white', isActive);
+                btn.classList.toggle('dark:bg-brand-base', isActive);
+                btn.classList.toggle('dark:text-white', isActive);
+                
+                btn.classList.toggle('bg-white', !isActive);
+                btn.classList.toggle('dark:bg-gray-700', !isActive);
+                btn.classList.toggle('text-brand-base', !isActive);
+                btn.classList.toggle('dark:text-brand-light', !isActive);
+            });
+
+            // Update prices
+            for (const [dept, prices] of Object.entries(BASE_PRICES)) {
+                for (const [session, basePrice] of Object.entries(prices)) {
+                    const el = document.getElementById(`price-${dept}-${session}`);
+                    if (el) {
+                        const discountedPrice = basePrice * (1 - discountRate);
+                        el.textContent = formatBDT(roundToNearest10(discountedPrice));
+                    }
+                }
+            }
+        };
+
+        // Update Dynamic Launch Projections
+        const updateLaunchProjections = () => {
+            const tier = currentStaffingTier;
+            
+            // --- MODEL A (Staggered, based on *selected* tier) ---
+            const pA_occ = 0.60;
+            const pA_payroll = tier.payroll;
+            const pA_p1_rev = (MAX_MONTHLY_REVENUE * pA_occ * (1 - 0.30)) * 3;
+            const pA_p1_profit = pA_p1_rev - (pA_payroll * 3);
+            
+            const pA_p2_rev = (MAX_MONTHLY_REVENUE * pA_occ * (1 - 0.20)) * 3;
+            const pA_p2_profit = pA_p2_rev - (pA_payroll * 3);
+
+            const pA_p3_rev = (MAX_MONTHLY_REVENUE * pA_occ) * 6;
+            const pA_p3_profit = pA_p3_rev - (pA_payroll * 6);
+            
+            const pA_total_profit = pA_p1_profit + pA_p2_profit + pA_p3_profit;
+            const pA_max_profit = pA_p3_profit * 2; // Extrapolate phase 3 profit for 12 months
+
+            modelATierLabel.textContent = `Tier ${tier.tier}`;
+            modelAP1Profit.textContent = formatBDTShort(pA_p1_profit);
+            modelAP2Profit.textContent = formatBDTShort(pA_p2_profit);
+            modelAP3Profit.textContent = formatBDTShort(pA_p3_profit);
+            modelATotalProfit.textContent = formatBDTShort(pA_total_profit);
+            modelAAvgProfit.textContent = `(Avg. ${formatBDTShort(pA_total_profit / 12)} / month)`;
+            
+            // Update bars (as % of max possible profit in this model, pA_max_profit)
+            modelAP1Bar.style.width = `${Math.max(0, (pA_p1_profit / 3) / (pA_max_profit / 12)) * 100}%`;
+            modelAP2Bar.style.width = `${Math.max(0, (pA_p2_profit / 3) / (pA_max_profit / 12)) * 100}%`;
+            modelAP3Bar.style.width = `${Math.max(0, (pA_p3_profit / 6) / (pA_max_profit / 12)) * 100}%`;
+
+            [modelAP1Profit, modelAP2Profit, modelAP3Profit].forEach(el => {
+                const isLoss = el.textContent.startsWith('–');
+                el.classList.toggle('text-red-600', isLoss);
+                el.classList.toggle('dark:text-red-400', isLoss);
+                el.classList.toggle('text-brand-base', !isLoss);
+                el.classList.toggle('dark:text-brand-light', !isLoss);
+            });
+
+
+            // --- MODEL B (Realistic Ramp-Up, hardcoded tiers with precise payroll) ---
+            const pB_p1_rev = (MAX_MONTHLY_REVENUE * 0.40 * (1 - 0.30)) * 3;
+            const pB_p1_payroll = TIER_DATA[0].payroll * 3; // Tier 0
+            const pB_p1_profit = pB_p1_rev - pB_p1_payroll;
+
+            const pB_p2_rev = (MAX_MONTHLY_REVENUE * 0.50 * (1 - 0.20)) * 3;
+            const pB_p2_payroll = TIER_DATA[1].payroll * 3; // Tier 1
+            const pB_p2_profit = pB_p2_rev - pB_p2_payroll;
+            
+            const pB_p3_rev = (MAX_MONTHLY_REVENUE * 0.60) * 6;
+            const pB_p3_payroll = TIER_DATA[2].payroll * 6; // Tier 2
+            const pB_p3_profit = pB_p3_rev - pB_p3_payroll;
+
+            const pB_total_profit = pB_p1_profit + pB_p2_profit + pB_p3_profit;
+            const pB_max_profit = pB_p3_profit * 2; // Extrapolate phase 3 profit
+
+            modelBP1Profit.textContent = formatBDTShort(pB_p1_profit);
+            modelBP2Profit.textContent = formatBDTShort(pB_p2_profit);
+            modelBP3Profit.textContent = formatBDTShort(pB_p3_profit);
+            modelBTotalProfit.textContent = formatBDTShort(pB_total_profit);
+
+            // Update bars (as % of max possible profit in this model, pB_max_profit)
+            modelBP1Bar.style.width = `${Math.max(0, (pB_p1_profit / 3) / (pB_max_profit / 12)) * 100}%`;
+            modelBP2Bar.style.width = `${Math.max(0, (pB_p2_profit / 3) / (pB_max_profit / 12)) * 100}%`;
+            modelBP3Bar.style.width = `${Math.max(0, (pB_p3_profit / 6) / (pB_max_profit / 12)) * 100}%`;
+            
+            [modelBP1Profit, modelBP2Profit, modelBP3Profit].forEach(el => {
+                const isLoss = el.textContent.startsWith('–');
+                el.classList.toggle('text-red-600', isLoss);
+                el.classList.toggle('dark:text-red-400', isLoss);
+                el.classList.toggle('text-brand-base', !isLoss);
+                el.classList.toggle('dark:text-brand-light', !isLoss);
+            });
+        };
+
+        // Update Staffing Tier Modeler
+        const updateStaffingTier = (tierIndex) => {
+            currentStaffingTier = TIER_DATA[tierIndex];
+            
+            // Update text readouts
+            staffFtEl.textContent = currentStaffingTier.ft;
+            staffPtEl.textContent = currentStaffingTier.pt;
+            staffTotalEl.textContent = currentStaffingTier.total;
+            staffPayrollEl.textContent = formatBDT(currentStaffingTier.payroll);
+            
+            // Update enhanced services
+            servicesTierLabelEl.textContent = `Tier ${currentStaffingTier.tier}`;
+            servicesUnlockedEl.innerHTML = TIER_SERVICES_HTML[tierIndex];
+
+            // Update tier financials
+            assumedOccupancyEl.textContent = `~${currentStaffingTier.capacity}%`;
+            const netMargin = currentStaffingTier.revenue - currentStaffingTier.payroll;
+            const marginPct = (netMargin / currentStaffingTier.revenue) * 100;
+            netMarginBdtEl.textContent = `≈ ${formatBDT(netMargin)}`;
+            netMarginPctEl.textContent = `~${marginPct.toFixed(1)}%`;
+
+            // Update bar chart
+            if (staffingTierChart) {
+                staffingTierChart.data.datasets[0].data = [currentStaffingTier.payroll, currentStaffingTier.revenue];
+                staffingTierChart.update();
+            }
+
+            // Update dynamic payroll table
+            updateDynamicPayrollTable(tierIndex);
+            
+            // Reset occupancy slider if not locked
+            if (!isOccupancyLocked) {
+                currentOccupancy = currentStaffingTier.capacity;
+                occupancySlider.value = currentOccupancy;
+            }
+
+            // Update occupancy modeler (which also updates Year 2+ projections)
+            updateOccupancyMetrics();
+
+            // Update Year 2+ Projection Label
+            projTierLabel.textContent = `Tier ${currentStaffingTier.tier}`;
+
+            // Update Model A in Launch Projections
+            updateLaunchProjections();
+        };
+
+        // Update Occupancy Slider Style
+        const updateOccupancySliderStyle = () => {
+            const { capacity, softLimit, hardLimit } = currentStaffingTier;
+            const max = parseInt(occupancySlider.max, 10);
+            
+            const capacityPct = (capacity / max) * 100;
+            const softPct = (softLimit / max) * 100;
+            const hardPct = (hardLimit / max) * 100;
+            
+            const green = currentTheme === 'dark' ? '#3cb06f' : '#167a42'; // brand-light / brand-base
+            const orange = '#f97316'; // brand-secondary
+            const red = '#ef4444'; // brand-red
+            const gray = currentTheme === 'dark' ? '#4b5563' : '#d1d5db'; // gray-600 / gray-300
+
+            let gradient = `linear-gradient(to right, ${green} ${capacityPct}%, ${gray} ${capacityPct}%)`;
+
+            // Add "stretch" and "redline" zones
+            if (softLimit < max) {
+                // Gradient for multi-color track
+                gradient = `linear-gradient(to right, ${green} ${capacityPct}%, ${orange} ${softPct}%, ${red} ${hardPct}%, ${gray} ${hardPct}%)`;
+
+                // Handle case where capacity and softlimit are different
+                if (capacityPct < softPct) {
+                     gradient = `linear-gradient(to right, ${green} ${capacityPct}%, ${orange} ${capacityPct}%, ${orange} ${softPct}%, ${red} ${softPct}%, ${red} ${hardPct}%, ${gray} ${hardPct}%)`;
+                }
+
+                // Simpler gradient based on a single "safe" zone
+                gradient = `linear-gradient(to right, ${green} ${softPct}%, ${orange} ${hardPct}%, ${red} 100%)`;
+            }
+            
+            occupancySlider.style.background = gradient;
+
+            // Update thumb color
+            occupancySlider.classList.remove('thumb-orange', 'thumb-red');
+            if (currentOccupancy > hardLimit) {
+                occupancySlider.classList.add('thumb-red');
+            } else if (currentOccupancy > softLimit) {
+                occupancySlider.classList.add('thumb-orange');
+            }
+        };
+
+        // Update Dynamic Occupancy Modeler
+        const updateOccupancyMetrics = () => {
+            const occupancy = currentOccupancy / 100;
+            const { capacity, softLimit, hardLimit } = currentStaffingTier;
+            
+            // Calculate metrics
+            const dailyRevenue = MAX_DAILY_REVENUE * occupancy;
+            const monthlyRevenue = dailyRevenue * DAYS_PER_MONTH;
+            const monthlyPayroll = currentStaffingTier.payroll;
+            const monthlyProfit = monthlyRevenue - monthlyPayroll;
+            const monthlyProfitPercent = (monthlyRevenue > 0) ? (monthlyProfit / monthlyRevenue) * 100 : 0;
+            const annualRevenue = monthlyRevenue * MONTHS_PER_YEAR;
+            const annualProfit = monthlyProfit * MONTHS_PER_YEAR;
+
+            // Update text readouts for Occupancy Modeler
+            occupancyValueEl.textContent = `${currentOccupancy}%`;
+            dailyRevenueEl.textContent = formatBDT(dailyRevenue);
+            monthlyRevenueEl.textContent = formatBDT(monthlyRevenue);
+            monthlyProfitEl.textContent = formatProfit(monthlyProfit);
+            monthlyProfitPercentEl.textContent = formatPercent(monthlyProfitPercent);
+            annualRevenueEl.textContent = formatBDT(annualRevenue);
+            annualProfitEl.textContent = formatProfit(annualProfit);
+
+            // Update recommendation text
+            occupancyRecommendationEl.textContent = `Recommended: ~${capacity}%`;
+            
+            // Update recommendation color & text color
+            occupancyValueEl.classList.remove('text-brand-highlight', 'text-brand-secondary', 'dark:text-brand-secondary-light', 'text-brand-red', 'dark:text-brand-red-light');
+            if (currentOccupancy > hardLimit) {
+                occupancyValueEl.classList.add('text-brand-red', 'dark:text-brand-red-light');
+                occupancyRecommendationEl.classList.add('animate-pulse');
+            } else if (currentOccupancy > softLimit) {
+                occupancyValueEl.classList.add('text-brand-secondary', 'dark:text-brand-secondary-light');
+                occupancyRecommendationEl.classList.remove('animate-pulse');
+            } else {
+                occupancyValueEl.classList.add('text-brand-highlight');
+                occupancyRecommendationEl.classList.remove('animate-pulse');
+            }
+
+            // Update slider track and thumb style
+            updateOccupancySliderStyle();
+
+            // Update profit/loss colors
+            const elementsToColor = [monthlyProfitEl, monthlyProfitPercentEl, annualProfitEl, projMonthlyProfit, projAnnualProfit];
+            elementsToColor.forEach(el => {
+                if (!el) return; // Guard clause
+                let isLoss = monthlyProfit < 0;
+                if (el === annualProfitEl || el === projAnnualProfit) {
+                    isLoss = annualProfit < 0;
+                }
+                
+                el.classList.toggle('text-red-600', isLoss);
+                el.classList.toggle('dark:text-red-400', isLoss);
+                el.classList.toggle('text-brand-base', !isLoss);
+                el.classList.toggle('dark:text-brand-light', !isLoss);
+            });
+
+            // Update Year 2+ Projections
+            projOccupancyLabel.textContent = `${currentOccupancy}% Capacity`;
+            projMonthlyProfit.textContent = formatProfit(monthlyProfit);
+            projAnnualRevenue.textContent = formatBDT(annualRevenue);
+            projAnnualProfit.textContent = formatProfit(annualProfit);
+        };
+
+
+        // --- QoL: SCROLL LISTENERS ---
+
+        // Back to Top Button
+        const handleScroll = () => {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        };
+
+        // Active Nav Link Observer
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    mainNavLinks.forEach(link => {
+                        link.classList.remove('nav-active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('nav-active');
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: '-40% 0px -40% 0px' }); // Highlights when section is in the middle 20% of the viewport
+
+
+        // --- EVENT LISTENERS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set footer year
+            document.getElementById('footer-year').textContent = new Date().getFullYear();
+            
+            // Init Lucide icons
+            lucide.createIcons();
+
+            // Init Theme
+            updateThemeIcons(currentTheme === 'dark');
+            
+            // Init Theme Toggle Buttons
+            themeToggleBtn.addEventListener('click', toggleTheme);
+            themeToggleBtnMobile.addEventListener('click', toggleTheme);
+
+            // Init Mobile Menu
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            // Close mobile menu when a link is clicked
+            document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Init Staffing Tier Modeler
+            staffingSlider.addEventListener('input', (e) => {
+                updateStaffingTier(parseInt(e.target.value));
+            });
+
+            // Init Occupancy Modeler
+            occupancySlider.addEventListener('input', (e) => {
+                currentOccupancy = parseInt(e.target.value);
+                updateOccupancyMetrics();
+            });
+
+            // Init Occupancy Lock
+            occupancyLockToggle.addEventListener('click', () => {
+                isOccupancyLocked = !isOccupancyLocked;
+                occupancyLockIcon.setAttribute('data-lucide', isOccupancyLocked ? 'lock' : 'unlock');
+                lucide.createIcons(); // Re-render the icon
+                occupancyLockToggle.classList.toggle('text-brand-highlight', isOccupancyLocked);
+                occupancyLockToggle.classList.toggle('dark:text-brand-highlight-light', isOccupancyLocked);
+                occupancyLockToggle.classList.toggle('text-gray-400', !isOccupancyLocked);
+                occupancyLockToggle.classList.toggle('dark:text-gray-500', !isOccupancyLocked);
+            });
+
+            // Init Price Toggles
+            priceToggleButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const rate = e.currentTarget.id.split('-')[2]; // '0', '20', or '30'
+                    updatePricingTable(parseInt(rate) / 100);
+                });
+            });
+
+            // Init Scroll Listeners (QoL)
+            window.addEventListener('scroll', handleScroll);
+            navSections.forEach(section => {
+                if(section) navObserver.observe(section);
+            });
+
+            // --- INITIAL STATE ---
+            
+            // Set initial state for sliders and dependent models
+            staffingSlider.value = 2; // Baseline Tier 2
+            occupancySlider.value = 60;
+            currentOccupancy = 60;
+            updateStaffingTier(2); // This will call updateOccupancyMetrics internally
+            
+            // Set initial state for pricing table
+            updatePricingTable(0); // Full Price
+
+            // Render Charts
+            renderVisitMixChart();
+            renderStaffingTierChart();
+            
+            // Ensure charts are updated on initial load *after* theme is set
+            updateChartsTheme();
+
+            // Run initial launch projection calc
+            updateLaunchProjections();
+        });
+
+    </script>
+</body>
+</html>
