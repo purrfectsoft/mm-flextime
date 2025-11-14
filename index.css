@@ -62,17 +62,20 @@ html.dark .flex-shift-z-suffix {
 }
 .flex-shift-o-suffix {
     color: #2563eb; /* brand-highlight (blue) */
+    visibility: hidden;
     opacity: 0;
     position: absolute;
-    left: 95%;
+    left: 100%;
     top: 0;
-    transform: translateX(-10px);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform: translateX(-8px);
+    white-space: nowrap;
+    transition: opacity 0.28s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
     font-weight: 900;
     font-style: italic;
     pointer-events: none;
 }
 .flex-shift-o-container:hover .flex-shift-o-suffix {
+    visibility: visible;
     opacity: 1;
     transform: translateX(0);
 }
