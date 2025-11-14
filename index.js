@@ -1037,6 +1037,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Init Lucide icons
     lucide.createIcons();
 
+    // (No JS fallback — use same CSS/markup pattern as FlexShift Z)
     // Init Theme
     updateThemeIcons(currentTheme === 'dark');
     
