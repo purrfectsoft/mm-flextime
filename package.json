@@ -1,0 +1,19 @@
+{
+  "name": "mm-flextime-microsite",
+  "version": "1.0.0",
+  "description": "Motion Mechanics FlexTime™ Operations & Financial Model Interactive Microsite",
+  "type": "module",
+  "scripts": {
+    "version": "node scripts/update-hashes.js && git add index.html",
+    "postversion": "git push && git push --tags"
+  },
+  "keywords": [
+    "flextime",
+    "motion-mechanics",
+    "physiotherapy",
+    "operations-model",
+    "financial-model"
+  ],
+  "author": "Purrfect Software Limited",
+  "license": "PURRFECT_LICENSE"
+}
