@@ -248,6 +248,20 @@
                 <p class="text-center text-gray-600 dark:text-gray-400 mb-2 max-w-2xl mx-auto">
                     Use this slider to see how payroll, revenue, and service capacity scale with each staffing tier.
                 </p>
+                <!-- How to Use Helper -->
+                <div class="bg-brand-highlight/10 dark:bg-brand-highlight/20 border-l-4 border-brand-highlight p-4 rounded-lg mb-6 max-w-3xl mx-auto">
+                    <div class="flex items-start">
+                        <i data-lucide="info" class="w-5 h-5 text-brand-highlight flex-shrink-0 mt-0.5 mr-3"></i>
+                        <div>
+                            <h4 class="text-sm font-semibold text-brand-dark dark:text-brand-light mb-1">How to use this model:</h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">
+                                <strong>1)</strong> Select a staffing tier below to set your team size and payroll baseline. 
+                                <strong>2)</strong> Scroll to the Capacity Modeler to adjust occupancy and see revenue projections. 
+                                <strong>3)</strong> Explore Launch Models and AccessCare™ to understand how discounts and subsidized care affect profitability.
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 <div class="text-center mb-8">
                     <span class="inline-block bg-brand-highlight/10 text-brand-highlight dark:bg-brand-highlight-light/20 dark:text-brand-highlight-light px-4 py-2 rounded-lg font-semibold text-lg">
                         <span id="current-tier-label">Tier 2 — Baseline Full Operations</span>
@@ -257,11 +271,11 @@
                 <!-- Slider -->
                 <div class="mb-8">
                     <div class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 px-1">
-                        <span>Tier 0 (Basic)</span>
-                        <span>Tier 1</span>
-                        <span>Tier 2 (Baseline)</span>
-                        <span>Tier 3</span>
-                        <span>Tier 4 (Full Ops)</span>
+                        <span class="text-xs md:text-sm">Minimum Viable Opening</span>
+                        <span class="text-xs md:text-sm">Stable Launch</span>
+                        <span class="text-xs md:text-sm">Baseline Full Ops</span>
+                        <span class="text-xs md:text-sm">Expanded Ops</span>
+                        <span class="text-xs md:text-sm">Full Ecosystem</span>
                     </div>
                     <input id="staffing-tier-slider" type="range" min="0" max="4" value="2" step="1" class="w-full h-3 bg-brand-extralight rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700 thumb-brand-highlight"
                     >
@@ -711,10 +725,10 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm">
-                        <h5 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">Operating Parameters</h5>
+                        <h5 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">Core Operating Parameters</h5>
                         <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                             <li class="flex justify-between">
-                                <span>Working days/month:</span>
+                                <span>Working days/month (Tier 0-2):</span>
                                 <strong class="text-brand-dark dark:text-brand-light">22 days</strong>
                             </li>
                             <li class="flex justify-between">
@@ -722,17 +736,17 @@
                                 <strong class="text-brand-dark dark:text-brand-light">7 beds</strong>
                             </li>
                             <li class="flex justify-between">
-                                <span>Max daily revenue:</span>
+                                <span>Max daily revenue (100% cap):</span>
                                 <strong class="text-brand-dark dark:text-brand-light">137,305 BDT</strong>
                             </li>
                             <li class="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
-                                <span>Max monthly revenue:</span>
+                                <span>Base monthly revenue (22 days):</span>
                                 <strong class="text-brand-secondary">3,020,710 BDT</strong>
                             </li>
                         </ul>
                     </div>
                     <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm">
-                        <h5 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">Session Mix & Pricing</h5>
+                        <h5 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">Session Mix Distribution</h5>
                         <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                             <li class="flex justify-between">
                                 <span>Foundation sessions:</span>
@@ -755,6 +769,43 @@
                             </li>
                         </ul>
                     </div>
+                </div>
+                
+                <!-- Expanded Revenue Streams (Higher Tiers) -->
+                <div class="mt-6 bg-brand-highlight/10 dark:bg-brand-highlight/20 p-4 rounded-lg border border-brand-highlight/30">
+                    <div class="flex items-start mb-3">
+                        <i data-lucide="trending-up" class="w-5 h-5 text-brand-highlight flex-shrink-0 mt-0.5 mr-3"></i>
+                        <h5 class="text-sm font-bold text-brand-dark dark:text-brand-light">Expanded Revenue Streams (Tier 3 & 4)</h5>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div class="bg-white dark:bg-gray-900 p-3 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-semibold text-brand-wood">Tier 3 (Partial Weekend)</span>
+                                <span class="text-xs bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full font-bold">+27% Days</span>
+                            </div>
+                            <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                                Partial weekend coverage (Saturdays) extends operational days from <strong>22 → 28 days/month</strong>
+                            </p>
+                            <p class="text-xs text-brand-highlight font-semibold">
+                                Potential monthly revenue: ~3.84M BDT (at same occupancy)
+                            </p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-900 p-3 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-semibold text-brand-secondary">Tier 4 (Full Ecosystem)</span>
+                                <span class="text-xs bg-brand-secondary/20 text-brand-secondary px-2 py-0.5 rounded-full font-bold">+36% Days</span>
+                            </div>
+                            <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                                Full weekend coverage + home care/online floaters enable <strong>~30 effective days/month</strong> of service delivery
+                            </p>
+                            <p class="text-xs text-brand-secondary font-semibold">
+                                Potential monthly revenue: ~4.11M BDT (at same occupancy)
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-3 italic">
+                        Note: Higher tier revenue calculations in the Capacity Modeler incorporate these expanded operational day models and service multipliers.
+                    </p>
                 </div>
             </div>
             

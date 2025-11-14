@@ -37,10 +37,19 @@ tailwind.config = {
 
 // Financial Constants
 const MAX_DAILY_REVENUE = 137305; // At 100% Occupancy, Full Price
-const DAYS_PER_MONTH = 22;
+const DAYS_PER_MONTH = 22; // Base operational days (Mon-Fri)
+const DAYS_PER_MONTH_TIER_3 = 28; // With partial weekend coverage (Saturdays)
+const DAYS_PER_MONTH_TIER_4 = 30; // With full weekend + home care coverage
 const MONTHS_PER_YEAR = 12;
 const MAX_MONTHLY_REVENUE = MAX_DAILY_REVENUE * DAYS_PER_MONTH; // 3,020,710
 const MAX_ANNUAL_REVENUE = MAX_MONTHLY_REVENUE * MONTHS_PER_YEAR;
+
+// Helper function to get operational days per month based on tier
+const getOperationalDays = (tierIndex) => {
+    if (tierIndex >= 4) return DAYS_PER_MONTH_TIER_4; // Tier 4: Full ecosystem
+    if (tierIndex >= 3) return DAYS_PER_MONTH_TIER_3; // Tier 3: Partial weekends
+    return DAYS_PER_MONTH; // Tier 0-2: Weekdays only
+};
 
 // Salary Ladder
 const SALARY_LADDER = {
@@ -222,16 +231,26 @@ const ORIGINAL_TIER_DATA = [
     { tier: 0, revenue: 906000, capacity: 30, softLimit: 40, hardLimit: 60 },
     { tier: 1, revenue: 1360000, capacity: 45, softLimit: 60, hardLimit: 80 },
     { tier: 2, revenue: 1812426, capacity: 60, softLimit: 80, hardLimit: 100 }, // Using 60% of max revenue
-    { tier: 3, revenue: 2265533, capacity: 75, softLimit: 100, hardLimit: 120 }, // 75%
-    { tier: 4, revenue: 2718639, capacity: 90, softLimit: 120, hardLimit: 150 } // 90%
+    { tier: 3, revenue: 2265533, capacity: 75, softLimit: 100, hardLimit: 120 }, // 75% with 28-day month
+    { tier: 4, revenue: 2718639, capacity: 90, softLimit: 120, hardLimit: 150 } // 90% with 30-day month
 ];
+
+// Helper function to calculate tier-specific max monthly revenue
+const getTierMaxMonthlyRevenue = (tierIndex) => {
+    const days = getOperationalDays(tierIndex);
+    return MAX_DAILY_REVENUE * days;
+};
 
 // NEW: Generate TIER_DATA by combining original data with precise calculations
 const TIER_DATA = ORIGINAL_TIER_DATA.map((item, index) => {
     const calculated = calculateTierData(index);
+    const tierMaxMonthlyRevenue = getTierMaxMonthlyRevenue(index);
+    const adjustedRevenue = tierMaxMonthlyRevenue * (item.capacity / 100); // Recalculate revenue based on tier-specific days
     return {
         ...item,
         ...calculated,
+        revenue: adjustedRevenue, // Override with tier-specific revenue calculation
+        tierMaxMonthlyRevenue: tierMaxMonthlyRevenue, // Store for use in calculations
         tier: index // ensure tier index is set
     };
 });
@@ -246,12 +265,13 @@ const TIER_NAMES = [
 ];
 
 // Service coverage for each tier
+// Tier 2 = none, Tier 3 = partial + basic home care, Tier 4 = full + dedicated home care
 const TIER_SERVICE_COVERAGE = [
     { weekend: "None", earlyMorning: "No", homeCare: "No" },
     { weekend: "None", earlyMorning: "No", homeCare: "No" },
     { weekend: "None", earlyMorning: "No", homeCare: "No" },
-    { weekend: "Partial", earlyMorning: "Yes", homeCare: "Limited" },
-    { weekend: "Full", earlyMorning: "Yes", homeCare: "Dedicated" }
+    { weekend: "Partial", earlyMorning: "Yes (06:00-09:00)", homeCare: "Basic" },
+    { weekend: "Full (Sat/Sun)", earlyMorning: "Yes (06:00-09:00)", homeCare: "Dedicated Team" }
 ];
 
 // Detailed Tier Services (PU/MM Flair)
@@ -750,13 +770,14 @@ const updateLaunchProjections = () => {
     // --- MODEL A (Staggered, based on *selected* tier) ---
     const pA_occ = 0.60;
     const pA_payroll = tier.payroll;
-    const pA_p1_rev = (MAX_MONTHLY_REVENUE * pA_occ * (1 - 0.30)) * 3;
+    const pA_tierMaxMonthly = tier.tierMaxMonthlyRevenue || getTierMaxMonthlyRevenue(tier.tier);
+    const pA_p1_rev = (pA_tierMaxMonthly * pA_occ * (1 - 0.30)) * 3;
     const pA_p1_profit = pA_p1_rev - (pA_payroll * 3);
     
-    const pA_p2_rev = (MAX_MONTHLY_REVENUE * pA_occ * (1 - 0.20)) * 3;
+    const pA_p2_rev = (pA_tierMaxMonthly * pA_occ * (1 - 0.20)) * 3;
     const pA_p2_profit = pA_p2_rev - (pA_payroll * 3);
 
-    const pA_p3_rev = (MAX_MONTHLY_REVENUE * pA_occ) * 6;
+    const pA_p3_rev = (pA_tierMaxMonthly * pA_occ) * 6;
     const pA_p3_profit = pA_p3_rev - (pA_payroll * 6);
     
     const pA_total_profit = pA_p1_profit + pA_p2_profit + pA_p3_profit;
@@ -784,15 +805,19 @@ const updateLaunchProjections = () => {
 
 
     // --- MODEL B (Realistic Ramp-Up, hardcoded tiers with precise payroll) ---
-    const pB_p1_rev = (MAX_MONTHLY_REVENUE * 0.40 * (1 - 0.30)) * 3;
+    const pB_tier0MaxMonthly = TIER_DATA[0].tierMaxMonthlyRevenue;
+    const pB_tier1MaxMonthly = TIER_DATA[1].tierMaxMonthlyRevenue;
+    const pB_tier2MaxMonthly = TIER_DATA[2].tierMaxMonthlyRevenue;
+    
+    const pB_p1_rev = (pB_tier0MaxMonthly * 0.40 * (1 - 0.30)) * 3;
     const pB_p1_payroll = TIER_DATA[0].payroll * 3; // Tier 0
     const pB_p1_profit = pB_p1_rev - pB_p1_payroll;
 
-    const pB_p2_rev = (MAX_MONTHLY_REVENUE * 0.50 * (1 - 0.20)) * 3;
+    const pB_p2_rev = (pB_tier1MaxMonthly * 0.50 * (1 - 0.20)) * 3;
     const pB_p2_payroll = TIER_DATA[1].payroll * 3; // Tier 1
     const pB_p2_profit = pB_p2_rev - pB_p2_payroll;
     
-    const pB_p3_rev = (MAX_MONTHLY_REVENUE * 0.60) * 6;
+    const pB_p3_rev = (pB_tier2MaxMonthly * 0.60) * 6;
     const pB_p3_payroll = TIER_DATA[2].payroll * 6; // Tier 2
     const pB_p3_profit = pB_p3_rev - pB_p3_payroll;
 
@@ -907,9 +932,10 @@ const updateOccupancyMetrics = () => {
     const occupancy = currentOccupancy / 100;
     const { capacity, softLimit, hardLimit } = currentStaffingTier;
     
-    // Calculate metrics
-    const dailyRevenue = MAX_DAILY_REVENUE * occupancy;
-    const monthlyRevenue = dailyRevenue * DAYS_PER_MONTH;
+    // Calculate metrics using tier-specific operational days
+    const tierMaxMonthlyRevenue = currentStaffingTier.tierMaxMonthlyRevenue || getTierMaxMonthlyRevenue(currentStaffingTier.tier);
+    const dailyRevenue = (tierMaxMonthlyRevenue / getOperationalDays(currentStaffingTier.tier)) * occupancy;
+    const monthlyRevenue = tierMaxMonthlyRevenue * occupancy;
     const monthlyPayroll = currentStaffingTier.payroll;
     const monthlyProfit = monthlyRevenue - monthlyPayroll;
     const monthlyProfitPercent = (monthlyRevenue > 0) ? (monthlyProfit / monthlyRevenue) * 100 : 0;
