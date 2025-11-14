@@ -5,6 +5,7 @@ This microsite uses an automated file hashing system to prevent aggressive cachi
 ## How It Works
 
 ### Version Format
+
 Files are versioned using the format: `?v={version}-{hash}`
 
 Example: `index.css?v=1.0.0-2b0e0feb`
@@ -67,7 +68,7 @@ Runs "postversion" script
 ✅ **Semantic Versioning**: Standard npm run versioning practices  
 ✅ **Automated**: No manual hash updates needed  
 ✅ **Auditable**: Git history shows all version changes  
-✅ **CDN-Friendly**: Different query parameters mean different cache entries  
+✅ **CDN-Friendly**: Different query parameters mean different cache entries
 
 ## Example Scenario
 
@@ -108,6 +109,7 @@ This is useful for testing or if you've modified files without updating version.
 ### Hashes aren't updating
 
 Ensure your files have been saved and run:
+
 ```bash
 node scripts/update-hashes.js
 ```
@@ -115,12 +117,14 @@ node scripts/update-hashes.js
 ### Git push fails after version bump
 
 Check your git remote is configured and you have push permissions:
+
 ```bash
 git remote -v
 git push origin develop
 ```
 
 To skip the automatic push temporarily, you can run:
+
 ```bash
 npm run version patch --no-git-tag-version
 node scripts/update-hashes.js

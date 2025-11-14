@@ -29,6 +29,7 @@ SOFTWARE.
 ---
 
 ## 2. Creative Commons Attribution 4.0 International (CC BY 4.0)
+
 ### For Visual Assets, Documentation, and Design
 
 This work is licensed under the Creative Commons Attribution 4.0 International License.
@@ -63,9 +64,9 @@ See **PURRFECT_LICENSE** for additional terms regarding the use of Motion Mechan
 
 **Summary:**
 
-*"Do whatever you want with the code or assets, just don't pretend you did it alone"*
+_"Do whatever you want with the code or assets, just don't pretend you did it alone"_
 
 - Use the code (MIT)
-- Use the design and documentation (CC BY 4.0)  
+- Use the design and documentation (CC BY 4.0)
 - Credit the original creators
 - Respect the brand usage restrictions (PURRFECT_LICENSE)

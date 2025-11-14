@@ -1,24 +1,29 @@
 {
-  "name": "mm-flextime-microsite",
-  "version": "2.6.3",
-  "description": "Motion Mechanics FlexTime™ Operations & Financial Model Interactive Microsite",
-  "type": "module",
-  "scripts": {
-    "version": "node scripts/update-hashes.js && git add index.html",
-    "postversion": "git push && git push --tags",
-    "deploy": "node scripts/deploy.js"
-  },
-  "dependencies": {
-    "dotenv": "^17.2.3"
-  },
-  "keywords": [
-    "flextime",
-    "motion-mechanics",
-    "physiotherapy",
-    "operations-model",
-    "financial-model"
-  ],
-  "author": "Purrfect Software Limited",
-  "license": "MIT",
-  "packageManager": "yarn@4.11.0"
+    "name": "mm-flextime-microsite",
+    "version": "2.6.3",
+    "description": "Motion Mechanics FlexTime™ Operations & Financial Model Interactive Microsite",
+    "type": "module",
+    "scripts": {
+        "version": "npm run format:fix && node scripts/update-hashes.js && git add index.html",
+        "postversion": "git push && git push --tags",
+        "deploy": "node scripts/deploy.js",
+        "format": "prettier --check .",
+        "format:fix": "prettier --write ."
+    },
+    "dependencies": {
+        "dotenv": "^17.2.3"
+    },
+    "keywords": [
+        "flextime",
+        "motion-mechanics",
+        "physiotherapy",
+        "operations-model",
+        "financial-model"
+    ],
+    "author": "Purrfect Software Limited",
+    "license": "MIT",
+    "packageManager": "yarn@4.11.0",
+    "devDependencies": {
+        "prettier": "^3.6.2"
+    }
 }
