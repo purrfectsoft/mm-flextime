@@ -186,15 +186,18 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
                 <!-- FlexShift Z (Future) -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border-2 border-dashed border-brand-highlight/50 dark:border-brand-highlight/70">
+                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border-2 border-dashed border-brand-highlight/50 dark:border-brand-highlight/70 hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out">
                     <div class="flex justify-between items-center mb-2">
-                        <h4 class="text-2xl font-bold text-brand-highlight">
-                            FlexShift 
-                            <span class="flex-shift-z-container">
-                                <span class="flex-shift-z">Z</span>
-                                <span class="flex-shift-z-suffix">ero</span>
-                            </span>
-                        </h4>
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="sunrise" class="w-8 h-8 text-brand-highlight group-hover:scale-110 transition-transform"></i>
+                            <h4 class="text-2xl font-bold text-brand-highlight">
+                                FlexShift 
+                                <span class="flex-shift-z-container">
+                                    <span class="flex-shift-z">Z</span>
+                                    <span class="flex-shift-z-suffix">ero</span>
+                                </span>
+                            </h4>
+                        </div>
                         <span class="text-xs font-semibold bg-brand-highlight/20 text-brand-highlight px-2 py-0.5 rounded-full">FUTURE (Tier 3+)</span>
                     </div>
                     <p class="text-lg font-medium text-gray-700 dark:text-gray-300">06:00 – 09:00</p>
@@ -202,23 +205,35 @@
                 </div>
                 
                 <!-- FlexStart -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
-                    <h4 class="text-2xl font-bold text-brand-wood dark:text-brand-wood">FlexStart</h4>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="clock" class="w-8 h-8 text-brand-wood"></i>
+                            <h4 class="text-2xl font-bold text-brand-wood dark:text-brand-wood">FlexStart</h4>
+                        </div>
+                        <span class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full">No Late Penalty</span>
+                    </div>
                     <p class="text-lg font-medium text-gray-700 dark:text-gray-300">09:00 – 10:00</p>
                     <p class="text-gray-600 dark:text-gray-400 mt-2">Internal staff preparation, calibration, and emergency early-day cases.</p>
                 </div>
 
                 <!-- FlexShift A -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
-                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">FlexShift A</h4>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <i data-lucide="activity" class="w-8 h-8 text-brand-dark"></i>
+                        <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">FlexShift A</h4>
+                    </div>
                     <p class="text-lg font-medium text-gray-700 dark:text-gray-300">10:00 – 13:00</p>
                     <p class="text-gray-600 dark:text-gray-400 mt-2">Morning care block emphasizing Neuro and Pediatric cases.</p>
                 </div>
 
                 <!-- Midday Reset -->
-                <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-2xl shadow-inner border border-gray-100 dark:border-gray-700">
-                    <div class="flex items-center justify-between mb-2">
-                        <h4 class="text-2xl font-bold text-brand-wood">Midday Reset</h4>
+                <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-2xl shadow-inner border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="refresh-cw" class="w-8 h-8 text-brand-wood"></i>
+                            <h4 class="text-2xl font-bold text-brand-wood">Midday Reset</h4>
+                        </div>
                         <span class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full">TURNOVER</span>
                     </div>
                     <p class="text-lg font-medium text-gray-700 dark:text-gray-300">13:00 – 14:00</p>
@@ -226,41 +241,54 @@
                 </div>
 
                 <!-- FlexShift B -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
-                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">FlexShift B</h4>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <i data-lucide="book-open" class="w-8 h-8 text-brand-dark"></i>
+                        <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">FlexShift B</h4>
+                    </div>
                     <p class="text-lg font-medium text-gray-700 dark:text-gray-300">14:00 – 17:00</p>
                     <p class="text-gray-600 dark:text-gray-400 mt-2">Afternoon block for evaluations, long-duration cases, and clinical training.</p>
                 </div>
 
-                <!-- Commute Gap (MOVED) -->
-                <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-2xl shadow-inner border border-gray-100 dark:border-gray-700 flex items-center justify-center">
-                    <div class="text-center">
-                        <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light">Commute Gap</h4>
-                        <p class="text-lg font-medium text-gray-700 dark:text-gray-300">17:00 – 19:00</p>
-                        <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm">Improves staff safety and reduces congestion alignment.</p>
+                <!-- Commute Gap (RECREATED) -->
+                <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-2xl shadow-inner border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="car" class="w-8 h-8 text-brand-wood flex-shrink-0"></i>
+                            <h4 class="text-2xl font-bold text-brand-wood dark:text-brand-wood">Commute Gap</h4>
+                        </div>
+                        <span class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full">SAFETY</span>
                     </div>
+                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">17:00 – 19:00</p>
+                    <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm">Buffer for staff travel and deconfliction to reduce congestion and improve safety.</p>
                 </div>
                 
                 <!-- FlexShift C (STYLED) -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
-                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light flex-shift-c">FlexShift C</h4>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <i data-lucide="moon" class="w-8 h-8 text-brand-secondary"></i>
+                        <h4 class="text-2xl font-bold text-brand-secondary dark:text-brand-secondary-light flex-shift-c">FlexShift C</h4>
+                    </div>
                     <p class="text-lg font-medium text-gray-700 dark:text-gray-300">19:00 – 22:00</p>
                     <p class="text-gray-600 dark:text-gray-400 mt-2">Evening block for office-goers and acute pain. Includes the <strong class="text-brand-secondary">Nightfall FlexLab™</strong>.</p>
                 </div>
 
                 <!-- FlexNight / FlexShift O(wl) -->
-                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 lg:col-span-2 hover:shadow-2xl hover:scale-[1.03] hover:border-brand-highlight-light transition-all duration-300 ease-in-out">
+                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border-2 border-dashed border-brand-highlight/50 dark:border-brand-highlight/70 lg:col-span-2 hover:shadow-2xl hover:scale-[1.03] hover:border-brand-highlight-light transition-all duration-300 ease-in-out">
                     <div class="flex items-center justify-between mb-2">
-                        <h4 class="text-2xl font-bold text-brand-highlight">FlexShift 
+                            <div class="flex items-center space-x-3">
+                                <i data-lucide="rocket" class="w-8 h-8 text-brand-highlight"></i>
+                                <h4 class="text-2xl font-bold text-brand-highlight">FlexShift 
                             <span class="flex-shift-o-container">
                                 <span class="flex-shift-o">O</span>
                                 <span class="flex-shift-o-suffix">wl</span>
                             </span>
                         </h4>
+                            </div>
                         <span class="text-xs font-semibold bg-brand-highlight-light/20 text-brand-highlight px-2 py-0.5 rounded-full">NIGHT</span>
                     </div>
                     <p class="text-lg font-medium text-gray-700 dark:text-gray-300">22:00 – 06:00</p>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2">Night shift operations for future or interplanetary operations — Purrfect Software, Motion Mechanics Online Services, and more.</p>
+                    <p class="text-gray-600 dark:text-gray-400 mt-2">Night shift operations for future or interplanetary operations — <span class="text-brand-highlight dark:text-brand-highlight-light font-semibold">Purrfect Software Limited</span>, <span class="text-brand-secondary dark:text-brand-secondary-light font-semibold">Motion Mechanics Online Services</span>, and more.</p>
                 </div>
 
             </div>
