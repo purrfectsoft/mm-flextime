@@ -1,6 +1,6 @@
 {
   "name": "mm-flextime-microsite",
-  "version": "1.0.0",
+  "version": "2.5.0",
   "description": "Motion Mechanics FlexTime™ Operations & Financial Model Interactive Microsite",
   "type": "module",
   "scripts": {
@@ -15,5 +15,5 @@
     "financial-model"
   ],
   "author": "Purrfect Software Limited",
-  "license": "PURRFECT_LICENSE"
+  "license": "MIT"
 }
