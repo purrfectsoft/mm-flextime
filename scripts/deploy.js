@@ -91,10 +91,12 @@ function getHashesFromHtml() {
   const htmlPath = path.join(projectRoot, 'index.html');
   const content = fs.readFileSync(htmlPath, 'utf8');
   
+  const htmlMatch = content.match(/data-html-hash="([^"]*)"/);
   const cssMatch = content.match(/index\.css\?v=[\w.-]+/);
   const jsMatch = content.match(/index\.js\?v=[\w.-]+/);
   
   return {
+    html: htmlMatch ? htmlMatch[1] : null,
     css: cssMatch ? cssMatch[0].split('-')[1] : null,
     js: jsMatch ? jsMatch[0].split('-')[1] : null,
   };
@@ -118,25 +120,29 @@ function verifyRemoteDeployment(version, localHashes) {
           const remoteVersion = versionMatch ? versionMatch[1] : null;
           
           // Extract hashes from HTML
+          const htmlMatch = data.match(/data-html-hash="([^"]*)"/);
           const cssMatch = data.match(/index\.css\?v=[\w.-]+/);
           const jsMatch = data.match(/index\.js\?v=[\w.-]+/);
           
           const remoteHashes = {
+            html: htmlMatch ? htmlMatch[1] : null,
             css: cssMatch ? cssMatch[0].split('-')[1] : null,
             js: jsMatch ? jsMatch[0].split('-')[1] : null,
           };
           
           // Verify match
           const versionMatch_ = remoteVersion === version;
+          const htmlMatch_ = remoteHashes.html === localHashes.html;
           const cssMatch_ = remoteHashes.css === localHashes.css;
           const jsMatch_ = remoteHashes.js === localHashes.js;
           
-          if (versionMatch_ && cssMatch_ && jsMatch_) {
+          if (versionMatch_ && htmlMatch_ && cssMatch_ && jsMatch_) {
             resolve({ version: remoteVersion, hashes: remoteHashes });
           } else {
             reject(new Error(
               `Version/hash mismatch:\n` +
               `  Version: ${remoteVersion} (expected ${version})\n` +
+              `  HTML: ${remoteHashes.html} (expected ${localHashes.html})\n` +
               `  CSS: ${remoteHashes.css} (expected ${localHashes.css})\n` +
               `  JS: ${remoteHashes.js} (expected ${localHashes.js})`
             ));
@@ -169,6 +175,7 @@ function displayStatus(version, hashes, url) {
   console.log('╚═══════════════════════════════════════════════════════════════╝');
   console.log('');
   console.log(`  📦 Version:      ${version}`);
+  console.log(`  📄 HTML Hash:    ${hashes.html}`);
   console.log(`  🎨 CSS Hash:     ${hashes.css}`);
   console.log(`  ⚙️  JS Hash:      ${hashes.js}`);
   console.log(`  🌐 URL:          ${url}`);
@@ -189,9 +196,24 @@ async function deploy() {
     try {
       const currentBranch = exec('git rev-parse --abbrev-ref HEAD');
       if (currentBranch !== DEVELOP_BRANCH) {
-        throw new Error(`Currently on ${currentBranch}, must be on ${DEVELOP_BRANCH}`);
+        console.log(`  ⚠️  Currently on ${currentBranch}, attempting to switch to ${DEVELOP_BRANCH}...`);
+        
+        // Check if working tree is clean
+        const status = exec('git status --porcelain');
+        if (status) {
+          throw new Error(`Cannot switch branches: Uncommitted changes detected. Please commit or stash changes.`);
+        }
+        
+        // Safe switch back to develop branch
+        try {
+          exec(`git checkout ${DEVELOP_BRANCH}`);
+          console.log(`  ✅ Switched to ${DEVELOP_BRANCH} branch`);
+        } catch (error) {
+          throw new Error(`Failed to switch to ${DEVELOP_BRANCH}: ${error.message}`);
+        }
+      } else {
+        console.log(`  ✅ On ${DEVELOP_BRANCH} branch`);
       }
-      console.log(`  ✅ On ${DEVELOP_BRANCH} branch`);
     } catch (error) {
       throw new Error(`Git verification failed: ${error.message}`);
     }
@@ -243,6 +265,7 @@ async function deploy() {
     const version = getVersion();
     const localHashes = getHashesFromHtml();
     console.log(`  ℹ️  Local version: ${version}`);
+    console.log(`  ℹ️  Local HTML hash: ${localHashes.html}`);
     console.log(`  ℹ️  Local CSS hash: ${localHashes.css}`);
     console.log(`  ℹ️  Local JS hash: ${localHashes.js}`);
 
