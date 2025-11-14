@@ -13,15 +13,15 @@ Motion Mechanics is a physiotherapy and rehabilitation center concept based in B
 Key themes:
 
 - It runs **multiple clinical departments**:
-  - Neuro
-  - MSK (musculoskeletal)
-  - Pediatrics
+    - Neuro
+    - MSK (musculoskeletal)
+    - Pediatrics
 
 - It cares about:
-  - **Quality of care**
-  - **Staff well-being**
-  - **Financial sustainability**
-  - **Accessibility for lower-income patients**
+    - **Quality of care**
+    - **Staff well-being**
+    - **Financial sustainability**
+    - **Accessibility for lower-income patients**
 
 ---
 
@@ -58,38 +58,38 @@ The app models different **staffing tiers**. Each tier has:
 High-level meaning of each tier:
 
 - **Tier 0 — Minimum Viable Opening Team**
-  - Very lean staffing
-  - 50% bed capacity
-  - All three main shifts (A/B/C) but minimal redundancy
-  - No weekends, early mornings, or home care
+    - Very lean staffing
+    - 50% bed capacity
+    - All three main shifts (A/B/C) but minimal redundancy
+    - No weekends, early mornings, or home care
 
 - **Tier 1 — Stable Launch Team**
-  - Still 50% bed capacity, but more stable A/B/C coverage
-  - Nightfall FlexLab (FlexShift C) is fully supported
-  - Better redundancy per shift
+    - Still 50% bed capacity, but more stable A/B/C coverage
+    - Nightfall FlexLab (FlexShift C) is fully supported
+    - Better redundancy per shift
 
 - **Tier 2 — Baseline Full Operations (Original Roster)**
-  - 17 FT + 9 PT staff
-  - All 7 beds active
-  - Full FlexTime (A, B, C shifts) fully supported
-  - Floaters for coverage and quality control
-  - CareBridge™ program can run properly
-  - Used as the “default” or “designed baseline”
+    - 17 FT + 9 PT staff
+    - All 7 beds active
+    - Full FlexTime (A, B, C shifts) fully supported
+    - Floaters for coverage and quality control
+    - CareBridge™ program can run properly
+    - Used as the “default” or “designed baseline”
 
 - **Tier 3 — Expanded Operations**
-  - More staff to handle:
-    - Early morning `FlexShift Z` (06:00–09:00)
-    - Partial weekend coverage
-    - Some home / at-home care visits
-  - Supports higher occupancy (70–85% of maximum capacity)
+    - More staff to handle:
+        - Early morning `FlexShift Z` (06:00–09:00)
+        - Partial weekend coverage
+        - Some home / at-home care visits
+    - Supports higher occupancy (70–85% of maximum capacity)
 
 - **Tier 4 — Full Ecosystem**
-  - Largest team size
-  - Adds:
-    - Full weekend operations (Sat & Sun A/B/C)
-    - Full early mornings (FlexShift Z)
-    - Dedicated home-care/on-call team
-  - Allows 90–100% occupancy of the system
+    - Largest team size
+    - Adds:
+        - Full weekend operations (Sat & Sun A/B/C)
+        - Full early mornings (FlexShift Z)
+        - Dedicated home-care/on-call team
+    - Allows 90–100% occupancy of the system
 
 The UI needs to clearly express that **higher tiers = more staff = higher safe capacity + additional services**.
 
@@ -102,7 +102,7 @@ Key assumptions used in the modeling:
 - **Working days per month**: 22
 - **Max daily revenue at 100% capacity**: 137,305 BDT
 - **Max monthly revenue at 100% capacity**:
-  - `maxMonthlyRevenue = maxDailyRevenue * 22`
+    - `maxMonthlyRevenue = maxDailyRevenue * 22`
 
 At any given occupancy level (e.g., 40%, 60%, 80%), the app estimates:
 

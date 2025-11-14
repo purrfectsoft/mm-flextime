@@ -67,7 +67,7 @@ The site uses CDN-hosted libraries for simplicity. For development:
 
 - **Tier 0**: Minimum Viable Opening Team (14 staff, ~30% capacity)
 - **Tier 1**: Stable Launch Team (21 staff, ~45% capacity)
-- **Tier 2**: Baseline Full Operations (26 staff, ~60% capacity) - *Default/Designed baseline*
+- **Tier 2**: Baseline Full Operations (26 staff, ~60% capacity) - _Default/Designed baseline_
 - **Tier 3**: Expanded Operations (28 staff, ~75% capacity, partial weekends, FlexShift Z)
 - **Tier 4**: Full Ecosystem (38 staff, ~90% capacity, full weekends, home care)
 
@@ -83,6 +83,7 @@ The site uses CDN-hosted libraries for simplicity. For development:
 ### FlexTime™
 
 A multi-shift operational model designed for:
+
 - Staff well-being (no excessive overtime)
 - Patient accessibility (morning to evening coverage)
 - Financial sustainability (optimized staffing vs. capacity)
@@ -90,6 +91,7 @@ A multi-shift operational model designed for:
 ### CareBridge™
 
 A structured subsidized care program:
+
 - 8 sessions/day (~9% of capacity) reserved for eligible beneficiaries
 - 30% discount on Standard sessions
 - Aimed at students, teachers, single parents, chronic care patients
@@ -133,6 +135,6 @@ Additional branding restrictions apply - see **PURRFECT_LICENSE** for details.
 
 ---
 
-*"Do whatever you want with the code or assets, just don't pretend you did it alone"*
+_"Do whatever you want with the code or assets, just don't pretend you did it alone"_
 
 Names, brand and trademarks are © 2025 Arafat Zahan & Purrfect Software Limited.

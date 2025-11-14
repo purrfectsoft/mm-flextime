@@ -18,7 +18,8 @@ npm run install
 ```
 
 ### Automatic Updates
-```
+
+````
 
 ### 2. Create a Version
 
@@ -35,16 +36,18 @@ npm run version major
 
 # Specific version
 npm run version 1.5.0
-```
-```
+````
+
+````
 
 ### 3. Deploy to Production
 
 ```bash
 npm run deploy
-```
+````
 
 This will:
+
 - Verify you're on the `develop` branch
 - Fetch latest changes from origin
 - Fast-forward merge `develop` → `deploy` branch (locally)
@@ -116,6 +119,7 @@ The deployment system uses SHA256 hashing to prevent aggressive browser caching:
 When either file changes, the hash changes, forcing browsers to fetch the new version.
 
 The `update-hashes.js` script:
+
 1. Reads `package.json` for current version
 2. Calculates SHA256 hash of `index.css` (first 8 chars)
 3. Calculates SHA256 hash of `index.js` (first 8 chars)
@@ -135,9 +139,9 @@ The deploy script ensures a clean fast-forward merge to prevent merge commits.
 2. **.env**: Never commit `.env` - it's in `.gitignore`
 3. **SSH User**: Create a dedicated git-pulling user on the server with minimal permissions
 4. **Remote permissions**: The SSH user should only be able to:
-   - Access `WEB_ROOT` directory
-   - Execute `git pull` and `git status`
-   - Read web files
+    - Access `WEB_ROOT` directory
+    - Execute `git pull` and `git status`
+    - Read web files
 
 ## Troubleshooting
 
@@ -220,6 +224,7 @@ Before deploying to production:
 ## Support
 
 For issues or questions, check:
+
 1. `.env` configuration
 2. Git branch status: `git status`
 3. Remote connectivity: `ssh -i SSH_KEY_PATH SSH_USER@SSH_HOST`

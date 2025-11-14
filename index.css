@@ -6,6 +6,17 @@ body {
     padding-top: 5rem; /* Offset for sticky header */
 }
 
+/* Fix for horizontal scroll in mobile view */
+
+html,
+body {
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+#mobile-menu {
+    width: 100%; /* Ensure mobile menu fits within the viewport */
+}
+
 /* Set base color scheme for dark mode */
 :root.dark {
     color-scheme: dark;
@@ -70,9 +81,8 @@ html.dark .flex-shift-c {
     text-shadow: 0 0 10px rgba(253, 186, 116, 0.2);
 }
 
-
 /* Custom slider styles (standard properties) */
-input[type="range"] {
+input[type='range'] {
     appearance: none;
     width: 100%;
     height: 8px;
@@ -80,14 +90,16 @@ input[type="range"] {
     background: #d1d5db; /* bg-gray-300 */
     outline: none;
     opacity: 0.7;
-    transition: opacity .2s, background .3s ease;
+    transition:
+        opacity 0.2s,
+        background 0.3s ease;
 }
 
-input[type="range"]:hover {
+input[type='range']:hover {
     opacity: 1;
 }
 
-input[type="range"]::-webkit-slider-thumb {
+input[type='range']::-webkit-slider-thumb {
     appearance: none;
     width: 24px;
     height: 24px;
@@ -95,39 +107,47 @@ input[type="range"]::-webkit-slider-thumb {
     background: #2563eb; /* bg-blue-600 - will be overridden by tailwind */
     cursor: pointer;
     border: 4px solid #ffffff; /* border-white */
-    box-shadow: 0 0 5px rgba(0,0,0,0.2);
-    transition: background .3s ease;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
 }
 
 /* Firefox thumb style */
-input[type="range"]::-moz-range-thumb {
+input[type='range']::-moz-range-thumb {
     width: 24px;
     height: 24px;
     border-radius: 50%;
     background: #2563eb;
     cursor: pointer;
     border: 4px solid #ffffff;
-    box-shadow: 0 0 5px rgba(0,0,0,0.2);
-    transition: background .3s ease;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
 }
 
-html.dark input[type="range"] {
+html.dark input[type='range'] {
     background: #4b5563; /* dark:bg-gray-600 */
 }
 
-html.dark input[type="range"]::-webkit-slider-thumb {
+html.dark input[type='range']::-webkit-slider-thumb {
     border-color: #1f2937; /* dark:border-gray-800 */
 }
 
-html.dark input[type="range"]::-moz-range-thumb {
+html.dark input[type='range']::-moz-range-thumb {
     border-color: #1f2937; /* dark:border-gray-800 */
 }
 
 /* Occupancy slider thumb colors */
-input[type="range"].thumb-orange::-webkit-slider-thumb { background: #f97316; }
-input[type="range"].thumb-orange::-moz-range-thumb { background: #f97316; }
-input[type="range"].thumb-red::-webkit-slider-thumb { background: #ef4444; }
-input[type="range"].thumb-red::-moz-range-thumb { background: #ef4444; }
+input[type='range'].thumb-orange::-webkit-slider-thumb {
+    background: #f97316;
+}
+input[type='range'].thumb-orange::-moz-range-thumb {
+    background: #f97316;
+}
+input[type='range'].thumb-red::-webkit-slider-thumb {
+    background: #ef4444;
+}
+input[type='range'].thumb-red::-moz-range-thumb {
+    background: #ef4444;
+}
 
 /* Tooltip */
 .tooltip {
@@ -154,7 +174,7 @@ input[type="range"].thumb-red::-moz-range-thumb { background: #ef4444; }
     transition: opacity 0.3s;
     font-size: 0.875rem;
     font-weight: 500;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     white-space: normal;
 }
 
@@ -184,7 +204,9 @@ html.dark .nav-active {
     right: 2rem;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
     z-index: 100;
 }
 #back-to-top.show {
@@ -193,14 +215,16 @@ html.dark .nav-active {
 }
 
 /* Dynamic Payroll Table Styles */
-.dept-row th, .dept-row td {
+.dept-row th,
+.dept-row td {
     background-color: #f3f4f6; /* bg-gray-100 */
     font-weight: 700;
     color: #1f2937; /* text-gray-800 */
     border-top: 2px solid #d1d5db; /* border-gray-300 */
     border-bottom: 1px solid #d1d5db; /* border-gray-300 */
 }
-html.dark .dept-row th, html.dark .dept-row td {
+html.dark .dept-row th,
+html.dark .dept-row td {
     background-color: #374151; /* dark:bg-gray-700 */
     color: #f9fafb; /* dark:text-gray-50 */
     border-top: 2px solid #4b5563; /* dark:border-gray-600 */
@@ -226,4 +250,19 @@ html.dark .grand-total-row td {
     background-color: #0d4826; /* brand-dark */
     color: #ffffff; /* text-white */
     border-top: 2px solid #3cb06f; /* border-brand-light */
+}
+
+@keyframes scaleOpen {
+    0% {
+        transform: scaleY(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+.animate-scaleOpen {
+    animation: scaleOpen 0.25s ease-out forwards;
 }
