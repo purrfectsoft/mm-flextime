@@ -177,7 +177,7 @@ function displayStatus(version, hashes, url) {
   console.log('║                  ✅ DEPLOYMENT SUCCESSFUL                      ║');
   console.log('╚═══════════════════════════════════════════════════════════════╝');
   console.log('');
-  console.log(`  📦 Version:      ${version}`);
+  console.log(`  📦   Version:    ${version}`);
   console.log(`  📄 HTML Hash:    ${hashes.html}`);
   console.log(`  🎨  CSS Hash:    ${hashes.css}`);
   console.log(`  ⚙️   JS Hash:    ${hashes.js}`);
