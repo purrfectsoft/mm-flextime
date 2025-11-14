@@ -28,7 +28,7 @@ This license reflects the Purrfect Universe philosophy: radical transparency, cr
 
 ❌ **Commercially re-theme or redistribute** the Motion Mechanics or Purrfect Universe branding  
 ❌ **Claim authorship** of the original work or concept  
-❌ **Use the brand names** "Motion Mechanics," "Purrfect Universe," "Purrfect Software," "FlexTime™," "AccessCare™," or "Night Relief Lab™" to market competing products or services  
+❌ **Use the brand names** "Motion Mechanics," "Purrfect Universe," "Purrfect Software," "FlexTime™," "CareBridge™," or "Nightfall FlexLab™" to market competing products or services  
 ❌ **Modify logos and re-distribute** them as your own brand identity  
 ❌ **Remove or obscure** attribution notices in derivative works  
 
@@ -42,8 +42,8 @@ The following names, brands, and trademarks are protected intellectual property:
 - **Purrfect Universe** (name, logo, visual identity)
 - **Purrfect Software Limited** (company name)
 - **FlexTime™** (service model name)
-- **AccessCare™** (program name)
-- **Night Relief Lab™** (service offering name)
+- **CareBridge™** (program name)
+- **Nightfall FlexLab™** (service offering name)
 
 **Copyright Notice:**  
 © 2025 Arafat Zahan & Purrfect Software Limited. All rights reserved.

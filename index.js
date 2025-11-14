@@ -288,7 +288,7 @@ const TIER_SERVICES_HTML = [
     <div>
         <h6 class="font-semibold text-brand-secondary dark:text-brand-secondary-light mb-1">PU Radical Innovations:</h6>
         <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
-            <li><strong class="text-brand-secondary">Night Relief Lab™</strong> (Express) active</li>
+            <li><strong class="text-brand-secondary">Nightfall FlexLab™</strong> (Express) active</li>
             <li>Limited redundancy; "all-hands" culture</li>
         </ul>
     </div>`,
@@ -320,7 +320,7 @@ const TIER_SERVICES_HTML = [
     <div>
         <h6 class="font-semibold text-brand-secondary dark:text-brand-secondary-light mb-1">PU Radical Innovations:</h6>
         <ul class="list-disc list-outside pl-5 space-y-1 text-sm">
-            <li><strong class="text-brand-highlight">AccessCare™ Program</strong> fully launched</li>
+            <li><strong class="text-brand-highlight">CareBridge™ Program</strong> fully launched</li>
             <li>Robust <strong>Floater System (2 staff)</strong> for quality control & redundancy</li>
         </ul>
     </div>`,

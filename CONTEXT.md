@@ -65,7 +65,7 @@ High-level meaning of each tier:
 
 - **Tier 1 — Stable Launch Team**
   - Still 50% bed capacity, but more stable A/B/C coverage
-  - Night Relief Lab (FlexShift C) is fully supported
+  - Nightfall FlexLab (FlexShift C) is fully supported
   - Better redundancy per shift
 
 - **Tier 2 — Baseline Full Operations (Original Roster)**
@@ -73,7 +73,7 @@ High-level meaning of each tier:
   - All 7 beds active
   - Full FlexTime (A, B, C shifts) fully supported
   - Floaters for coverage and quality control
-  - AccessCare™ program can run properly
+  - CareBridge™ program can run properly
   - Used as the “default” or “designed baseline”
 
 - **Tier 3 — Expanded Operations**
@@ -145,15 +145,15 @@ Pricing is different for:
 And there are also discount models for:
 
 - Launch discounts (e.g., 30% off for first 3 months)
-- AccessCare™ subsidized slots (for lower-income patients, usually 30% off Standard sessions only)
+- CareBridge™ subsidized slots (for lower-income patients, usually 30% off Standard sessions only)
 
 The Session Pricing Modeler in the HTML lets users see price changes under different discount levels.
 
 ---
 
-## AccessCare™
+## CareBridge™
 
-AccessCare™ is a structured discounted-care model:
+CareBridge™ is a structured discounted-care model:
 
 - ~8 subsidized Standard sessions per day (~9% of capacity)
 - 30% discount on Standard sessions

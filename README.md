@@ -6,11 +6,11 @@ An interactive financial modeling and operational planning tool for **Motion Mec
 
 This microsite provides a comprehensive, data-driven exploration of the FlexTime™ operational model, including:
 
-- **Multi-shift Operations**: FlexShift Z (early morning), A (morning), B (afternoon), and C (evening) including the Night Relief Lab™
+- **Multi-shift Operations**: FlexShift Z (early morning), A (morning), B (afternoon), and C (evening) including the Nightfall FlexLab™
 - **Tiered Staffing Framework**: 5 staffing tiers (0-4) from Minimum Viable Opening to Full Ecosystem operations
 - **Dynamic Financial Projections**: Interactive capacity modeling with real-time revenue and profit calculations
 - **Session-Based Pricing**: Foundation, Standard, Premium, and Express session types across Neuro, MSK, and Pediatrics
-- **AccessCare™ Program**: Structured subsidized care model for equitable access
+- **CareBridge™ Program**: Structured subsidized care model for equitable access
 - **Launch Scenarios**: First-year projections with discount phases and ramp-up models
 
 ## Features
@@ -87,14 +87,14 @@ A multi-shift operational model designed for:
 - Patient accessibility (morning to evening coverage)
 - Financial sustainability (optimized staffing vs. capacity)
 
-### AccessCare™
+### CareBridge™
 
 A structured subsidized care program:
 - 8 sessions/day (~9% of capacity) reserved for eligible beneficiaries
 - 30% discount on Standard sessions
 - Aimed at students, teachers, single parents, chronic care patients
 
-### Night Relief Lab™
+### Nightfall FlexLab™
 
 Evening FlexShift C (19:00-22:00) targeting office workers and acute pain cases with Express 15-20 minute sessions.
 
