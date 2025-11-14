@@ -578,6 +578,16 @@ const updateChartsTheme = () => {
     // Update Visit Mix Chart
     if (visitMixChart) {
         visitMixChart.options.plugins.legend.labels.color = newOptions.doughnut.plugins.legend.labels.color;
+        // Update dataset border for doughnut/pie charts so light mode has no visible slice borders
+        try {
+            const ds = visitMixChart.data.datasets[0];
+            if (ds) {
+                ds.borderWidth = currentTheme === 'dark' ? 4 : 0;
+                ds.borderColor = currentTheme === 'dark' ? '#1f2937' : '#ffffff';
+            }
+        } catch (e) {
+            // defensive: if chart structure differs, skip
+        }
         visitMixChart.update();
     }
 
@@ -618,7 +628,8 @@ const renderVisitMixChart = () => {
                     '#f97316'  // brand-secondary
                 ],
                 borderColor: currentTheme === 'dark' ? '#1f2937' : '#ffffff',
-                borderWidth: 4,
+                // Remove visible borders in light mode (looks off on white backgrounds)
+                borderWidth: currentTheme === 'dark' ? 4 : 0,
             }]
         },
         options: options
