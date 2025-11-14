@@ -1012,20 +1012,32 @@
                             Parameters</h5>
                         <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                             <li class="flex justify-between">
-                                <span>Working days/month (Tier 0-2):</span>
-                                <strong class="text-brand-dark dark:text-brand-light">22 days</strong>
+                                <span>Working days/month <span id="model-tier-label">(Tier 0-2)</span>:</span>
+                                <strong id="model-working-days" class="text-brand-dark dark:text-brand-light">22 days</strong>
                             </li>
                             <li class="flex justify-between">
-                                <span>Max beds (full ops):</span>
-                                <strong class="text-brand-dark dark:text-brand-light">7 beds</strong>
+                                <span>Bed capacity (this tier):</span>
+                                <strong id="model-bed-capacity" class="text-brand-dark dark:text-brand-light flex items-center gap-2">
+                                    7 beds
+                                    <span class="tooltip">
+                                        <i data-lucide="info" class="w-3 h-3 text-gray-400 dark:text-gray-500 cursor-help"></i>
+                                        <span class="tooltiptext">Virtual Bed: additional patients served by home-care, online and other revenue streams based on surplus staffing and capacity</span>
+                                    </span>
+                                </strong>
                             </li>
                             <li class="flex justify-between">
                                 <span>Max daily revenue (100% cap):</span>
-                                <strong class="text-brand-dark dark:text-brand-light">137,305 BDT</strong>
+                                <strong id="model-max-daily-revenue" class="text-brand-dark dark:text-brand-light">137,305 BDT</strong>
                             </li>
                             <li class="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
-                                <span>Base monthly revenue (22 days):</span>
-                                <strong class="text-brand-secondary">3,020,710 BDT</strong>
+                                <span>Base monthly revenue <span id="model-revenue-days-label">(22 days)</span>:</span>
+                                <strong id="model-base-monthly-revenue" class="text-brand-secondary flex items-center gap-2">
+                                    3,020,710 BDT
+                                    <span class="tooltip">
+                                        <i data-lucide="info" class="w-3 h-3 text-gray-400 dark:text-gray-500 cursor-help"></i>
+                                        <span class="tooltiptext">Calculated from 22-day base + additional days gained from higher tiers + additional revenue from virtual beds and expanded services</span>
+                                    </span>
+                                </strong>
                             </li>
                         </ul>
                     </div>

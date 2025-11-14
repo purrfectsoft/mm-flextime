@@ -854,6 +854,152 @@ const updateLaunchProjections = () => {
     });
 };
 
+// Update Model Assumptions Section (Core Operating Parameters) - DYNAMIC
+const updateModelAssumptions = (tierIndex) => {
+    const tier = TIER_DATA[tierIndex];
+    const operationalDays = getOperationalDays(tierIndex);
+    const tierMaxMonthlyRevenue = getTierMaxMonthlyRevenue(tierIndex);
+    const baseDays = DAYS_PER_MONTH; // Always 22
+    const additionalDays = operationalDays - baseDays;
+    
+    // --- WORKING DAYS: Stylized format (22 +6 or 22 +8, etc.) ---
+    const tierLabelEl = document.getElementById('model-tier-label');
+    if (tierLabelEl) {
+        tierLabelEl.textContent = `(Tier ${tierIndex})`;
+    }
+    
+    const workingDaysEl = document.getElementById('model-working-days');
+    if (workingDaysEl) {
+        if (additionalDays > 0) {
+            workingDaysEl.innerHTML = `${baseDays} <span class="text-brand-secondary font-semibold">+${additionalDays}</span> days`;
+        } else {
+            workingDaysEl.textContent = `${operationalDays} days`;
+        }
+    }
+    
+    // --- BED CAPACITY: Dynamic based on tier, with vBed styling ---
+    // Tier 0-1: 5 beds, Tier 2: 7 beds, Tier 3-4: 7 + virtual beds
+    let vBedCount = 0;
+    const bedCapacityEl = document.getElementById('model-bed-capacity');
+    if (bedCapacityEl) {
+        let baseBeds = 5;
+        
+        if (tierIndex <= 1) {
+            baseBeds = 5;
+            vBedCount = 0;
+        } else if (tierIndex === 2) {
+            baseBeds = 7;
+            vBedCount = 0;
+        } else if (tierIndex === 3) {
+            baseBeds = 7;
+            vBedCount = 2; // Tier 3: partial weekend + basic home care
+        } else if (tierIndex === 4) {
+            baseBeds = 7;
+            vBedCount = 3; // Tier 4: full weekend + dedicated home care + online services
+        }
+        
+        // Update only the text node, not the icon
+        const textNode = bedCapacityEl.childNodes[0];
+        const tooltip = bedCapacityEl.querySelector('.tooltip');
+        
+        if (vBedCount > 0) {
+            textNode.textContent = `${baseBeds} `;
+            // Remove old span if exists
+            const oldSpan = bedCapacityEl.querySelector('span.vbed-count');
+            if (oldSpan) oldSpan.remove();
+            // Add new vBed count span with + sign colored same as count
+            const vbedSpan = document.createElement('span');
+            vbedSpan.className = 'text-brand-secondary font-semibold vbed-count';
+            vbedSpan.textContent = `+${vBedCount} vBed`;
+            bedCapacityEl.insertBefore(vbedSpan, tooltip);
+            // Show tooltip only when there are vBeds
+            if (tooltip) tooltip.classList.remove('hidden');
+        } else {
+            textNode.textContent = `${baseBeds} beds`;
+            const oldSpan = bedCapacityEl.querySelector('span.vbed-count');
+            if (oldSpan) oldSpan.remove();
+            // Hide tooltip when no vBeds
+            if (tooltip) tooltip.classList.add('hidden');
+        }
+    }
+    
+    // --- MAX DAILY REVENUE: Show base + overcapacity bonus + vBed contribution ---
+    // Base: 137,305 BDT at 100% capacity
+    // If occupancy slider is > 100%, show additional revenue
+    // Also include vBed contribution: (MAX_DAILY_REVENUE / 7) * vBedCount
+    const maxDailyRevenueEl = document.getElementById('model-max-daily-revenue');
+    if (maxDailyRevenueEl) {
+        const currentOccupancyVal = parseInt(occupancySlider.value, 10);
+        const vBedDailyRevenue = (MAX_DAILY_REVENUE / 7) * vBedCount; // Revenue per vBed per day
+        let totalBonus = vBedDailyRevenue; // Always include vBed bonus
+        
+        // Add overcapacity bonus if over 100%
+        if (currentOccupancyVal > 100) {
+            const overcapacityPercent = currentOccupancyVal - 100;
+            const overcapacityBonus = (MAX_DAILY_REVENUE * overcapacityPercent) / 100;
+            totalBonus += overcapacityBonus;
+        }
+        
+        if (totalBonus > 0) {
+            maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> BDT`;
+        } else {
+            maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} BDT`;
+        }
+    }
+    
+    // --- BASE MONTHLY REVENUE: Stylized with days + vBed breakdown ---
+    // Formula: Base (22 days) + (MAX_DAILY_REVENUE / 7 * vBeds * additional days) + (MAX_DAILY_REVENUE * additional days)
+    const baseMonthlyRevenueEl = document.getElementById('model-base-monthly-revenue');
+    const baseMonthlyRevenueDaysLabelEl = document.getElementById('model-revenue-days-label');
+    
+    if (baseMonthlyRevenueEl && baseMonthlyRevenueDaysLabelEl) {
+        // Base revenue = 22 days at 100% occupancy
+        const baseRevenue = MAX_DAILY_REVENUE * baseDays;
+        
+        // Additional revenue from extra days (Tier 3: +6 days, Tier 4: +8 days)
+        const additionalDaysRevenue = MAX_DAILY_REVENUE * additionalDays;
+        
+        // Additional revenue from vBeds on all operational days
+        // vBed contribution per day = MAX_DAILY_REVENUE / 7 per vBed
+        const vBedDailyRevenue = (MAX_DAILY_REVENUE / 7) * vBedCount;
+        const additionalVBedRevenue = vBedDailyRevenue * operationalDays;
+        
+        // Total additional revenue
+        const totalAdditionalRevenue = additionalDaysRevenue + additionalVBedRevenue;
+        
+        // Update labels
+        if (additionalDays > 0) {
+            baseMonthlyRevenueDaysLabelEl.innerHTML = `(${baseDays} + <span class="text-brand-secondary font-semibold">${additionalDays}</span> days)`;
+        } else {
+            baseMonthlyRevenueDaysLabelEl.textContent = `(${operationalDays} days)`;
+        }
+        
+        // Update revenue value and tooltip visibility
+        const textNode = baseMonthlyRevenueEl.childNodes[0];
+        const tooltip = baseMonthlyRevenueEl.querySelector('.tooltip');
+        
+        if (totalAdditionalRevenue > 0) {
+            textNode.textContent = `${formatBDT(baseRevenue)} `;
+            // Remove old bonus span if exists
+            const oldSpan = baseMonthlyRevenueEl.querySelector('span.revenue-bonus');
+            if (oldSpan) oldSpan.remove();
+            // Add new bonus span
+            const bonusSpan = document.createElement('span');
+            bonusSpan.className = 'text-brand-secondary font-semibold revenue-bonus';
+            bonusSpan.textContent = `+${formatBDT(totalAdditionalRevenue)} BDT`;
+            baseMonthlyRevenueEl.insertBefore(bonusSpan, tooltip);
+            // Show tooltip only when there's additional revenue
+            if (tooltip) tooltip.classList.remove('hidden');
+        } else {
+            textNode.textContent = `${formatBDT(tierMaxMonthlyRevenue)} BDT`;
+            const oldSpan = baseMonthlyRevenueEl.querySelector('span.revenue-bonus');
+            if (oldSpan) oldSpan.remove();
+            // Hide tooltip when no additional revenue
+            if (tooltip) tooltip.classList.add('hidden');
+        }
+    }
+};
+
 // Update Staffing Tier Modeler
 const updateStaffingTier = (tierIndex) => {
     currentStaffingTier = TIER_DATA[tierIndex];
@@ -895,6 +1041,9 @@ const updateStaffingTier = (tierIndex) => {
 
     // Update dynamic payroll table
     updateDynamicPayrollTable(tierIndex);
+    
+    // Update Model Assumptions (Core Operating Parameters) - DYNAMIC
+    updateModelAssumptions(tierIndex);
     
     // Reset occupancy slider if not locked
     if (!isOccupancyLocked) {
@@ -1076,6 +1225,32 @@ document.addEventListener('DOMContentLoaded', () => {
     occupancySlider.addEventListener('input', (e) => {
         currentOccupancy = parseInt(e.target.value);
         updateOccupancyMetrics();
+        // Also update max daily revenue display if occupancy crosses 100% threshold or vBeds are present
+        const maxDailyRevenueEl = document.getElementById('model-max-daily-revenue');
+        if (maxDailyRevenueEl) {
+            // Recalculate vBed count based on current tier
+            let vBedCount = 0;
+            const tierIndex = currentStaffingTier.tier;
+            if (tierIndex === 3) vBedCount = 2;
+            else if (tierIndex === 4) vBedCount = 3;
+            
+            const currentOccupancyVal = parseInt(e.target.value, 10);
+            const vBedDailyRevenue = (MAX_DAILY_REVENUE / 7) * vBedCount;
+            let totalBonus = vBedDailyRevenue; // Always include vBed bonus
+            
+            // Add overcapacity bonus if over 100%
+            if (currentOccupancyVal > 100) {
+                const overcapacityPercent = currentOccupancyVal - 100;
+                const overcapacityBonus = (MAX_DAILY_REVENUE * overcapacityPercent) / 100;
+                totalBonus += overcapacityBonus;
+            }
+            
+            if (totalBonus > 0) {
+                maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> BDT`;
+            } else {
+                maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} BDT`;
+            }
+        }
     });
 
     // Init Occupancy Lock
