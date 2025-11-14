@@ -37,7 +37,7 @@
 
                     <img src="assets/images/mm-logo-tp.png"
                         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
-                        alt="Motion Mechanics Logo" class="h-12">
+                        alt="Motion Mechanics Logo" class="h-10 w-auto">
                     <span style="display:none;" class="text-2xl font-bold text-brand-dark dark:text-brand-light">Motion
                         Mechanics</span>
                 </a>
@@ -620,12 +620,12 @@
 
 
         <!-- Interactive Financial Projections (UPDATED) -->
-        <section id="projections" class="mb-20 pt-20">
+        <section id="projections" class="mb-20 pt-20 ">
             <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">Dynamic Capacity
                 Modeler</h3>
 
             <div
-                class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+                class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 relative">
                 <p class="text-center text-gray-600 dark:text-gray-400 mb-6 max-w-3xl mx-auto">
                     Select a <strong class="text-brand-dark dark:text-brand-light">Staffing Tier</strong> above to set
                     your payroll cost. Then, use the slider below to model how <strong
@@ -634,17 +634,20 @@
                 </p>
 
                 <!-- Occupancy Warning (conditional) -->
-                <div id="occupancy-warning"
-                    class="hidden mb-4 bg-orange-50 dark:bg-orange-900/20 border-l-4 border-orange-500 p-4 rounded">
+                 <div class=" absolute -bottom-20 left-1/2 -translate-x-1/2">
+                    <div id="occupancy-warning"
+                    class="hidden  bg-orange-50 dark:bg-orange-900 border-l-4 border-orange-500 p-4 rounded-2xl">
                     <div class="flex items-center">
                         <i data-lucide="alert-triangle"
                             class="w-5 h-5 text-orange-600 dark:text-orange-400 mr-3 flex-shrink-0"></i>
-                        <p class="text-sm text-orange-700 dark:text-orange-300">
-                            <strong>Above recommended capacity:</strong> You are operating above the designed capacity
-                            for the current staffing tier. Consider increasing staffing or managing patient load.
-                        </p>
+                            <p class="text-sm text-orange-700 dark:text-orange-300">
+                                <strong>Above recommended capacity:</strong> You are operating above the designed capacity
+                                for the current staffing tier. Consider increasing staffing or managing patient load.
+                            </p>
                     </div>
                 </div>
+                 </div>
+                
 
                 <!-- Occupancy Slider (UPDATED) -->
                 <div class="mb-8">
