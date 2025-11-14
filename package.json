@@ -1,11 +1,11 @@
 {
   "name": "mm-flextime-microsite",
-  "version": "2.5.1",
+  "version": "2.5.4",
   "description": "Motion Mechanics FlexTime™ Operations & Financial Model Interactive Microsite",
   "type": "module",
   "scripts": {
-    "version": "node scripts/update-hashes.js && git add index.html",
-    "postversion": "git push && git push --tags",
+    "version": "bash scripts/version.sh",
+    "postversion": "bash scripts/postversion.sh",
     "deploy": "node scripts/deploy.js"
   },
   "dependencies": {
