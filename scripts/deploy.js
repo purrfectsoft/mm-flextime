@@ -169,6 +169,9 @@ function displayStatus(version, hashes, url) {
     ].join('\n');
   };
 
+  // Add HTML hash as query parameter for cache busting
+  const urlWithHash = `${url}?h=${hashes.html}`;
+
   console.log('\n');
   console.log('╔═══════════════════════════════════════════════════════════════╗');
   console.log('║                  ✅ DEPLOYMENT SUCCESSFUL                      ║');
@@ -178,7 +181,7 @@ function displayStatus(version, hashes, url) {
   console.log(`  📄 HTML Hash:    ${hashes.html}`);
   console.log(`  🎨 CSS Hash:     ${hashes.css}`);
   console.log(`  ⚙️  JS Hash:      ${hashes.js}`);
-  console.log(`  🌐 URL:          ${url}`);
+  console.log(`  🌐 URL:          ${urlWithHash}`);
   console.log('');
   console.log('═'.repeat(67));
   console.log('');
