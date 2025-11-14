@@ -14,7 +14,7 @@ cp .env.example .env
 nano .env
 
 # 3. Install dependencies
-yarn install
+npm run install
 ```
 
 ### Automatic Updates
@@ -25,23 +25,23 @@ yarn install
 ```bash
 ```bash
 # Patch release (1.0.0 → 1.0.1)
-yarn version patch
+npm run version patch
 
 # Minor release (1.0.0 → 1.1.0)
-yarn version minor
+npm run version minor
 
 # Major release (1.0.0 → 2.0.0)
-yarn version major
+npm run version major
 
 # Specific version
-yarn version 1.5.0
+npm run version 1.5.0
 ```
 ```
 
 ### 3. Deploy to Production
 
 ```bash
-yarn deploy
+npm run deploy
 ```
 
 This will:
@@ -86,7 +86,7 @@ DEVELOP_BRANCH=develop            # Development branch
                │
                ▼
 ┌─────────────────────────────────────┐
-│ yarn version patch                  │
+│ npm run version patch                  │
 │ - Updates version in package.json   │
 │ - Recalculates CSS/JS hashes        │
 │ - Updates HTML                      │
@@ -96,7 +96,7 @@ DEVELOP_BRANCH=develop            # Development branch
                │
                ▼
 ┌─────────────────────────────────────┐
-│ yarn deploy                         │
+│ npm run deploy                         │
 │ - Verifies develop branch           │
 │ - Fetches from origin               │
 │ - Merges develop → deploy (--ff)    │
@@ -189,7 +189,7 @@ If needed, rollback to a previous version:
 ```bash
 # Locally
 git checkout v1.0.0      # Checkout previous tag
-yarn deploy           # Deploy the previous version
+npm run deploy           # Deploy the previous version
 
 # The script will verify the remote matches the local version
 ```
@@ -199,8 +199,8 @@ yarn deploy           # Deploy the previous version
 For GitHub Actions or similar, use:
 
 ```bash
-yarn install
-yarn deploy
+npm run install
+npm run deploy
 ```
 
 The script will handle all git operations and remote deployment.

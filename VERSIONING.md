@@ -27,22 +27,22 @@ When you bump the version using yarn, the system automatically:
 
 ```bash
 # Patch release (1.0.0 → 1.0.1)
-yarn version patch
+npm run version patch
 
 # Minor release (1.0.0 → 1.1.0)
-yarn version minor
+npm run version minor
 
 # Major release (1.0.0 → 2.0.0)
-yarn version major
+npm run version major
 
 # Specific version
-yarn version 1.5.0
+npm run version 1.5.0
 ```
 
 ### What Happens Behind the Scenes
 
 ```
-yarn version patch
+npm run version patch
     ↓
 Updates package.json version
     ↓
@@ -64,7 +64,7 @@ Runs "postversion" script
 
 ✅ **Browser Cache Busting**: Unique hash on every file change  
 ✅ **Deterministic**: Same version = same hash (useful for tracking)  
-✅ **Semantic Versioning**: Standard yarn versioning practices  
+✅ **Semantic Versioning**: Standard npm run versioning practices  
 ✅ **Automated**: No manual hash updates needed  
 ✅ **Auditable**: Git history shows all version changes  
 ✅ **CDN-Friendly**: Different query parameters mean different cache entries  
@@ -72,7 +72,7 @@ Runs "postversion" script
 ## Example Scenario
 
 1. You make changes to `index.css`
-2. Run `yarn version patch`
+2. Run `npm run version patch`
 3. Script detects the file changed → new hash calculated
 4. HTML automatically updated: `index.css?v=1.0.1-9c3f2a1e`
 5. Browser fetches new CSS instead of using cached version
@@ -84,11 +84,11 @@ Runs "postversion" script
 
 Calculates SHA256 hashes of CSS and JS files and updates the HTML.
 
-**Triggered by**: `yarn version` command  
+**Triggered by**: `npm run version` command  
 **Modifies**: `index.html`  
 **Output**: Console log showing version and hashes
 
-### Yarn Hooks
+### npm run Hooks
 
 - **version** script: Runs before git tag is created
 - **`postversion`** script: Runs after git tag is created, pushes commits
@@ -122,7 +122,7 @@ git push origin develop
 
 To skip the automatic push temporarily, you can run:
 ```bash
-yarn version patch --no-git-tag-version
+npm run version patch --no-git-tag-version
 node scripts/update-hashes.js
 ```
 
