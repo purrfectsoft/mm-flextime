@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" class="light" style="scroll-behavior: smooth;">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en" class="light" style="scroll-behavior: smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Motion Mechanics - FlexTime™ Model</title>
 
     <!-- Tailwind CSS -->
@@ -16,1301 +15,2244 @@
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.378.0/dist/umd/lucide.min.js"></script>
 
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="index.css?v=2.6.3-2b0e0feb">
-</head>
+    <link rel="stylesheet" href="index.css?v=2.6.3-2b0e0feb" />
+  </head>
 
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300" data-html-hash="5ea8dfd7">
-
+  <body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300"
+    data-html-hash="5ea8dfd7"
+  >
     <!-- Header / Navbar -->
     <header
-        class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 fixed top-0 left-0 right-0 z-50 h-20">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
-                <a href="#home" class="flex items-center space-x-3 flex-shrink-0">
-                    <img src="assets/images/pu-logo-tp.png"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                        alt="Purrfect Universe Logo" class="h-10 w-10">
-                    <div style="display:none;"
-                        class="h-10 w-10 rounded-full bg-brand-wood flex items-center justify-center text-white font-bold text-xl">
-                        P</div>
-
-                    <img src="assets/images/mm-logo-tp.png"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
-                        alt="Motion Mechanics Logo" class="h-10 w-auto">
-                    <span style="display:none;" class="text-2xl font-bold text-brand-dark dark:text-brand-light">Motion
-                        Mechanics</span>
-                </a>
-
-                <!-- Desktop Nav -->
-                <nav class="hidden lg:flex items-center space-x-2 main-nav">
-                    <a href="#model"
-                        class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Service
-                        Model</a>
-                    <a href="#staffing-modeler"
-                        class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Staffing
-                        Modeler</a>
-                    <a href="#payroll-framework"
-                        class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Payroll</a>
-                    <a href="#projections"
-                        class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Capacity
-                        Modeler</a>
-                    <a href="#launch-projections"
-                        class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Launch
-                        Models</a>
-                    <a href="#future-projections"
-                        class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Future
-                        Projections</a>
-                    <a href="#access-care"
-                        class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">CareBridge™</a>
-                    <a href="#data-tables"
-                        class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Core
-                        Data</a>
-
-                    <!-- Dark Mode Toggle (Desktop) -->
-                    <button id="theme-toggle" type="button"
-                        class="ml-4 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors">
-                        <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                        </svg>
-                        <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607l-.707-.707a1 1 0 010-1.414 1 1 0 011.414 0l.707.707a1 1 0 01-1.414 1.414zM4.95 15.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414zM1.414 6.364l.707.707a1 1 0 010 1.414 1 1 0 01-1.414 0l-.707-.707a1 1 0 011.414-1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z"
-                                fill-rule="evenodd" clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
-                </nav>
-
-                <!-- Mobile Menu Button -->
-                <button id="mobile-menu-button" type="button"
-                    class="lg:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                    <span class="sr-only">Open main menu</span>
-                </button>
+      class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 fixed top-0 left-0 right-0 z-50 h-20"
+    >
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <!-- Logo -->
+          <a href="#home" class="flex items-center space-x-3 flex-shrink-0">
+            <img
+              src="assets/images/pu-logo-tp.png"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              alt="Purrfect Universe Logo"
+              class="h-10 w-10"
+            />
+            <div
+              style="display: none"
+              class="h-10 w-10 rounded-full bg-brand-wood flex items-center justify-center text-white font-bold text-xl"
+            >
+              P
             </div>
-        </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu"
-            class="hidden lg:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 shadow-lg fixed top-20 left-0 right-0 z-40">
-            <nav class="flex flex-col space-y-2 px-4 main-nav">
-                <a href="#model"
-                    class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Service
-                    Model</a>
-                <a href="#staffing-modeler"
-                    class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Staffing
-                    Modeler</a>
-                <a href="#payroll-framework"
-                    class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Payroll</a>
-                <a href="#projections"
-                    class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Capacity
-                    Modeler</a>
-                <a href="#launch-projections"
-                    class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Launch
-                    Models</a>
-                <a href="#future-projections"
-                    class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Future
-                    Projections</a>
-                <a href="#access-care"
-                    class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">CareBridge™</a>
-                <a href="#data-tables"
-                    class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Core
-                    Data</a>
+            <img
+              src="assets/images/mm-logo-tp.png"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
+              alt="Motion Mechanics Logo"
+              class="h-10 w-auto"
+            />
+            <span
+              style="display: none"
+              class="text-2xl font-bold text-brand-dark dark:text-brand-light"
+              >Motion Mechanics</span
+            >
+          </a>
 
-                <!-- Dark Mode Toggle (Mobile) -->
-                <button id="theme-toggle-mobile" type="button"
-                    class="mt-4 w-full flex justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors">
-                    <svg id="theme-toggle-dark-icon-mobile" class="hidden w-6 h-6" fill="currentColor"
-                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                    </svg>
-                    <svg id="theme-toggle-light-icon-mobile" class="hidden w-6 h-6" fill="currentColor"
-                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607l-.707-.707a1 1 0 010-1.414 1 1 0 011.414 0l.707.707a1 1 0 01-1.414 1.414zM4.95 15.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414zM1.414 6.364l.707.707a1 1 0 010 1.414 1 1 0 01-1.414 0l-.707-.707a1 1 0 011.414-1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z"
-                            fill-rule="evenodd" clip-rule="evenodd"></path>
-                    </svg>
-                </button>
-            </nav>
+          <!-- Desktop Nav -->
+          <nav class="hidden lg:flex items-center space-x-2 main-nav">
+            <a
+              href="#model"
+              class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >Service Model</a
+            >
+            <a
+              href="#staffing-modeler"
+              class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >Staffing Modeler</a
+            >
+            <a
+              href="#payroll-framework"
+              class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >Payroll</a
+            >
+            <a
+              href="#projections"
+              class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >Capacity Modeler</a
+            >
+            <a
+              href="#launch-projections"
+              class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >Launch Models</a
+            >
+            <a
+              href="#future-projections"
+              class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >Future Projections</a
+            >
+            <a
+              href="#access-care"
+              class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >CareBridge™</a
+            >
+            <a
+              href="#data-tables"
+              class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >Core Data</a
+            >
+
+            <!-- Dark Mode Toggle (Desktop) -->
+            <button
+              id="theme-toggle"
+              type="button"
+              class="ml-4 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors"
+            >
+              <svg
+                id="theme-toggle-dark-icon"
+                class="hidden w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+                ></path>
+              </svg>
+              <svg
+                id="theme-toggle-light-icon"
+                class="hidden w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607l-.707-.707a1 1 0 010-1.414 1 1 0 011.414 0l.707.707a1 1 0 01-1.414 1.414zM4.95 15.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414zM1.414 6.364l.707.707a1 1 0 010 1.414 1 1 0 01-1.414 0l-.707-.707a1 1 0 011.414-1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z"
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
+          </nav>
+
+          <!-- Mobile Menu Button -->
+          <button
+            id="mobile-menu-button"
+            type="button"
+            class="lg:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors"
+          >
+            <i data-lucide="menu" class="w-6 h-6"></i>
+            <span class="sr-only">Open main menu</span>
+          </button>
         </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div
+        id="mobile-menu"
+        class="hidden lg:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4 shadow-lg fixed top-20 left-0 right-0 z-40"
+      >
+        <nav class="flex flex-col space-y-2 px-4 main-nav">
+          <a
+            href="#model"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >Service Model</a
+          >
+          <a
+            href="#staffing-modeler"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >Staffing Modeler</a
+          >
+          <a
+            href="#payroll-framework"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >Payroll</a
+          >
+          <a
+            href="#projections"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >Capacity Modeler</a
+          >
+          <a
+            href="#launch-projections"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >Launch Models</a
+          >
+          <a
+            href="#future-projections"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >Future Projections</a
+          >
+          <a
+            href="#access-care"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >CareBridge™</a
+          >
+          <a
+            href="#data-tables"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >Core Data</a
+          >
+
+          <!-- Dark Mode Toggle (Mobile) -->
+          <button
+            id="theme-toggle-mobile"
+            type="button"
+            class="mt-4 w-full flex justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors"
+          >
+            <svg
+              id="theme-toggle-dark-icon-mobile"
+              class="hidden w-6 h-6"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+              ></path>
+            </svg>
+            <svg
+              id="theme-toggle-light-icon-mobile"
+              class="hidden w-6 h-6"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607l-.707-.707a1 1 0 010-1.414 1 1 0 011.414 0l.707.707a1 1 0 01-1.414 1.414zM4.95 15.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414zM1.414 6.364l.707.707a1 1 0 010 1.414 1 1 0 01-1.414 0l-.707-.707a1 1 0 011.414-1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+        </nav>
+      </div>
     </header>
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <!-- Hero Section -->
+      <section id="home" class="text-center mb-20 md:mb-24 pt-16">
+        <h1
+          class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-dark dark:text-brand-light mb-6"
+        >
+          FlexTime™ Operations
+        </h1>
+        <h2
+          class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-secondary mb-8"
+        >
+          & Financial Model
+        </h2>
+        <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+          A strategic proposal for premium, accessible, and sustainable
+          physiotherapy care in Bangladesh.
+        </p>
+      </section>
 
-        <!-- Hero Section -->
-        <section id="home" class="text-center mb-20 md:mb-24 pt-16">
-            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-dark dark:text-brand-light mb-6">
-                FlexTime™ Operations
-            </h1>
-            <h2 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-secondary mb-8">
-                & Financial Model
-            </h2>
-            <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                A strategic proposal for premium, accessible, and sustainable physiotherapy care in Bangladesh.
+      <!-- Executive Overview -->
+      <section id="overview" class="mb-20 pt-20">
+        <h3
+          class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center"
+        >
+          Executive Overview
+        </h3>
+        <p
+          class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center mb-10"
+        >
+          Motion Mechanics introduces
+          <strong class="font-bold text-brand-secondary">FlexTime™</strong>, a
+          modern framework for high-quality, sustainable care. Our system
+          integrates five core pillars:
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Pillar 1: Operations -->
+          <div
+            class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:scale-[1.03] hover:border-brand-secondary dark:hover:border-brand-secondary transition-all duration-300 ease-in-out"
+          >
+            <i
+              data-lucide="zap"
+              class="w-10 h-10 text-brand-secondary mb-4 group-hover:scale-110 transition-transform"
+            ></i>
+            <h4
+              class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+            >
+              Multi-Shift Operations
+            </h4>
+            <p class="text-gray-600 dark:text-gray-400">
+              Structured shifts (Z, A, B, C), including the
+              <strong class="text-brand-wood dark:text-brand-wood"
+                >Nightfall FlexLab™</strong
+              >, to expand access for all patient schedules.
             </p>
-        </section>
+          </div>
 
-        <!-- Executive Overview -->
-        <section id="overview" class="mb-20 pt-20">
-            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">Executive Overview
-            </h3>
-            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center mb-10">
-                Motion Mechanics introduces <strong class="font-bold text-brand-secondary">FlexTime™</strong>, a modern
-                framework for high-quality, sustainable care. Our system integrates five core pillars:
+          <!-- Pillar 2: Session Model -->
+          <div
+            class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:scale-[1.03] hover:border-brand-wood dark:hover:border-brand-wood transition-all duration-300 ease-in-out"
+          >
+            <i
+              data-lucide="package-plus"
+              class="w-10 h-10 text-brand-wood mb-4 group-hover:scale-110 transition-transform"
+            ></i>
+            <h4
+              class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+            >
+              Diversified Session Model
+            </h4>
+            <p class="text-gray-600 dark:text-gray-400">
+              A four-tier session model (Foundation, Standard, Premium, Express)
+              aligned with clinical value and patient needs.
             </p>
+          </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Pillar 1: Operations -->
-                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700
-                            hover:shadow-2xl hover:scale-[1.03] hover:border-brand-secondary dark:hover:border-brand-secondary
-                            transition-all duration-300 ease-in-out">
-                    <i data-lucide="zap"
-                        class="w-10 h-10 text-brand-secondary mb-4 group-hover:scale-110 transition-transform"></i>
-                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Multi-Shift Operations</h4>
-                    <p class="text-gray-600 dark:text-gray-400">
-                        Structured shifts (Z, A, B, C), including the <strong
-                            class="text-brand-wood dark:text-brand-wood">Nightfall FlexLab™</strong>, to expand access
-                        for all patient schedules.
-                    </p>
-                </div>
+          <!-- Pillar 3: Staffing -->
+          <div
+            class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:scale-[1.03] hover:border-brand-highlight dark:hover:border-brand-highlight transition-all duration-300 ease-in-out"
+          >
+            <i
+              data-lucide="users"
+              class="w-10 h-10 text-brand-highlight mb-4 group-hover:scale-110 transition-transform"
+            ></i>
+            <h4
+              class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+            >
+              Scalable Tiered Staffing
+            </h4>
+            <p class="text-gray-600 dark:text-gray-400">
+              An interactive 5-tier staffing model that balances payroll costs
+              with service capacity and future growth.
+            </p>
+          </div>
 
-                <!-- Pillar 2: Session Model -->
-                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700
-                            hover:shadow-2xl hover:scale-[1.03] hover:border-brand-wood dark:hover:border-brand-wood
-                            transition-all duration-300 ease-in-out">
-                    <i data-lucide="package-plus"
-                        class="w-10 h-10 text-brand-wood mb-4 group-hover:scale-110 transition-transform"></i>
-                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Diversified Session Model
-                    </h4>
-                    <p class="text-gray-600 dark:text-gray-400">
-                        A four-tier session model (Foundation, Standard, Premium, Express) aligned with clinical value
-                        and patient needs.
-                    </p>
-                </div>
+          <!-- Pillar 4: CareBridge -->
+          <div
+            class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 md:col-start-1 lg:col-start-auto hover:shadow-2xl hover:scale-[1.03] hover:border-brand-secondary dark:hover:border-brand-secondary transition-all duration-300 ease-in-out"
+          >
+            <i
+              data-lucide="heart-handshake"
+              class="w-10 h-10 text-brand-secondary mb-4 group-hover:scale-110 transition-transform"
+            ></i>
+            <h4
+              class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+            >
+              CareBridge™ Program
+            </h4>
+            <p class="text-gray-600 dark:text-gray-400">
+              A compassionate, subsidized program to ensure equitable care is
+              woven into our sustainable model.
+            </p>
+          </div>
 
-                <!-- Pillar 3: Staffing -->
-                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700
-                            hover:shadow-2xl hover:scale-[1.03] hover:border-brand-highlight dark:hover:border-brand-highlight
-                            transition-all duration-300 ease-in-out">
-                    <i data-lucide="users"
-                        class="w-10 h-10 text-brand-highlight mb-4 group-hover:scale-110 transition-transform"></i>
-                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Scalable Tiered Staffing
-                    </h4>
-                    <p class="text-gray-600 dark:text-gray-400">
-                        An interactive 5-tier staffing model that balances payroll costs with service capacity and
-                        future growth.
-                    </p>
-                </div>
-
-                <!-- Pillar 4: CareBridge -->
-                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700
-                            md:col-start-1 lg:col-start-auto
-                            hover:shadow-2xl hover:scale-[1.03] hover:border-brand-secondary dark:hover:border-brand-secondary
-                            transition-all duration-300 ease-in-out">
-                    <i data-lucide="heart-handshake"
-                        class="w-10 h-10 text-brand-secondary mb-4 group-hover:scale-110 transition-transform"></i>
-                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">CareBridge™ Program</h4>
-                    <p class="text-gray-600 dark:text-gray-400">
-                        A compassionate, subsidized program to ensure equitable care is woven into our sustainable
-                        model.
-                    </p>
-                </div>
-
-                <!-- Pillar 5: Financials -->
-                <div class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700
-                            md:col-start-auto lg:col-span-2
-                            hover:shadow-2xl hover:scale-[1.03] hover:border-brand-wood dark:hover:border-brand-wood
-                            transition-all duration-300 ease-in-out">
-                    <div class="flex items-start space-x-4">
-                        <i data-lucide="bar-chart-3"
-                            class="w-10 h-10 text-brand-wood mb-4 group-hover:scale-110 transition-transform flex-shrink-0"></i>
-                        <div>
-                            <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Data-Driven
-                                Financials</h4>
-                            <p class="text-gray-600 dark:text-gray-400">
-                                Interactive models for staffing tiers, occupancy rates, and launch projections provide a
-                                clear, dynamic financial backbone for decision-making.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FlexTime™ Service Model (UPDATED) -->
-        <section id="model" class="mb-20 pt-20">
-            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">FlexTime™ Service
-                Model</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <!-- FlexShift Z (Future) -->
-                <div
-                    class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border-2 border-dashed border-brand-highlight/50 dark:border-brand-highlight/70 hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out">
-                    <div class="flex justify-between items-center mb-2">
-                        <div class="flex items-center space-x-3">
-                            <i data-lucide="sunrise"
-                                class="w-8 h-8 text-brand-highlight group-hover:scale-110 transition-transform"></i>
-                            <h4 class="text-2xl font-bold text-brand-highlight">
-                                FlexShift
-                                <span class="flex-shift-z-container">
-                                    <span class="flex-shift-z">Z</span>
-                                    <span class="flex-shift-z-suffix">ero</span>
-                                </span>
-                            </h4>
-                        </div>
-                        <span
-                            class="text-xs font-semibold bg-brand-highlight/20 text-brand-highlight px-2 py-0.5 rounded-full">FUTURE
-                            (Tier 3+)</span>
-                    </div>
-                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">06:00 – 09:00</p>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2">Early morning block for dedicated professionals and
-                        pre-work/school sessions.</p>
-                </div>
-
-                <!-- FlexStart -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
-                    <div class="flex justify-between items-center mb-2">
-                        <div class="flex items-center space-x-3">
-                            <i data-lucide="clock" class="w-8 h-8 text-brand-wood"></i>
-                            <h4 class="text-2xl font-bold text-brand-wood dark:text-brand-wood">FlexStart</h4>
-                        </div>
-                        <span class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full">No
-                            Late Penalty</span>
-                    </div>
-                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">09:00 – 10:00</p>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2">Internal staff preparation, calibration, and
-                        emergency early-day cases.</p>
-                </div>
-
-                <!-- FlexShift A -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
-                    <div class="flex items-center space-x-3 mb-2">
-                        <i data-lucide="activity" class="w-8 h-8 text-brand-dark"></i>
-                        <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">FlexShift A</h4>
-                    </div>
-                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">10:00 – 13:00</p>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2">Morning care block emphasizing Neuro and Pediatric
-                        cases.</p>
-                </div>
-
-                <!-- Midday Reset -->
-                <div
-                    class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-2xl shadow-inner border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
-                    <div class="flex justify-between items-center mb-2">
-                        <div class="flex items-center space-x-3">
-                            <i data-lucide="refresh-cw" class="w-8 h-8 text-brand-wood"></i>
-                            <h4 class="text-2xl font-bold text-brand-wood">Midday Reset</h4>
-                        </div>
-                        <span
-                            class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full">TURNOVER</span>
-                    </div>
-                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">13:00 – 14:00</p>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2">Buffer for turnover, sanitization, and staff reset
-                        between morning and afternoon blocks.</p>
-                </div>
-
-                <!-- FlexShift B -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
-                    <div class="flex items-center space-x-3 mb-2">
-                        <i data-lucide="book-open" class="w-8 h-8 text-brand-dark"></i>
-                        <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">FlexShift B</h4>
-                    </div>
-                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">14:00 – 17:00</p>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2">Afternoon block for evaluations, long-duration
-                        cases, and clinical training.</p>
-                </div>
-
-                <!-- Commute Gap (RECREATED) -->
-                <div
-                    class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-2xl shadow-inner border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
-                    <div class="flex justify-between items-center mb-2">
-                        <div class="flex items-center space-x-3">
-                            <i data-lucide="car" class="w-8 h-8 text-brand-wood flex-shrink-0"></i>
-                            <h4 class="text-2xl font-bold text-brand-wood dark:text-brand-wood">Commute Gap</h4>
-                        </div>
-                        <span
-                            class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full">SAFETY</span>
-                    </div>
-                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">17:00 – 19:00</p>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm">Buffer for staff travel and deconfliction
-                        to reduce congestion and improve safety.</p>
-                </div>
-
-                <!-- FlexShift C (STYLED) -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
-                    <div class="flex items-center space-x-3 mb-2">
-                        <i data-lucide="moon" class="w-8 h-8 text-brand-secondary"></i>
-                        <h4
-                            class="text-2xl font-bold text-brand-secondary dark:text-brand-secondary-light flex-shift-c">
-                            FlexShift C</h4>
-                    </div>
-                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">19:00 – 22:00</p>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2">Evening block for office-goers and acute pain.
-                        Includes the <strong class="text-brand-secondary">Nightfall FlexLab™</strong>.</p>
-                </div>
-
-                <!-- FlexNight / FlexShift O(wl) -->
-                <div
-                    class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border-2 border-dashed border-brand-highlight/50 dark:border-brand-highlight/70 lg:col-span-2 hover:shadow-2xl hover:scale-[1.03] hover:border-brand-highlight-light transition-all duration-300 ease-in-out">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="flex items-center space-x-3">
-                            <i data-lucide="rocket" class="w-8 h-8 text-brand-highlight group-hover:scale-110 transition-transform"></i>
-                            <h4 class="text-2xl font-bold text-brand-highlight">FlexShift
-                                <span class="flex-shift-z-container flex-shift-o-container">
-                                    <span class="flex-shift-z flex-shift-o">O</span>
-                                    <span class="flex-shift-z-suffix flex-shift-o-suffix">wl</span>
-                                </span>
-                            </h4>
-                        </div>
-                        <span class="text-xs font-semibold bg-brand-highlight-light/20 text-brand-highlight px-2 py-0.5 rounded-full">NIGHT</span>
-                    </div>
-                    <p class="text-lg font-medium text-gray-700 dark:text-gray-300">22:00 – 06:00</p>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2">Night shift operations for future or interplanetary
-                        operations — <span
-                            class="text-brand-highlight dark:text-brand-highlight-light font-semibold">Purrfect Software
-                            Limited</span>, <span class="text-brand-base dark:text-brand-light font-semibold">Motion
-                            Mechanics</span> online services, and more.</p>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Interactive Staffing Tier Modeler -->
-        <section id="staffing-modeler" class="mb-20 pt-20">
-            <div
-                class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
-                <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-2 text-center">Interactive
-                    Staffing Tier Modeler</h3>
-                <p class="text-center text-gray-600 dark:text-gray-400 mb-2 max-w-2xl mx-auto">
-                    Use this slider to see how payroll, revenue, and service capacity scale with each staffing tier.
+          <!-- Pillar 5: Financials -->
+          <div
+            class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 md:col-start-auto lg:col-span-2 hover:shadow-2xl hover:scale-[1.03] hover:border-brand-wood dark:hover:border-brand-wood transition-all duration-300 ease-in-out"
+          >
+            <div class="flex items-start space-x-4">
+              <i
+                data-lucide="bar-chart-3"
+                class="w-10 h-10 text-brand-wood mb-4 group-hover:scale-110 transition-transform flex-shrink-0"
+              ></i>
+              <div>
+                <h4
+                  class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+                >
+                  Data-Driven Financials
+                </h4>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Interactive models for staffing tiers, occupancy rates, and
+                  launch projections provide a clear, dynamic financial backbone
+                  for decision-making.
                 </p>
-                <!-- How to Use Helper -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FlexTime™ Service Model (UPDATED) -->
+      <section id="model" class="mb-20 pt-20">
+        <h3
+          class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center"
+        >
+          FlexTime™ Service Model
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- FlexShift Z (Future) -->
+          <div
+            class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border-2 border-dashed border-brand-highlight/50 dark:border-brand-highlight/70 hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out"
+          >
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center space-x-3">
+                <i
+                  data-lucide="sunrise"
+                  class="w-8 h-8 text-brand-highlight group-hover:scale-110 transition-transform"
+                ></i>
+                <h4 class="text-2xl font-bold text-brand-highlight">
+                  FlexShift
+                  <span class="flex-shift-z-container">
+                    <span class="flex-shift-z">Z</span>
+                    <span class="flex-shift-z-suffix">ero</span>
+                  </span>
+                </h4>
+              </div>
+              <span
+                class="text-xs font-semibold bg-brand-highlight/20 text-brand-highlight px-2 py-0.5 rounded-full"
+                >FUTURE (Tier 3+)</span
+              >
+            </div>
+            <p class="text-lg font-medium text-gray-700 dark:text-gray-300">
+              06:00 – 09:00
+            </p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">
+              Early morning block for dedicated professionals and
+              pre-work/school sessions.
+            </p>
+          </div>
+
+          <!-- FlexStart -->
+          <div
+            class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200"
+          >
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center space-x-3">
+                <i data-lucide="clock" class="w-8 h-8 text-brand-wood"></i>
+                <h4
+                  class="text-2xl font-bold text-brand-wood dark:text-brand-wood"
+                >
+                  FlexStart
+                </h4>
+              </div>
+              <span
+                class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full"
+                >No Late Penalty</span
+              >
+            </div>
+            <p class="text-lg font-medium text-gray-700 dark:text-gray-300">
+              09:00 – 10:00
+            </p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">
+              Internal staff preparation, calibration, and emergency early-day
+              cases.
+            </p>
+          </div>
+
+          <!-- FlexShift A -->
+          <div
+            class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200"
+          >
+            <div class="flex items-center space-x-3 mb-2">
+              <i data-lucide="activity" class="w-8 h-8 text-brand-dark"></i>
+              <h4
+                class="text-2xl font-bold text-brand-dark dark:text-brand-light"
+              >
+                FlexShift A
+              </h4>
+            </div>
+            <p class="text-lg font-medium text-gray-700 dark:text-gray-300">
+              10:00 – 13:00
+            </p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">
+              Morning care block emphasizing Neuro and Pediatric cases.
+            </p>
+          </div>
+
+          <!-- Midday Reset -->
+          <div
+            class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-2xl shadow-inner border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200"
+          >
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center space-x-3">
+                <i data-lucide="refresh-cw" class="w-8 h-8 text-brand-wood"></i>
+                <h4 class="text-2xl font-bold text-brand-wood">Midday Reset</h4>
+              </div>
+              <span
+                class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full"
+                >TURNOVER</span
+              >
+            </div>
+            <p class="text-lg font-medium text-gray-700 dark:text-gray-300">
+              13:00 – 14:00
+            </p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">
+              Buffer for turnover, sanitization, and staff reset between morning
+              and afternoon blocks.
+            </p>
+          </div>
+
+          <!-- FlexShift B -->
+          <div
+            class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200"
+          >
+            <div class="flex items-center space-x-3 mb-2">
+              <i data-lucide="book-open" class="w-8 h-8 text-brand-dark"></i>
+              <h4
+                class="text-2xl font-bold text-brand-dark dark:text-brand-light"
+              >
+                FlexShift B
+              </h4>
+            </div>
+            <p class="text-lg font-medium text-gray-700 dark:text-gray-300">
+              14:00 – 17:00
+            </p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">
+              Afternoon block for evaluations, long-duration cases, and clinical
+              training.
+            </p>
+          </div>
+
+          <!-- Commute Gap (RECREATED) -->
+          <div
+            class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-2xl shadow-inner border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200"
+          >
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center space-x-3">
+                <i
+                  data-lucide="car"
+                  class="w-8 h-8 text-brand-wood flex-shrink-0"
+                ></i>
+                <h4
+                  class="text-2xl font-bold text-brand-wood dark:text-brand-wood"
+                >
+                  Commute Gap
+                </h4>
+              </div>
+              <span
+                class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full"
+                >SAFETY</span
+              >
+            </div>
+            <p class="text-lg font-medium text-gray-700 dark:text-gray-300">
+              17:00 – 19:00
+            </p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm">
+              Buffer for staff travel and deconfliction to reduce congestion and
+              improve safety.
+            </p>
+          </div>
+
+          <!-- FlexShift C (STYLED) -->
+          <div
+            class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-200"
+          >
+            <div class="flex items-center space-x-3 mb-2">
+              <i data-lucide="moon" class="w-8 h-8 text-brand-secondary"></i>
+              <h4
+                class="text-2xl font-bold text-brand-secondary dark:text-brand-secondary-light flex-shift-c"
+              >
+                FlexShift C
+              </h4>
+            </div>
+            <p class="text-lg font-medium text-gray-700 dark:text-gray-300">
+              19:00 – 22:00
+            </p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">
+              Evening block for office-goers and acute pain. Includes the
+              <strong class="text-brand-secondary">Nightfall FlexLab™</strong>.
+            </p>
+          </div>
+
+          <!-- FlexNight / FlexShift O(wl) -->
+          <div
+            class="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border-2 border-dashed border-brand-highlight/50 dark:border-brand-highlight/70 lg:col-span-2 hover:shadow-2xl hover:scale-[1.03] hover:border-brand-highlight-light transition-all duration-300 ease-in-out"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center space-x-3">
+                <i
+                  data-lucide="rocket"
+                  class="w-8 h-8 text-brand-highlight group-hover:scale-110 transition-transform"
+                ></i>
+                <h4 class="text-2xl font-bold text-brand-highlight">
+                  FlexShift
+                  <span class="flex-shift-z-container flex-shift-o-container">
+                    <span class="flex-shift-z flex-shift-o">O</span>
+                    <span class="flex-shift-z-suffix flex-shift-o-suffix"
+                      >wl</span
+                    >
+                  </span>
+                </h4>
+              </div>
+              <span
+                class="text-xs font-semibold bg-brand-highlight-light/20 text-brand-highlight px-2 py-0.5 rounded-full"
+                >NIGHT</span
+              >
+            </div>
+            <p class="text-lg font-medium text-gray-700 dark:text-gray-300">
+              22:00 – 06:00
+            </p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">
+              Night shift operations for future or interplanetary operations —
+              <span
+                class="text-brand-highlight dark:text-brand-highlight-light font-semibold"
+                >Purrfect Software Limited</span
+              >,
+              <span class="text-brand-base dark:text-brand-light font-semibold"
+                >Motion Mechanics</span
+              >
+              online services, and more.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Staffing Tier Modeler -->
+      <section id="staffing-modeler" class="mb-20 pt-20">
+        <div
+          class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
+        >
+          <h3
+            class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-2 text-center"
+          >
+            Interactive Staffing Tier Modeler
+          </h3>
+          <p
+            class="text-center text-gray-600 dark:text-gray-400 mb-2 max-w-2xl mx-auto"
+          >
+            Use this slider to see how payroll, revenue, and service capacity
+            scale with each staffing tier.
+          </p>
+          <!-- How to Use Helper -->
+          <div
+            class="bg-brand-highlight/10 dark:bg-brand-highlight/20 border-l-4 border-brand-highlight p-4 rounded-lg mb-6 max-w-3xl mx-auto"
+          >
+            <div class="flex items-start">
+              <i
+                data-lucide="info"
+                class="w-5 h-5 text-brand-highlight flex-shrink-0 mt-0.5 mr-3"
+              ></i>
+              <div>
+                <h4
+                  class="text-sm font-semibold text-brand-dark dark:text-brand-light mb-1"
+                >
+                  How to use this model:
+                </h4>
+                <p class="text-sm text-gray-700 dark:text-gray-300">
+                  <strong>1)</strong> Select a staffing tier below to set your
+                  team size and payroll baseline. <strong>2)</strong> Scroll to
+                  the Capacity Modeler to adjust occupancy and see revenue
+                  projections. <strong>3)</strong> Explore Launch Models and
+                  CareBridge™ to understand how discounts and subsidized care
+                  affect profitability.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mb-8">
+            <span
+              class="inline-block bg-brand-highlight/10 text-brand-highlight dark:bg-brand-highlight-light/20 dark:text-brand-highlight-light px-4 py-2 rounded-lg font-semibold text-lg"
+            >
+              <span id="current-tier-label"
+                >Tier 2 — Baseline Full Operations</span
+              >
+            </span>
+          </div>
+
+          <!-- Slider -->
+          <div class="mb-8">
+            <div
+              class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 px-1"
+            >
+              <span class="text-xs md:text-sm">Minimum Viable Opening</span>
+              <span class="text-xs md:text-sm">Stable Launch</span>
+              <span class="text-xs md:text-sm">Baseline Full Ops</span>
+              <span class="text-xs md:text-sm">Expanded Ops</span>
+              <span class="text-xs md:text-sm">Full Ecosystem</span>
+            </div>
+            <input
+              id="staffing-tier-slider"
+              type="range"
+              min="0"
+              max="4"
+              value="2"
+              step="1"
+              class="w-full h-3 bg-brand-extralight rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700 thumb-brand-highlight"
+            />
+          </div>
+
+          <!-- Readouts -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Staffing & Payroll (FULL WIDTH) -->
+            <div class="col-span-1 lg:col-span-3">
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- FT Staff -->
                 <div
-                    class="bg-brand-highlight/10 dark:bg-brand-highlight/20 border-l-4 border-brand-highlight p-4 rounded-lg mb-6 max-w-3xl mx-auto">
-                    <div class="flex items-start">
-                        <i data-lucide="info" class="w-5 h-5 text-brand-highlight flex-shrink-0 mt-0.5 mr-3"></i>
-                        <div>
-                            <h4 class="text-sm font-semibold text-brand-dark dark:text-brand-light mb-1">How to use this
-                                model:</h4>
-                            <p class="text-sm text-gray-700 dark:text-gray-300">
-                                <strong>1)</strong> Select a staffing tier below to set your team size and payroll
-                                baseline.
-                                <strong>2)</strong> Scroll to the Capacity Modeler to adjust occupancy and see revenue
-                                projections.
-                                <strong>3)</strong> Explore Launch Models and CareBridge™ to understand how discounts
-                                and subsidized care affect profitability.
-                            </p>
-                        </div>
-                    </div>
+                  class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center"
+                >
+                  <span
+                    class="text-sm text-brand-base dark:text-brand-light font-medium"
+                    >Full-Time Staff</span
+                  >
+                  <div
+                    id="staff-ft"
+                    class="text-3xl font-bold text-brand-dark dark:text-brand-light"
+                  >
+                    17
+                  </div>
                 </div>
-                <div class="text-center mb-8">
+                <!-- PT Staff -->
+                <div
+                  class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center"
+                >
+                  <span
+                    class="text-sm text-brand-base dark:text-brand-light font-medium"
+                    >Part-Time Staff</span
+                  >
+                  <div
+                    id="staff-pt"
+                    class="text-3xl font-bold text-brand-dark dark:text-brand-light"
+                  >
+                    9
+                  </div>
+                </div>
+                <!-- Total Staff -->
+                <div
+                  class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center"
+                >
+                  <span
+                    class="text-sm text-brand-base dark:text-brand-light font-medium"
+                    >Total Staff</span
+                  >
+                  <div
+                    id="staff-total"
+                    class="text-3xl font-bold text-brand-dark dark:text-brand-light"
+                  >
+                    26
+                  </div>
+                </div>
+                <!-- Monthly Payroll -->
+                <div
+                  class="bg-brand-wood/10 dark:bg-brand-wood/20 p-4 rounded-lg text-center"
+                >
+                  <span
+                    class="text-sm text-brand-wood dark:text-brand-wood font-medium"
+                    >Monthly Payroll</span
+                  >
+                  <div
+                    id="staff-payroll"
+                    class="text-2xl md:text-xl lg:text-2xl font-bold text-brand-wood dark:text-brand-wood"
+                  >
+                    927,750
+                  </div>
+                  <span class="text-sm text-brand-wood dark:text-brand-wood"
+                    >BDT</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Capacity Overview & Service Coverage -->
+            <div
+              class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg lg:col-span-3"
+            >
+              <div
+                class="flex items-center justify-between mb-4 flex-wrap gap-4"
+              >
+                <div class="flex items-center">
+                  <i
+                    data-lucide="gauge"
+                    class="w-6 h-6 text-brand-base dark:text-brand-light mr-3"
+                  ></i>
+                  <h5
+                    class="text-xl font-semibold text-brand-dark dark:text-brand-light"
+                  >
+                    Capacity Overview
+                  </h5>
+                </div>
+                <div class="text-center">
+                  <span
+                    class="text-sm text-brand-base dark:text-brand-light font-medium block"
+                    >Designed Capacity</span
+                  >
+                  <div
+                    id="tier-capacity-label"
+                    class="text-2xl font-bold text-brand-dark dark:text-brand-light"
+                  >
+                    ~60%
+                  </div>
+                </div>
+              </div>
+
+              <!-- Service Coverage Badges -->
+              <div class="mb-6">
+                <h6
+                  class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3"
+                >
+                  Service Coverage:
+                </h6>
+                <div class="flex flex-wrap gap-3">
+                  <div
+                    class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm"
+                  >
+                    <i
+                      data-lucide="calendar"
+                      class="w-4 h-4 text-brand-wood"
+                    ></i>
                     <span
-                        class="inline-block bg-brand-highlight/10 text-brand-highlight dark:bg-brand-highlight-light/20 dark:text-brand-highlight-light px-4 py-2 rounded-lg font-semibold text-lg">
-                        <span id="current-tier-label">Tier 2 — Baseline Full Operations</span>
-                    </span>
+                      class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >Weekend:
+                      <span
+                        id="coverage-weekend"
+                        class="font-bold text-brand-dark dark:text-brand-light"
+                        >None</span
+                      ></span
+                    >
+                  </div>
+                  <div
+                    class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm"
+                  >
+                    <i
+                      data-lucide="sunrise"
+                      class="w-4 h-4 text-brand-highlight"
+                    ></i>
+                    <span
+                      class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >FlexShift Z:
+                      <span
+                        id="coverage-early"
+                        class="font-bold text-brand-dark dark:text-brand-light"
+                        >No</span
+                      ></span
+                    >
+                  </div>
+                  <div
+                    class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm"
+                  >
+                    <i
+                      data-lucide="home"
+                      class="w-4 h-4 text-brand-secondary"
+                    ></i>
+                    <span
+                      class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >Home Care:
+                      <span
+                        id="coverage-home"
+                        class="font-bold text-brand-dark dark:text-brand-light"
+                        >No</span
+                      ></span
+                    >
+                  </div>
                 </div>
-
-                <!-- Slider -->
-                <div class="mb-8">
-                    <div class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 px-1">
-                        <span class="text-xs md:text-sm">Minimum Viable Opening</span>
-                        <span class="text-xs md:text-sm">Stable Launch</span>
-                        <span class="text-xs md:text-sm">Baseline Full Ops</span>
-                        <span class="text-xs md:text-sm">Expanded Ops</span>
-                        <span class="text-xs md:text-sm">Full Ecosystem</span>
-                    </div>
-                    <input id="staffing-tier-slider" type="range" min="0" max="4" value="2" step="1"
-                        class="w-full h-3 bg-brand-extralight rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700 thumb-brand-highlight">
-                </div>
-
-                <!-- Readouts -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                    <!-- Staffing & Payroll (FULL WIDTH) -->
-                    <div class="col-span-1 lg:col-span-3">
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <!-- FT Staff -->
-                            <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                                <span class="text-sm text-brand-base dark:text-brand-light font-medium">Full-Time
-                                    Staff</span>
-                                <div id="staff-ft" class="text-3xl font-bold text-brand-dark dark:text-brand-light">17
-                                </div>
-                            </div>
-                            <!-- PT Staff -->
-                            <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                                <span class="text-sm text-brand-base dark:text-brand-light font-medium">Part-Time
-                                    Staff</span>
-                                <div id="staff-pt" class="text-3xl font-bold text-brand-dark dark:text-brand-light">9
-                                </div>
-                            </div>
-                            <!-- Total Staff -->
-                            <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                                <span class="text-sm text-brand-base dark:text-brand-light font-medium">Total
-                                    Staff</span>
-                                <div id="staff-total" class="text-3xl font-bold text-brand-dark dark:text-brand-light">
-                                    26</div>
-                            </div>
-                            <!-- Monthly Payroll -->
-                            <div class="bg-brand-wood/10 dark:bg-brand-wood/20 p-4 rounded-lg text-center">
-                                <span class="text-sm text-brand-wood dark:text-brand-wood font-medium">Monthly
-                                    Payroll</span>
-                                <div id="staff-payroll"
-                                    class="text-2xl md:text-xl lg:text-2xl font-bold text-brand-wood dark:text-brand-wood">
-                                    927,750</div>
-                                <span class="text-sm text-brand-wood dark:text-brand-wood">BDT</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Capacity Overview & Service Coverage -->
-                    <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg lg:col-span-3">
-                        <div class="flex items-center justify-between mb-4 flex-wrap gap-4">
-                            <div class="flex items-center">
-                                <i data-lucide="gauge" class="w-6 h-6 text-brand-base dark:text-brand-light mr-3"></i>
-                                <h5 class="text-xl font-semibold text-brand-dark dark:text-brand-light">Capacity
-                                    Overview</h5>
-                            </div>
-                            <div class="text-center">
-                                <span class="text-sm text-brand-base dark:text-brand-light font-medium block">Designed
-                                    Capacity</span>
-                                <div id="tier-capacity-label"
-                                    class="text-2xl font-bold text-brand-dark dark:text-brand-light">~60%</div>
-                            </div>
-                        </div>
-
-                        <!-- Service Coverage Badges -->
-                        <div class="mb-6">
-                            <h6 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">Service
-                                Coverage:</h6>
-                            <div class="flex flex-wrap gap-3">
-                                <div
-                                    class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm">
-                                    <i data-lucide="calendar" class="w-4 h-4 text-brand-wood"></i>
-                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Weekend: <span
-                                            id="coverage-weekend"
-                                            class="font-bold text-brand-dark dark:text-brand-light">None</span></span>
-                                </div>
-                                <div
-                                    class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm">
-                                    <i data-lucide="sunrise" class="w-4 h-4 text-brand-highlight"></i>
-                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">FlexShift Z:
-                                        <span id="coverage-early"
-                                            class="font-bold text-brand-dark dark:text-brand-light">No</span></span>
-                                </div>
-                                <div
-                                    class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm">
-                                    <i data-lucide="home" class="w-4 h-4 text-brand-secondary"></i>
-                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Home Care: <span
-                                            id="coverage-home"
-                                            class="font-bold text-brand-dark dark:text-brand-light">No</span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Services Unlocked (FULL WIDTH, UPGRADED) -->
-                    <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg lg:col-span-3">
-                        <div class="flex items-center mb-4">
-                            <i data-lucide="unlock" class="w-6 h-6 text-brand-dark dark:text-brand-light mr-3"></i>
-                            <h5 class="text-xl font-semibold text-brand-dark dark:text-brand-light">Services Unlocked at
-                                <span id="services-tier-label" class="text-brand-highlight">Tier 2</span></h5>
-                        </div>
-                        <div id="services-unlocked"
-                            class="text-gray-700 dark:text-gray-300 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                            <!-- JS will populate this -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tier Financials -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Payroll vs Revenue Chart -->
-                    <div
-                        class="md:col-span-2 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-                        <h5 class="text-lg font-semibold text-brand-dark dark:text-brand-light mb-4">
-                            Tier Financials (at Assumed Occupancy)
-                            <span class="tooltip">
-                                <i data-lucide="info"
-                                    class="w-4 h-4 text-gray-400 dark:text-gray-500 inline-block ml-1 cursor-help"></i>
-                                <span class="tooltiptext">Expected Revenue is modeled using full-price sessions at 22
-                                    working days/month and the assumed occupancy for this tier.</span>
-                            </span>
-                        </h5>
-                        <!-- Chart container with fixed height -->
-                        <div class="relative h-72">
-                            <canvas id="staffingTierChart"></canvas>
-                        </div>
-                    </div>
-                    <!-- Net Margin Card -->
-                    <div
-                        class="flex flex-col justify-center space-y-4 bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg">
-                        <div class="text-center">
-                            <span class="text-sm text-brand-base dark:text-brand-light font-medium">Assumed
-                                Occupancy</span>
-                            <div id="assumed-occupancy"
-                                class="text-3xl font-bold text-brand-dark dark:text-brand-light">~60%</div>
-                        </div>
-                        <div class="text-center border-t border-b border-brand-base/20 dark:border-brand-light/20 py-4">
-                            <span class="text-sm text-brand-base dark:text-brand-light font-medium">Expected Net
-                                Operating Margin</span>
-                            <div id="net-margin-bdt" class="text-3xl font-bold text-brand-dark dark:text-brand-light">≈
-                                884,676</div>
-                            <span class="text-brand-base dark:text-brand-light">BDT / month</span>
-                        </div>
-                        <div class="text-center">
-                            <span class="text-sm text-brand-base dark:text-brand-light font-medium">Operating Margin
-                                %</span>
-                            <div id="net-margin-pct" class="text-3xl font-bold text-brand-dark dark:text-brand-light">
-                                ~48.8%</div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
-        </section>
 
-        <!-- Dynamic Payroll Framework (NEW) -->
-        <section id="payroll-framework" class="mb-20 pt-20">
-            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">Dynamic Payroll
-                Framework</h3>
-            <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                This table is linked to the <strong class="text-brand-highlight">Staffing Tier Modeler</strong>. Change
-                the tier to see a detailed payroll breakdown.
-            </p>
-
+            <!-- Services Unlocked (FULL WIDTH, UPGRADED) -->
             <div
-                class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                        <thead class="bg-gray-50 dark:bg-gray-700">
-                            <tr>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">
-                                    Department</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">
-                                    Role</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">
-                                    Type</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">
-                                    Count</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">
-                                    Salary (BDT)</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider">
-                                    Subtotal (BDT)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dynamic-payroll-table-body"
-                            class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                            <!-- JS will populate this -->
-                        </tbody>
-                    </table>
-                </div>
+              class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg lg:col-span-3"
+            >
+              <div class="flex items-center mb-4">
+                <i
+                  data-lucide="unlock"
+                  class="w-6 h-6 text-brand-dark dark:text-brand-light mr-3"
+                ></i>
+                <h5
+                  class="text-xl font-semibold text-brand-dark dark:text-brand-light"
+                >
+                  Services Unlocked at
+                  <span id="services-tier-label" class="text-brand-highlight"
+                    >Tier 2</span
+                  >
+                </h5>
+              </div>
+              <div
+                id="services-unlocked"
+                class="text-gray-700 dark:text-gray-300 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4"
+              >
+                <!-- JS will populate this -->
+              </div>
             </div>
-        </section>
+          </div>
 
-
-        <!-- Interactive Financial Projections (UPDATED) -->
-        <section id="projections" class="mb-20 pt-20 ">
-            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">Dynamic Capacity
-                Modeler</h3>
-
+          <!-- Tier Financials -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Payroll vs Revenue Chart -->
             <div
-                class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 relative">
-                <p class="text-center text-gray-600 dark:text-gray-400 mb-6 max-w-3xl mx-auto">
-                    Select a <strong class="text-brand-dark dark:text-brand-light">Staffing Tier</strong> above to set
-                    your payroll cost. Then, use the slider below to model how <strong
-                        class="text-brand-secondary">Total Capacity Utilization</strong> (including over-capacity,
-                    on-call, and hybrid services) impacts your finances.
+              class="md:col-span-2 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-700"
+            >
+              <h5
+                class="text-lg font-semibold text-brand-dark dark:text-brand-light mb-4"
+              >
+                Tier Financials (at Assumed Occupancy)
+                <span class="tooltip">
+                  <i
+                    data-lucide="info"
+                    class="w-4 h-4 text-gray-400 dark:text-gray-500 inline-block ml-1 cursor-help"
+                  ></i>
+                  <span class="tooltiptext"
+                    >Expected Revenue is modeled using full-price sessions at 22
+                    working days/month and the assumed occupancy for this
+                    tier.</span
+                  >
+                </span>
+              </h5>
+              <!-- Chart container with fixed height -->
+              <div class="relative h-72">
+                <canvas id="staffingTierChart"></canvas>
+              </div>
+            </div>
+            <!-- Net Margin Card -->
+            <div
+              class="flex flex-col justify-center space-y-4 bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg"
+            >
+              <div class="text-center">
+                <span
+                  class="text-sm text-brand-base dark:text-brand-light font-medium"
+                  >Assumed Occupancy</span
+                >
+                <div
+                  id="assumed-occupancy"
+                  class="text-3xl font-bold text-brand-dark dark:text-brand-light"
+                >
+                  ~60%
+                </div>
+              </div>
+              <div
+                class="text-center border-t border-b border-brand-base/20 dark:border-brand-light/20 py-4"
+              >
+                <span
+                  class="text-sm text-brand-base dark:text-brand-light font-medium"
+                  >Expected Net Operating Margin</span
+                >
+                <div
+                  id="net-margin-bdt"
+                  class="text-3xl font-bold text-brand-dark dark:text-brand-light"
+                >
+                  ≈ 884,676
+                </div>
+                <span class="text-brand-base dark:text-brand-light"
+                  >BDT / month</span
+                >
+              </div>
+              <div class="text-center">
+                <span
+                  class="text-sm text-brand-base dark:text-brand-light font-medium"
+                  >Operating Margin %</span
+                >
+                <div
+                  id="net-margin-pct"
+                  class="text-3xl font-bold text-brand-dark dark:text-brand-light"
+                >
+                  ~48.8%
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dynamic Payroll Framework (NEW) -->
+      <section id="payroll-framework" class="mb-20 pt-20">
+        <h3
+          class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center"
+        >
+          Dynamic Payroll Framework
+        </h3>
+        <p
+          class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto"
+        >
+          This table is linked to the
+          <strong class="text-brand-highlight">Staffing Tier Modeler</strong>.
+          Change the tier to see a detailed payroll breakdown.
+        </p>
+
+        <div
+          class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden"
+        >
+          <div class="overflow-x-auto">
+            <table
+              class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+            >
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
+                  >
+                    Department
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
+                  >
+                    Role
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
+                  >
+                    Type
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
+                  >
+                    Count
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
+                  >
+                    Salary (BDT)
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
+                  >
+                    Subtotal (BDT)
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                id="dynamic-payroll-table-body"
+                class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
+              >
+                <!-- JS will populate this -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Financial Projections (UPDATED) -->
+      <section id="projections" class="mb-20 pt-20">
+        <h3
+          class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center"
+        >
+          Dynamic Capacity Modeler
+        </h3>
+
+        <div
+          class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
+        >
+          <p
+            class="text-center text-gray-600 dark:text-gray-400 mb-6 max-w-3xl mx-auto"
+          >
+            Select a
+            <strong class="text-brand-dark dark:text-brand-light"
+              >Staffing Tier</strong
+            >
+            above to set your payroll cost. Then, use the slider below to model
+            how
+            <strong class="text-brand-secondary"
+              >Total Capacity Utilization</strong
+            >
+            (including over-capacity, on-call, and hybrid services) impacts your
+            finances.
+          </p>
+
+          <!-- Occupancy Slider (UPDATED) -->
+          <div class="mb-8">
+            <div class="flex justify-between items-center mb-2">
+              <label
+                for="occupancy-slider"
+                class="text-lg font-semibold text-gray-700 dark:text-gray-300"
+              >
+                Total Capacity Utilization:
+                <span
+                  id="occupancy-value"
+                  class="text-2xl font-bold text-brand-highlight"
+                  >60%</span
+                >
+              </label>
+              <div class="flex items-center space-x-2">
+                <span
+                  id="occupancy-recommendation"
+                  class="text-sm font-medium bg-brand-extralight text-brand-base dark:bg-brand-dark/50 dark:text-brand-light px-3 py-1 rounded-full"
+                >
+                  Recommended for Tier 2
+                </span>
+                <!-- Occupancy Lock Toggle (NEW) -->
+                <button
+                  id="occupancy-lock-toggle"
+                  type="button"
+                  class="text-gray-400 dark:text-gray-500 hover:text-brand-highlight dark:hover:text-brand-highlight-light focus:outline-none p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <i
+                    id="occupancy-lock-icon"
+                    data-lucide="unlock"
+                    class="w-5 h-5"
+                  ></i>
+                </button>
+              </div>
+            </div>
+            <input
+              id="occupancy-slider"
+              type="range"
+              min="0"
+              max="150"
+              value="60"
+              step="1"
+              class="w-full h-3 bg-brand-extralight rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700 thumb-brand-highlight"
+            />
+          </div>
+
+          <!-- Occupancy Warning (conditional) -->
+          <div class="h-[52px] -mt-5 mb-4">
+            <div
+              id="occupancy-warning"
+              class="hidden bg-orange-50 dark:bg-orange-900 border-l-4 border-orange-500 p-4 rounded-2xl animate-scaleOpen origin-top"
+            >
+              <div class="flex items-center">
+                <i
+                  data-lucide="alert-triangle"
+                  class="w-5 h-5 text-orange-600 dark:text-orange-400 mr-3 flex-shrink-0"
+                ></i>
+                <p class="text-sm text-orange-700 dark:text-orange-300">
+                  <strong>Above recommended capacity:</strong> You are operating
+                  above the designed capacity for the current staffing tier.
+                  Consider increasing staffing or managing patient load.
                 </p>
-
-                <!-- Occupancy Warning (conditional) -->
-                 <div class=" absolute -bottom-20 left-1/2 -translate-x-1/2">
-                    <div id="occupancy-warning"
-                    class="hidden  bg-orange-50 dark:bg-orange-900 border-l-4 border-orange-500 p-4 rounded-2xl">
-                    <div class="flex items-center">
-                        <i data-lucide="alert-triangle"
-                            class="w-5 h-5 text-orange-600 dark:text-orange-400 mr-3 flex-shrink-0"></i>
-                            <p class="text-sm text-orange-700 dark:text-orange-300">
-                                <strong>Above recommended capacity:</strong> You are operating above the designed capacity
-                                for the current staffing tier. Consider increasing staffing or managing patient load.
-                            </p>
-                    </div>
-                </div>
-                 </div>
-                
-
-                <!-- Occupancy Slider (UPDATED) -->
-                <div class="mb-8">
-                    <div class="flex justify-between items-center mb-2">
-                        <label for="occupancy-slider" class="text-lg font-semibold text-gray-700 dark:text-gray-300">
-                            Total Capacity Utilization:
-                            <span id="occupancy-value" class="text-2xl font-bold text-brand-highlight">60%</span>
-                        </label>
-                        <div class="flex items-center space-x-2">
-                            <span id="occupancy-recommendation"
-                                class="text-sm font-medium bg-brand-extralight text-brand-base dark:bg-brand-dark/50 dark:text-brand-light px-3 py-1 rounded-full">
-                                Recommended for Tier 2
-                            </span>
-                            <!-- Occupancy Lock Toggle (NEW) -->
-                            <button id="occupancy-lock-toggle" type="button"
-                                class="text-gray-400 dark:text-gray-500 hover:text-brand-highlight dark:hover:text-brand-highlight-light focus:outline-none p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <i id="occupancy-lock-icon" data-lucide="unlock" class="w-5 h-5"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <input id="occupancy-slider" type="range" min="0" max="150" value="60" step="1"
-                        class="w-full h-3 bg-brand-extralight rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700 thumb-brand-highlight">
-                </div>
-
-                <!-- Financial Metrics Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                    <!-- Daily Revenue -->
-                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-300 font-medium">Daily Revenue</span>
-                        <div id="daily-revenue" class="text-3xl font-bold text-brand-secondary-light">82,383</div>
-                        <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
-                    </div>
-                    <!-- Monthly Revenue -->
-                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-300 font-medium">Monthly Revenue</span>
-                        <div id="monthly-revenue" class="text-3xl font-bold text-brand-secondary">1,812,426</div>
-                        <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
-                    </div>
-                    <!-- Monthly Profit -->
-                    <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                        <span class="text-sm text-brand-base dark:text-brand-light font-medium">Monthly Profit</span>
-                        <div id="monthly-profit" class="text-3xl font-bold text-brand-base dark:text-brand-light">
-                            +884,676</div>
-                        <span class="text-xs text-brand-base dark:text-brand-light">BDT</span>
-                    </div>
-                    <!-- Monthly Profit % -->
-                    <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                        <span class="text-sm text-brand-base dark:text-brand-light font-medium">Profit Margin</span>
-                        <div id="monthly-profit-percent"
-                            class="text-3xl font-bold text-brand-base dark:text-brand-light">+48.8%</div>
-                        <span class="text-xs text-brand-base dark:text-brand-light">vs Revenue</span>
-                    </div>
-                    <!-- Annual Revenue -->
-                    <div class="col-span-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                        <span class="text-sm text-gray-600 dark:text-gray-300 font-medium">Annual Revenue</span>
-                        <div id="annual-revenue"
-                            class="text-3xl md:text-2xl lg:text-3xl font-bold text-brand-secondary">21,749,112</div>
-                        <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
-                    </div>
-                    <!-- Annual Profit -->
-                    <div class="col-span-2 bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                        <span class="text-sm text-brand-base dark:text-brand-light font-medium">Annual Profit (vs
-                            Payroll)</span>
-                        <div id="annual-profit"
-                            class="text-3xl md:text-2xl lg:text-3xl font-bold text-brand-base dark:text-brand-light">
-                            +10,616,112</div>
-                        <span class="text-xs text-brand-base dark:text-brand-light">BDT</span>
-                    </div>
-                </div>
+              </div>
             </div>
-        </section>
+          </div>
 
-        <!-- First Year Projection Models (UPDATED) -->
-        <section id="launch-projections" class="mb-20 pt-20">
-            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">First-Year Launch
-                Projection Models</h3>
-            <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto">
-                These are <strong class="text-brand-highlight">scenario-based projections</strong> for the first year of
-                operations. Model A uses your selected staffing tier with varying discounts. Model B shows a fixed
-                ramp-up path independent of the tier slider.
-            </p>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Model A -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 flex flex-col">
-                    <div class="min-h-[110px]">
-                        <div class="flex items-start justify-between mb-3">
-                            <h4 class="text-2xl font-bold text-brand-highlight">Model A: Discounted Launch</h4>
-                            <span class="tooltip">
-                                <i data-lucide="info" class="w-5 h-5 text-gray-400 dark:text-gray-500 cursor-help"></i>
-                                <span class="tooltiptext">Model A shows a fixed-staffing scenario using your currently
-                                    selected tier. It varies only the discount rate over time while maintaining 60%
-                                    occupancy throughout the year.</span>
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-1"><strong>Scenario:</strong> Constant 60%
-                            occupancy with discount phases</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Uses payroll from <strong
-                                id="model-a-tier-label" class="text-brand-highlight">Tier 2</strong> (dynamically linked
-                            to slider)</p>
-                    </div>
-
-                    <div class="space-y-6">
-                        <!-- Phase 1 -->
-                        <div>
-                            <div class="flex justify-between items-baseline mb-1">
-                                <span class="font-semibold text-brand-dark dark:text-brand-light">Months 1-3 (30%
-                                    Discount)</span>
-                                <span id="model-a-p1-profit"
-                                    class="font-bold text-brand-base dark:text-brand-light text-lg">+10.49 lakh</span>
-                            </div>
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                                <div id="model-a-p1-bar" class="bg-brand-base h-2.5 rounded-full" style="width: 25%">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Phase 2 -->
-                        <div>
-                            <div class="flex justify-between items-baseline mb-1">
-                                <span class="font-semibold text-brand-dark dark:text-brand-light">Months 4-6 (20%
-                                    Discount)</span>
-                                <span id="model-a-p2-profit"
-                                    class="font-bold text-brand-base dark:text-brand-light text-lg">+15.95 lakh</span>
-                            </div>
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                                <div id="model-a-p2-bar" class="bg-brand-base h-2.5 rounded-full" style="width: 40%">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Phase 3 -->
-                        <div>
-                            <div class="flex justify-between items-baseline mb-1">
-                                <span class="font-semibold text-brand-dark dark:text-brand-light">Months 7-12 (Full
-                                    Price)</span>
-                                <span id="model-a-p3-profit"
-                                    class="font-bold text-brand-base dark:text-brand-light text-lg">+53.08 lakh</span>
-                            </div>
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                                <div id="model-a-p3-bar" class="bg-brand-base h-2.5 rounded-full" style="width: 100%">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                        <div class="text-center bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg">
-                            <span class="text-lg font-medium text-brand-base dark:text-brand-light">Total First-Year
-                                Profit</span>
-                            <div id="model-a-total-profit"
-                                class="text-4xl font-extrabold text-brand-dark dark:text-brand-light mt-1">79.52 lakh
-                            </div>
-                            <span id="model-a-avg-profit"
-                                class="text-sm font-medium text-brand-base dark:text-brand-light">(Avg. 6.63 lakh /
-                                month)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Model B (NOW DYNAMIC) -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border-2 border-brand-secondary flex flex-col">
-                    <div class="min-h-[110px]">
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="flex-1">
-                                <div class="flex items-start gap-2 mb-1">
-                                    <h4 class="text-2xl font-bold text-brand-secondary">Model B: Ramp-Up Scenario</h4>
-                                    <span class="tooltip">
-                                        <i data-lucide="info"
-                                            class="w-5 h-5 text-gray-400 dark:text-gray-500 cursor-help"></i>
-                                        <span class="tooltiptext">Model B shows a realistic growth path with both
-                                            occupancy and staffing ramping up over time. This model is independent of
-                                            your tier slider selection and always uses Tier 0→1→2.</span>
-                                    </span>
-                                </div>
-                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-1"><strong>Scenario:</strong>
-                                    Gradual ramp-up (40%→50%→60%) with discount phases</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Staffing grows Tier 0 → Tier 1
-                                    → Tier 2 (fixed, not linked to slider)</p>
-                            </div>
-                            <span
-                                class="text-xs font-bold bg-brand-secondary/20 text-brand-secondary px-3 py-1 rounded-full mt-1 flex-shrink-0">RECOMMENDED</span>
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        <!-- Phase 1 -->
-                        <div>
-                            <div class="flex justify-between items-baseline mb-1">
-                                <span class="font-semibold text-brand-dark dark:text-brand-light">M 1-3 (40% Occ, 30%
-                                    Disc, Tier 0)</span>
-                                <span id="model-b-p1-profit"
-                                    class="font-bold text-red-600 dark:text-red-400 text-lg">–2.46 lakh</span>
-                            </div>
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                                <div id="model-b-p1-bar" class="bg-red-600 dark:bg-red-400 h-2.5 rounded-full"
-                                    style="width: 10%"></div>
-                            </div>
-                        </div>
-                        <!-- Phase 2 -->
-                        <div>
-                            <div class="flex justify-between items-baseline mb-1">
-                                <span class="font-semibold text-brand-dark dark:text-brand-light">M 4-6 (50% Occ, 20%
-                                    Disc, Tier 1)</span>
-                                <span id="model-b-p2-profit"
-                                    class="font-bold text-brand-base dark:text-brand-light text-lg">+8.40 lakh</span>
-                            </div>
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                                <div id="model-b-p2-bar" class="bg-brand-base h-2.5 rounded-full" style="width: 25%">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Phase 3 -->
-                        <div>
-                            <div class="flex justify-between items-baseline mb-1">
-                                <span class="font-semibold text-brand-dark dark:text-brand-light">M 7-12 (60% Occ, Full
-                                    Price, Tier 2)</span>
-                                <span id="model-b-p3-profit"
-                                    class="font-bold text-brand-base dark:text-brand-light text-lg">+53.08 lakh</span>
-                            </div>
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                                <div id="model-b-p3-bar" class="bg-brand-base h-2.5 rounded-full" style="width: 100%">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                        <div class="text-center bg-brand-secondary/10 dark:bg-brand-secondary/20 p-6 rounded-lg">
-                            <span class="text-lg font-medium text-brand-secondary dark:text-brand-secondary-light">Total
-                                First-Year Profit</span>
-                            <div id="model-b-total-profit" class="text-4xl font-extrabold text-brand-secondary mt-1">
-                                59.02 lakh</div>
-                            <span
-                                class="text-sm font-medium text-brand-secondary dark:text-brand-secondary-light">(After
-                                initial ramp-up)</span>
-                        </div>
-                    </div>
-                </div>
+          <!-- Financial Metrics Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <!-- Daily Revenue -->
+            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+              <span class="text-sm text-gray-600 dark:text-gray-300 font-medium"
+                >Daily Revenue</span
+              >
+              <div
+                id="daily-revenue"
+                class="text-3xl font-bold text-brand-secondary-light"
+              >
+                82,383
+              </div>
+              <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
             </div>
-        </section>
+            <!-- Monthly Revenue -->
+            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+              <span class="text-sm text-gray-600 dark:text-gray-300 font-medium"
+                >Monthly Revenue</span
+              >
+              <div
+                id="monthly-revenue"
+                class="text-3xl font-bold text-brand-secondary"
+              >
+                1,812,426
+              </div>
+              <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
+            </div>
+            <!-- Monthly Profit -->
+            <div
+              class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center"
+            >
+              <span
+                class="text-sm text-brand-base dark:text-brand-light font-medium"
+                >Monthly Profit</span
+              >
+              <div
+                id="monthly-profit"
+                class="text-3xl font-bold text-brand-base dark:text-brand-light"
+              >
+                +884,676
+              </div>
+              <span class="text-xs text-brand-base dark:text-brand-light"
+                >BDT</span
+              >
+            </div>
+            <!-- Monthly Profit % -->
+            <div
+              class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center"
+            >
+              <span
+                class="text-sm text-brand-base dark:text-brand-light font-medium"
+                >Profit Margin</span
+              >
+              <div
+                id="monthly-profit-percent"
+                class="text-3xl font-bold text-brand-base dark:text-brand-light"
+              >
+                +48.8%
+              </div>
+              <span class="text-xs text-brand-base dark:text-brand-light"
+                >vs Revenue</span
+              >
+            </div>
+            <!-- Annual Revenue -->
+            <div
+              class="col-span-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center"
+            >
+              <span class="text-sm text-gray-600 dark:text-gray-300 font-medium"
+                >Annual Revenue</span
+              >
+              <div
+                id="annual-revenue"
+                class="text-3xl md:text-2xl lg:text-3xl font-bold text-brand-secondary"
+              >
+                21,749,112
+              </div>
+              <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
+            </div>
+            <!-- Annual Profit -->
+            <div
+              class="col-span-2 bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center"
+            >
+              <span
+                class="text-sm text-brand-base dark:text-brand-light font-medium"
+                >Annual Profit (vs Payroll)</span
+              >
+              <div
+                id="annual-profit"
+                class="text-3xl md:text-2xl lg:text-3xl font-bold text-brand-base dark:text-brand-light"
+              >
+                +10,616,112
+              </div>
+              <span class="text-xs text-brand-base dark:text-brand-light"
+                >BDT</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <!-- Year 2+ Dynamic Projections (UPDATED) -->
-        <section id="future-projections" class="mb-20 pt-20">
-            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">Year 2+ Dynamic
-                Projections</h3>
-            <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                These projections are fully dynamic. They are based on the <strong id="proj-tier-label"
-                    class="text-brand-base dark:text-brand-light font-semibold">Tier 2</strong> staffing model and a
-                sustained <strong id="proj-occupancy-label" class="text-brand-secondary font-semibold">60%
-                    Capacity</strong>.
-            </p>
+      <!-- First Year Projection Models (UPDATED) -->
+      <section id="launch-projections" class="mb-20 pt-20">
+        <h3
+          class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center"
+        >
+          First-Year Launch Projection Models
+        </h3>
+        <p
+          class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto"
+        >
+          These are
+          <strong class="text-brand-highlight"
+            >scenario-based projections</strong
+          >
+          for the first year of operations. Model A uses your selected staffing
+          tier with varying discounts. Model B shows a fixed ramp-up path
+          independent of the tier slider.
+        </p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Model A -->
+          <div
+            class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 flex flex-col"
+          >
+            <div class="min-h-[110px]">
+              <div class="flex items-start justify-between mb-3">
+                <h4 class="text-2xl font-bold text-brand-highlight">
+                  Model A: Discounted Launch
+                </h4>
+                <span class="tooltip">
+                  <i
+                    data-lucide="info"
+                    class="w-5 h-5 text-gray-400 dark:text-gray-500 cursor-help"
+                  ></i>
+                  <span class="tooltiptext"
+                    >Model A shows a fixed-staffing scenario using your
+                    currently selected tier. It varies only the discount rate
+                    over time while maintaining 60% occupancy throughout the
+                    year.</span
+                  >
+                </span>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <strong>Scenario:</strong> Constant 60% occupancy with discount
+                phases
+              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                Uses payroll from
+                <strong id="model-a-tier-label" class="text-brand-highlight"
+                  >Tier 2</strong
+                >
+                (dynamically linked to slider)
+              </p>
+            </div>
+
+            <div class="space-y-6">
+              <!-- Phase 1 -->
+              <div>
+                <div class="flex justify-between items-baseline mb-1">
+                  <span
+                    class="font-semibold text-brand-dark dark:text-brand-light"
+                    >Months 1-3 (30% Discount)</span
+                  >
+                  <span
+                    id="model-a-p1-profit"
+                    class="font-bold text-brand-base dark:text-brand-light text-lg"
+                    >+10.49 lakh</span
+                  >
+                </div>
+                <div
+                  class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5"
+                >
+                  <div
+                    id="model-a-p1-bar"
+                    class="bg-brand-base h-2.5 rounded-full"
+                    style="width: 25%"
+                  ></div>
+                </div>
+              </div>
+              <!-- Phase 2 -->
+              <div>
+                <div class="flex justify-between items-baseline mb-1">
+                  <span
+                    class="font-semibold text-brand-dark dark:text-brand-light"
+                    >Months 4-6 (20% Discount)</span
+                  >
+                  <span
+                    id="model-a-p2-profit"
+                    class="font-bold text-brand-base dark:text-brand-light text-lg"
+                    >+15.95 lakh</span
+                  >
+                </div>
+                <div
+                  class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5"
+                >
+                  <div
+                    id="model-a-p2-bar"
+                    class="bg-brand-base h-2.5 rounded-full"
+                    style="width: 40%"
+                  ></div>
+                </div>
+              </div>
+              <!-- Phase 3 -->
+              <div>
+                <div class="flex justify-between items-baseline mb-1">
+                  <span
+                    class="font-semibold text-brand-dark dark:text-brand-light"
+                    >Months 7-12 (Full Price)</span
+                  >
+                  <span
+                    id="model-a-p3-profit"
+                    class="font-bold text-brand-base dark:text-brand-light text-lg"
+                    >+53.08 lakh</span
+                  >
+                </div>
+                <div
+                  class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5"
+                >
+                  <div
+                    id="model-a-p3-bar"
+                    class="bg-brand-base h-2.5 rounded-full"
+                    style="width: 100%"
+                  ></div>
+                </div>
+              </div>
+            </div>
 
             <div
-                class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Projected Monthly Profit -->
-                    <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg text-center">
-                        <span class="text-lg font-medium text-brand-base dark:text-brand-light">Projected Monthly
-                            Profit</span>
-                        <div id="proj-monthly-profit"
-                            class="text-5xl font-extrabold text-brand-base dark:text-brand-light my-2">+884,676</div>
-                        <span class="text-base text-brand-base dark:text-brand-light">BDT / month</span>
-                    </div>
-                    <!-- Projected Annual Revenue -->
-                    <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg text-center">
-                        <span class="text-lg font-medium text-gray-600 dark:text-gray-300">Projected Annual
-                            Revenue</span>
-                        <div id="proj-annual-revenue" class="text-5xl font-extrabold text-brand-secondary my-2">
-                            21,749,112</div>
-                        <span class="text-base text-gray-500 dark:text-gray-400">BDT / year</span>
-                    </div>
-                    <!-- Projected Annual Profit -->
-                    <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg text-center">
-                        <span class="text-lg font-medium text-brand-base dark:text-brand-light">Projected Annual
-                            Profit</span>
-                        <div id="proj-annual-profit"
-                            class="text-5xl font-extrabold text-brand-base dark:text-brand-light my-2">+10,616,112</div>
-                        <span class="text-base text-brand-base dark:text-brand-light">BDT / year</span>
-                    </div>
+              class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700"
+            >
+              <div
+                class="text-center bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg"
+              >
+                <span
+                  class="text-lg font-medium text-brand-base dark:text-brand-light"
+                  >Total First-Year Profit</span
+                >
+                <div
+                  id="model-a-total-profit"
+                  class="text-4xl font-extrabold text-brand-dark dark:text-brand-light mt-1"
+                >
+                  79.52 lakh
                 </div>
+                <span
+                  id="model-a-avg-profit"
+                  class="text-sm font-medium text-brand-base dark:text-brand-light"
+                  >(Avg. 6.63 lakh / month)</span
+                >
+              </div>
             </div>
-        </section>
+          </div>
 
-        <!-- CareBridge Program -->
-        <section id="access-care" class="mb-20 pt-20">
-            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">CareBridge™ Program
-            </h3>
-            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center mb-10">
-                A structured, sustainable system for ensuring care accessibility is a core pillar of our mission.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Program Pillar 1: Slots -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
-                    <i data-lucide="calendar-plus" class="w-10 h-10 text-brand-highlight mb-4"></i>
-                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Daily Subsidized Slots</h4>
-                    <p class="text-gray-600 dark:text-gray-400">
-                        <strong class="text-2xl font-bold text-brand-highlight">8 sessions/day</strong> (~9% of total
-                        capacity) are reserved for the CareBridge™ program.
-                    </p>
-                </div>
-                <!-- Program Pillar 2: Value -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
-                    <i data-lucide="percent" class="w-10 h-10 text-brand-secondary mb-4"></i>
-                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Discount Value</h4>
-                    <p class="text-gray-600 dark:text-gray-400">
-                        A <strong class="text-2xl font-bold text-brand-secondary">30% discount</strong> is applied to
-                        Standard Sessions for all eligible beneficiaries.
-                    </p>
-                </div>
-                <!-- Program Pillar 3: Eligibility -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 md:col-span-2 lg:col-span-1">
-                    <i data-lucide="users" class="w-10 h-10 text-brand-wood mb-4"></i>
-                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Eligible Beneficiaries</h4>
-                    <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                        <li>Students & Teachers</li>
-                        <li>Single-parent households</li>
-                        <li>Chronic care patients (>12 sessions)</li>
-                        <li>Community health referrals</li>
-                    </ul>
-                </div>
-                <!-- Program Pillar 4: Impact -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
-                    <i data-lucide="trending-down" class="w-10 h-10 text-brand-base dark:text-brand-light mb-4"></i>
-                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Financial Impact</h4>
-                    <p class="text-gray-600 dark:text-gray-400">
-                        Represents ~1.3 million BDT/year in subsidized care. The business remains <strong
-                            class="text-brand-base dark:text-brand-light">highly profitable</strong> at all modeled
-                        occupancy levels.
-                    </p>
-                </div>
-                <!-- Program Pillar 5: Purpose -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 md:col-span-2">
-                    <i data-lucide="shield-check" class="w-10 h-10 text-brand-highlight mb-4"></i>
-                    <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Purpose and Brand Value
+          <!-- Model B (NOW DYNAMIC) -->
+          <div
+            class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border-2 border-brand-secondary flex flex-col"
+          >
+            <div class="min-h-[110px]">
+              <div class="flex justify-between items-start mb-3">
+                <div class="flex-1">
+                  <div class="flex items-start gap-2 mb-1">
+                    <h4 class="text-2xl font-bold text-brand-secondary">
+                      Model B: Ramp-Up Scenario
                     </h4>
-                    <p class="text-gray-600 dark:text-gray-400">
-                        Ensures equitable access to premium care, reinforces our social responsibility, and builds deep,
-                        lasting community trust and brand loyalty.
-                    </p>
+                    <span class="tooltip">
+                      <i
+                        data-lucide="info"
+                        class="w-5 h-5 text-gray-400 dark:text-gray-500 cursor-help"
+                      ></i>
+                      <span class="tooltiptext"
+                        >Model B shows a realistic growth path with both
+                        occupancy and staffing ramping up over time. This model
+                        is independent of your tier slider selection and always
+                        uses Tier 0→1→2.</span
+                      >
+                    </span>
+                  </div>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                    <strong>Scenario:</strong> Gradual ramp-up (40%→50%→60%)
+                    with discount phases
+                  </p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                    Staffing grows Tier 0 → Tier 1 → Tier 2 (fixed, not linked
+                    to slider)
+                  </p>
                 </div>
+                <span
+                  class="text-xs font-bold bg-brand-secondary/20 text-brand-secondary px-3 py-1 rounded-full mt-1 flex-shrink-0"
+                  >RECOMMENDED</span
+                >
+              </div>
             </div>
-        </section>
 
-        <!-- Other Data Section -->
-        <section id="data-tables" class="mb-20 pt-20">
-            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">Core Data &
-                Assumptions</h3>
+            <div class="space-y-6">
+              <!-- Phase 1 -->
+              <div>
+                <div class="flex justify-between items-baseline mb-1">
+                  <span
+                    class="font-semibold text-brand-dark dark:text-brand-light"
+                    >M 1-3 (40% Occ, 30% Disc, Tier 0)</span
+                  >
+                  <span
+                    id="model-b-p1-profit"
+                    class="font-bold text-red-600 dark:text-red-400 text-lg"
+                    >–2.46 lakh</span
+                  >
+                </div>
+                <div
+                  class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5"
+                >
+                  <div
+                    id="model-b-p1-bar"
+                    class="bg-red-600 dark:bg-red-400 h-2.5 rounded-full"
+                    style="width: 10%"
+                  ></div>
+                </div>
+              </div>
+              <!-- Phase 2 -->
+              <div>
+                <div class="flex justify-between items-baseline mb-1">
+                  <span
+                    class="font-semibold text-brand-dark dark:text-brand-light"
+                    >M 4-6 (50% Occ, 20% Disc, Tier 1)</span
+                  >
+                  <span
+                    id="model-b-p2-profit"
+                    class="font-bold text-brand-base dark:text-brand-light text-lg"
+                    >+8.40 lakh</span
+                  >
+                </div>
+                <div
+                  class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5"
+                >
+                  <div
+                    id="model-b-p2-bar"
+                    class="bg-brand-base h-2.5 rounded-full"
+                    style="width: 25%"
+                  ></div>
+                </div>
+              </div>
+              <!-- Phase 3 -->
+              <div>
+                <div class="flex justify-between items-baseline mb-1">
+                  <span
+                    class="font-semibold text-brand-dark dark:text-brand-light"
+                    >M 7-12 (60% Occ, Full Price, Tier 2)</span
+                  >
+                  <span
+                    id="model-b-p3-profit"
+                    class="font-bold text-brand-base dark:text-brand-light text-lg"
+                    >+53.08 lakh</span
+                  >
+                </div>
+                <div
+                  class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5"
+                >
+                  <div
+                    id="model-b-p3-bar"
+                    class="bg-brand-base h-2.5 rounded-full"
+                    style="width: 100%"
+                  ></div>
+                </div>
+              </div>
+            </div>
 
-            <!-- Model Assumptions Card -->
             <div
-                class="mb-8 bg-gradient-to-br from-brand-extralight to-white dark:from-brand-dark/50 dark:to-gray-800 p-8 rounded-2xl shadow-xl border-2 border-brand-base/30 dark:border-brand-light/30">
-                <div class="flex items-center mb-6">
-                    <i data-lucide="calculator" class="w-8 h-8 text-brand-base dark:text-brand-light mr-4"></i>
-                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">Model Assumptions</h4>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm">
-                        <h5 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">Core Operating
-                            Parameters</h5>
-                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                            <li class="flex justify-between">
-                                <span>Working days/month <span id="model-tier-label">(Tier 0-2)</span>:</span>
-                                <strong id="model-working-days" class="text-brand-dark dark:text-brand-light">22 days</strong>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Bed capacity (this tier):</span>
-                                <strong id="model-bed-capacity" class="text-brand-dark dark:text-brand-light flex items-center gap-2">
-                                    7 beds
-                                    <span class="tooltip">
-                                        <i data-lucide="info" class="w-3 h-3 text-gray-400 dark:text-gray-500 cursor-help"></i>
-                                        <span class="tooltiptext">Virtual Bed: additional patients served by home-care, online and other revenue streams based on surplus staffing and capacity</span>
-                                    </span>
-                                </strong>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Max daily revenue (100% cap):</span>
-                                <strong id="model-max-daily-revenue" class="text-brand-dark dark:text-brand-light">137,305 BDT</strong>
-                            </li>
-                            <li class="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
-                                <span>Base monthly revenue <span id="model-revenue-days-label">(22 days)</span>:</span>
-                                <strong id="model-base-monthly-revenue" class="text-brand-secondary flex items-center gap-2">
-                                    3,020,710 BDT
-                                    <span class="tooltip">
-                                        <i data-lucide="info" class="w-3 h-3 text-gray-400 dark:text-gray-500 cursor-help"></i>
-                                        <span class="tooltiptext">Calculated from 22-day base + additional days gained from higher tiers + additional revenue from virtual beds and expanded services</span>
-                                    </span>
-                                </strong>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm">
-                        <h5 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">Session Mix
-                            Distribution</h5>
-                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                            <li class="flex justify-between">
-                                <span>Foundation sessions:</span>
-                                <strong class="text-brand-dark dark:text-brand-light">20%</strong>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Standard sessions:</span>
-                                <strong class="text-brand-dark dark:text-brand-light">50%</strong>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Premium sessions:</span>
-                                <strong class="text-brand-dark dark:text-brand-light">25%</strong>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Express sessions:</span>
-                                <strong class="text-brand-dark dark:text-brand-light">5%</strong>
-                            </li>
-                            <li
-                                class="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2 text-xs text-gray-600 dark:text-gray-400">
-                                Pricing varies by department (Neuro, MSK, Peds) and session type
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Expanded Revenue Streams (Higher Tiers) -->
+              class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700"
+            >
+              <div
+                class="text-center bg-brand-secondary/10 dark:bg-brand-secondary/20 p-6 rounded-lg"
+              >
+                <span
+                  class="text-lg font-medium text-brand-secondary dark:text-brand-secondary-light"
+                  >Total First-Year Profit</span
+                >
                 <div
-                    class="mt-6 bg-brand-highlight/10 dark:bg-brand-highlight/20 p-4 rounded-lg border border-brand-highlight/30">
-                    <div class="flex items-start mb-3">
-                        <i data-lucide="trending-up" class="w-5 h-5 text-brand-highlight flex-shrink-0 mt-0.5 mr-3"></i>
-                        <h5 class="text-sm font-bold text-brand-dark dark:text-brand-light">Expanded Revenue Streams
-                            (Tier 3 & 4)</h5>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                        <div class="bg-white dark:bg-gray-900 p-3 rounded-lg">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-semibold text-brand-wood">Tier 3 (Partial Weekend)</span>
-                                <span
-                                    class="text-xs bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full font-bold">+27%
-                                    Days</span>
-                            </div>
-                            <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                                Partial weekend coverage (Saturdays) extends operational days from <strong>22 → 28
-                                    days/month</strong>
-                            </p>
-                            <p class="text-xs text-brand-highlight font-semibold">
-                                Potential monthly revenue: ~3.84M BDT (at same occupancy)
-                            </p>
-                        </div>
-                        <div class="bg-white dark:bg-gray-900 p-3 rounded-lg">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-semibold text-brand-secondary">Tier 4 (Full Ecosystem)</span>
-                                <span
-                                    class="text-xs bg-brand-secondary/20 text-brand-secondary px-2 py-0.5 rounded-full font-bold">+36%
-                                    Days</span>
-                            </div>
-                            <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                                Full weekend coverage + home care/online floaters enable <strong>~30 effective
-                                    days/month</strong> of service delivery
-                            </p>
-                            <p class="text-xs text-brand-secondary font-semibold">
-                                Potential monthly revenue: ~4.11M BDT (at same occupancy)
-                            </p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-3 italic">
-                        Note: Higher tier revenue calculations in the Capacity Modeler incorporate these expanded
-                        operational day models and service multipliers.
-                    </p>
+                  id="model-b-total-profit"
+                  class="text-4xl font-extrabold text-brand-secondary mt-1"
+                >
+                  59.02 lakh
                 </div>
+                <span
+                  class="text-sm font-medium text-brand-secondary dark:text-brand-secondary-light"
+                  >(After initial ramp-up)</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Year 2+ Dynamic Projections (UPDATED) -->
+      <section id="future-projections" class="mb-20 pt-20">
+        <h3
+          class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center"
+        >
+          Year 2+ Dynamic Projections
+        </h3>
+        <p
+          class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto"
+        >
+          These projections are fully dynamic. They are based on the
+          <strong
+            id="proj-tier-label"
+            class="text-brand-base dark:text-brand-light font-semibold"
+            >Tier 2</strong
+          >
+          staffing model and a sustained
+          <strong
+            id="proj-occupancy-label"
+            class="text-brand-secondary font-semibold"
+            >60% Capacity</strong
+          >.
+        </p>
+
+        <div
+          class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Projected Monthly Profit -->
+            <div
+              class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg text-center"
+            >
+              <span
+                class="text-lg font-medium text-brand-base dark:text-brand-light"
+                >Projected Monthly Profit</span
+              >
+              <div
+                id="proj-monthly-profit"
+                class="text-5xl font-extrabold text-brand-base dark:text-brand-light my-2"
+              >
+                +884,676
+              </div>
+              <span class="text-base text-brand-base dark:text-brand-light"
+                >BDT / month</span
+              >
+            </div>
+            <!-- Projected Annual Revenue -->
+            <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg text-center">
+              <span class="text-lg font-medium text-gray-600 dark:text-gray-300"
+                >Projected Annual Revenue</span
+              >
+              <div
+                id="proj-annual-revenue"
+                class="text-5xl font-extrabold text-brand-secondary my-2"
+              >
+                21,749,112
+              </div>
+              <span class="text-base text-gray-500 dark:text-gray-400"
+                >BDT / year</span
+              >
+            </div>
+            <!-- Projected Annual Profit -->
+            <div
+              class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg text-center"
+            >
+              <span
+                class="text-lg font-medium text-brand-base dark:text-brand-light"
+                >Projected Annual Profit</span
+              >
+              <div
+                id="proj-annual-profit"
+                class="text-5xl font-extrabold text-brand-base dark:text-brand-light my-2"
+              >
+                +10,616,112
+              </div>
+              <span class="text-base text-brand-base dark:text-brand-light"
+                >BDT / year</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CareBridge Program -->
+      <section id="access-care" class="mb-20 pt-20">
+        <h3
+          class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center"
+        >
+          CareBridge™ Program
+        </h3>
+        <p
+          class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center mb-10"
+        >
+          A structured, sustainable system for ensuring care accessibility is a
+          core pillar of our mission.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Program Pillar 1: Slots -->
+          <div
+            class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700"
+          >
+            <i
+              data-lucide="calendar-plus"
+              class="w-10 h-10 text-brand-highlight mb-4"
+            ></i>
+            <h4
+              class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+            >
+              Daily Subsidized Slots
+            </h4>
+            <p class="text-gray-600 dark:text-gray-400">
+              <strong class="text-2xl font-bold text-brand-highlight"
+                >8 sessions/day</strong
+              >
+              (~9% of total capacity) are reserved for the CareBridge™ program.
+            </p>
+          </div>
+          <!-- Program Pillar 2: Value -->
+          <div
+            class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700"
+          >
+            <i
+              data-lucide="percent"
+              class="w-10 h-10 text-brand-secondary mb-4"
+            ></i>
+            <h4
+              class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+            >
+              Discount Value
+            </h4>
+            <p class="text-gray-600 dark:text-gray-400">
+              A
+              <strong class="text-2xl font-bold text-brand-secondary"
+                >30% discount</strong
+              >
+              is applied to Standard Sessions for all eligible beneficiaries.
+            </p>
+          </div>
+          <!-- Program Pillar 3: Eligibility -->
+          <div
+            class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 md:col-span-2 lg:col-span-1"
+          >
+            <i data-lucide="users" class="w-10 h-10 text-brand-wood mb-4"></i>
+            <h4
+              class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+            >
+              Eligible Beneficiaries
+            </h4>
+            <ul
+              class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1"
+            >
+              <li>Students & Teachers</li>
+              <li>Single-parent households</li>
+              <li>Chronic care patients (>12 sessions)</li>
+              <li>Community health referrals</li>
+            </ul>
+          </div>
+          <!-- Program Pillar 4: Impact -->
+          <div
+            class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700"
+          >
+            <i
+              data-lucide="trending-down"
+              class="w-10 h-10 text-brand-base dark:text-brand-light mb-4"
+            ></i>
+            <h4
+              class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+            >
+              Financial Impact
+            </h4>
+            <p class="text-gray-600 dark:text-gray-400">
+              Represents ~1.3 million BDT/year in subsidized care. The business
+              remains
+              <strong class="text-brand-base dark:text-brand-light"
+                >highly profitable</strong
+              >
+              at all modeled occupancy levels.
+            </p>
+          </div>
+          <!-- Program Pillar 5: Purpose -->
+          <div
+            class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 md:col-span-2"
+          >
+            <i
+              data-lucide="shield-check"
+              class="w-10 h-10 text-brand-highlight mb-4"
+            ></i>
+            <h4
+              class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+            >
+              Purpose and Brand Value
+            </h4>
+            <p class="text-gray-600 dark:text-gray-400">
+              Ensures equitable access to premium care, reinforces our social
+              responsibility, and builds deep, lasting community trust and brand
+              loyalty.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Other Data Section -->
+      <section id="data-tables" class="mb-20 pt-20">
+        <h3
+          class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center"
+        >
+          Core Data & Assumptions
+        </h3>
+
+        <!-- Model Assumptions Card -->
+        <div
+          class="mb-8 bg-gradient-to-br from-brand-extralight to-white dark:from-brand-dark/50 dark:to-gray-800 p-8 rounded-2xl shadow-xl border-2 border-brand-base/30 dark:border-brand-light/30"
+        >
+          <div class="flex items-center mb-6">
+            <i
+              data-lucide="calculator"
+              class="w-8 h-8 text-brand-base dark:text-brand-light mr-4"
+            ></i>
+            <h4
+              class="text-2xl font-bold text-brand-dark dark:text-brand-light"
+            >
+              Model Assumptions
+            </h4>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm">
+              <h5
+                class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3"
+              >
+                Core Operating Parameters
+              </h5>
+              <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                <li class="flex justify-between">
+                  <span
+                    >Working days/month
+                    <span id="model-tier-label">(Tier 0-2)</span>:</span
+                  >
+                  <strong
+                    id="model-working-days"
+                    class="text-brand-dark dark:text-brand-light"
+                    >22 days</strong
+                  >
+                </li>
+                <li class="flex justify-between">
+                  <span>Bed capacity (this tier):</span>
+                  <strong
+                    id="model-bed-capacity"
+                    class="text-brand-dark dark:text-brand-light flex items-center gap-2"
+                  >
+                    7 beds
+                    <span class="tooltip">
+                      <i
+                        data-lucide="info"
+                        class="w-3 h-3 text-gray-400 dark:text-gray-500 cursor-help"
+                      ></i>
+                      <span class="tooltiptext"
+                        >Virtual Bed: additional patients served by home-care,
+                        online and other revenue streams based on surplus
+                        staffing and capacity</span
+                      >
+                    </span>
+                  </strong>
+                </li>
+                <li class="flex justify-between">
+                  <span>Max daily revenue (100% cap):</span>
+                  <strong
+                    id="model-max-daily-revenue"
+                    class="text-brand-dark dark:text-brand-light"
+                    >137,305 BDT</strong
+                  >
+                </li>
+                <li
+                  class="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-2 mt-2"
+                >
+                  <span
+                    >Base monthly revenue
+                    <span id="model-revenue-days-label">(22 days)</span>:</span
+                  >
+                  <strong
+                    id="model-base-monthly-revenue"
+                    class="text-brand-secondary flex items-center gap-2"
+                  >
+                    3,020,710 BDT
+                    <span class="tooltip">
+                      <i
+                        data-lucide="info"
+                        class="w-3 h-3 text-gray-400 dark:text-gray-500 cursor-help"
+                      ></i>
+                      <span class="tooltiptext"
+                        >Calculated from 22-day base + additional days gained
+                        from higher tiers + additional revenue from virtual beds
+                        and expanded services</span
+                      >
+                    </span>
+                  </strong>
+                </li>
+              </ul>
+            </div>
+            <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm">
+              <h5
+                class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3"
+              >
+                Session Mix Distribution
+              </h5>
+              <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                <li class="flex justify-between">
+                  <span>Foundation sessions:</span>
+                  <strong class="text-brand-dark dark:text-brand-light"
+                    >20%</strong
+                  >
+                </li>
+                <li class="flex justify-between">
+                  <span>Standard sessions:</span>
+                  <strong class="text-brand-dark dark:text-brand-light"
+                    >50%</strong
+                  >
+                </li>
+                <li class="flex justify-between">
+                  <span>Premium sessions:</span>
+                  <strong class="text-brand-dark dark:text-brand-light"
+                    >25%</strong
+                  >
+                </li>
+                <li class="flex justify-between">
+                  <span>Express sessions:</span>
+                  <strong class="text-brand-dark dark:text-brand-light"
+                    >5%</strong
+                  >
+                </li>
+                <li
+                  class="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2 text-xs text-gray-600 dark:text-gray-400"
+                >
+                  Pricing varies by department (Neuro, MSK, Peds) and session
+                  type
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Expanded Revenue Streams (Higher Tiers) -->
+          <div
+            class="mt-6 bg-brand-highlight/10 dark:bg-brand-highlight/20 p-4 rounded-lg border border-brand-highlight/30"
+          >
+            <div class="flex items-start mb-3">
+              <i
+                data-lucide="trending-up"
+                class="w-5 h-5 text-brand-highlight flex-shrink-0 mt-0.5 mr-3"
+              ></i>
+              <h5
+                class="text-sm font-bold text-brand-dark dark:text-brand-light"
+              >
+                Expanded Revenue Streams (Tier 3 & 4)
+              </h5>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div class="bg-white dark:bg-gray-900 p-3 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-semibold text-brand-wood"
+                    >Tier 3 (Partial Weekend)</span
+                  >
+                  <span
+                    class="text-xs bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full font-bold"
+                    >+27% Days</span
+                  >
+                </div>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                  Partial weekend coverage (Saturdays) extends operational days
+                  from <strong>22 → 28 days/month</strong>
+                </p>
+                <p class="text-xs text-brand-highlight font-semibold">
+                  Potential monthly revenue: ~3.84M BDT (at same occupancy)
+                </p>
+              </div>
+              <div class="bg-white dark:bg-gray-900 p-3 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-semibold text-brand-secondary"
+                    >Tier 4 (Full Ecosystem)</span
+                  >
+                  <span
+                    class="text-xs bg-brand-secondary/20 text-brand-secondary px-2 py-0.5 rounded-full font-bold"
+                    >+36% Days</span
+                  >
+                </div>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                  Full weekend coverage + home care/online floaters enable
+                  <strong>~30 effective days/month</strong> of service delivery
+                </p>
+                <p class="text-xs text-brand-secondary font-semibold">
+                  Potential monthly revenue: ~4.11M BDT (at same occupancy)
+                </p>
+              </div>
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-400 mt-3 italic">
+              Note: Higher tier revenue calculations in the Capacity Modeler
+              incorporate these expanded operational day models and service
+              multipliers.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Visit Mix Doughnut Chart -->
+          <div
+            class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
+          >
+            <h4
+              class="text-2xl font-bold text-brand-dark dark:text-brand-light mb-6 text-center"
+            >
+              Expected Visit Mix
+            </h4>
+            <div class="max-w-xs mx-auto">
+              <canvas id="visitMixChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Pricing Tables -->
+          <div
+            class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
+          >
+            <h4
+              class="text-2xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center"
+            >
+              Session Pricing Modeler
+            </h4>
+
+            <!-- Discount Toggle -->
+            <div
+              class="mb-6 flex justify-center rounded-lg shadow-sm"
+              role="group"
+            >
+              <button
+                type="button"
+                id="price-toggle-0"
+                class="price-toggle-btn bg-brand-base text-white px-4 py-2 text-sm font-medium rounded-l-lg border border-brand-base"
+              >
+                Full Price
+              </button>
+              <button
+                type="button"
+                id="price-toggle-20"
+                class="price-toggle-btn bg-white dark:bg-gray-700 text-brand-base dark:text-brand-light px-4 py-2 text-sm font-medium border-t border-b border-brand-base hover:bg-gray-50 dark:hover:bg-gray-600"
+              >
+                20% Off
+              </button>
+              <button
+                type="button"
+                id="price-toggle-30"
+                class="price-toggle-btn bg-white dark:bg-gray-700 text-brand-base dark:text-brand-light px-4 py-2 text-sm font-medium rounded-r-lg border border-brand-base hover:bg-gray-50 dark:hover:bg-gray-600"
+              >
+                30% Off
+              </button>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Visit Mix Doughnut Chart -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
-                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light mb-6 text-center">Expected Visit
-                        Mix</h4>
-                    <div class="max-w-xs mx-auto">
-                        <canvas id="visitMixChart"></canvas>
+            <div class="space-y-6">
+              <!-- Neuro Pricing -->
+              <div>
+                <h5
+                  class="text-lg font-semibold text-brand-wood dark:text-brand-wood mb-2"
+                >
+                  Neurology
+                </h5>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  <div
+                    class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >Foundation</span
+                    >
+                    <div
+                      id="price-neuro-foundation"
+                      class="font-bold text-lg text-gray-800 dark:text-gray-200"
+                    >
+                      2000
                     </div>
+                  </div>
+                  <div
+                    class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >Standard</span
+                    >
+                    <div
+                      id="price-neuro-standard"
+                      class="font-bold text-lg text-gray-800 dark:text-gray-200"
+                    >
+                      1400
+                    </div>
+                  </div>
+                  <div
+                    class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >Premium</span
+                    >
+                    <div
+                      id="price-neuro-premium"
+                      class="font-bold text-lg text-gray-800 dark:text-gray-200"
+                    >
+                      2400
+                    </div>
+                  </div>
+                  <div
+                    class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-brand-secondary"
+                      >Express (C)</span
+                    >
+                    <div
+                      id="price-neuro-express"
+                      class="font-bold text-lg text-brand-secondary"
+                    >
+                      1000
+                    </div>
+                  </div>
                 </div>
+              </div>
 
-                <!-- Pricing Tables -->
-                <div
-                    class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
-                    <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">Session
-                        Pricing Modeler</h4>
-
-                    <!-- Discount Toggle -->
-                    <div class="mb-6 flex justify-center rounded-lg shadow-sm" role="group">
-                        <button type="button" id="price-toggle-0"
-                            class="price-toggle-btn bg-brand-base text-white px-4 py-2 text-sm font-medium rounded-l-lg border border-brand-base">
-                            Full Price
-                        </button>
-                        <button type="button" id="price-toggle-20"
-                            class="price-toggle-btn bg-white dark:bg-gray-700 text-brand-base dark:text-brand-light px-4 py-2 text-sm font-medium border-t border-b border-brand-base hover:bg-gray-50 dark:hover:bg-gray-600">
-                            20% Off
-                        </button>
-                        <button type="button" id="price-toggle-30"
-                            class="price-toggle-btn bg-white dark:bg-gray-700 text-brand-base dark:text-brand-light px-4 py-2 text-sm font-medium rounded-r-lg border border-brand-base hover:bg-gray-50 dark:hover:bg-gray-600">
-                            30% Off
-                        </button>
+              <!-- MSK Pricing -->
+              <div>
+                <h5
+                  class="text-lg font-semibold text-brand-wood dark:text-brand-wood mb-2"
+                >
+                  MSK (Musculoskeletal)
+                </h5>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  <div
+                    class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >Foundation</span
+                    >
+                    <div
+                      id="price-msk-foundation"
+                      class="font-bold text-lg text-gray-800 dark:text-gray-200"
+                    >
+                      1500
                     </div>
-
-                    <div class="space-y-6">
-                        <!-- Neuro Pricing -->
-                        <div>
-                            <h5 class="text-lg font-semibold text-brand-wood dark:text-brand-wood mb-2">Neurology</h5>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">Foundation</span>
-                                    <div id="price-neuro-foundation"
-                                        class="font-bold text-lg text-gray-800 dark:text-gray-200">2000</div>
-                                </div>
-                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">Standard</span>
-                                    <div id="price-neuro-standard"
-                                        class="font-bold text-lg text-gray-800 dark:text-gray-200">1400</div>
-                                </div>
-                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">Premium</span>
-                                    <div id="price-neuro-premium"
-                                        class="font-bold text-lg text-gray-800 dark:text-gray-200">2400</div>
-                                </div>
-                                <div
-                                    class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-brand-secondary">Express (C)</span>
-                                    <div id="price-neuro-express" class="font-bold text-lg text-brand-secondary">1000
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- MSK Pricing -->
-                        <div>
-                            <h5 class="text-lg font-semibold text-brand-wood dark:text-brand-wood mb-2">MSK
-                                (Musculoskeletal)</h5>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">Foundation</span>
-                                    <div id="price-msk-foundation"
-                                        class="font-bold text-lg text-gray-800 dark:text-gray-200">1500</div>
-                                </div>
-                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">Standard</span>
-                                    <div id="price-msk-standard"
-                                        class="font-bold text-lg text-gray-800 dark:text-gray-200">900</div>
-                                </div>
-                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">Premium</span>
-                                    <div id="price-msk-premium"
-                                        class="font-bold text-lg text-gray-800 dark:text-gray-200">1600</div>
-                                </div>
-                                <div
-                                    class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-brand-secondary">Express (C)</span>
-                                    <div id="price-msk-express" class="font-bold text-lg text-brand-secondary">800</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pediatrics Pricing -->
-                        <div>
-                            <h5 class="text-lg font-semibold text-brand-wood dark:text-brand-wood mb-2">Pediatrics</h5>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">Foundation</span>
-                                    <div id="price-peds-foundation"
-                                        class="font-bold text-lg text-gray-800 dark:text-gray-200">1800</div>
-                                </div>
-                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">Standard (45m)</span>
-                                    <div id="price-peds-standard"
-                                        class="font-bold text-lg text-gray-800 dark:text-gray-200">1200</div>
-                                </div>
-                                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">Premium</span>
-                                    <div id="price-peds-premium"
-                                        class="font-bold text-lg text-gray-800 dark:text-gray-200">2000</div>
-                                </div>
-                                <div
-                                    class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center">
-                                    <span class="text-xs text-brand-secondary">Express (C)</span>
-                                    <div id="price-peds-express" class="font-bold text-lg text-brand-secondary">900
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                  </div>
+                  <div
+                    class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >Standard</span
+                    >
+                    <div
+                      id="price-msk-standard"
+                      class="font-bold text-lg text-gray-800 dark:text-gray-200"
+                    >
+                      900
                     </div>
+                  </div>
+                  <div
+                    class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >Premium</span
+                    >
+                    <div
+                      id="price-msk-premium"
+                      class="font-bold text-lg text-gray-800 dark:text-gray-200"
+                    >
+                      1600
+                    </div>
+                  </div>
+                  <div
+                    class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-brand-secondary"
+                      >Express (C)</span
+                    >
+                    <div
+                      id="price-msk-express"
+                      class="font-bold text-lg text-brand-secondary"
+                    >
+                      800
+                    </div>
+                  </div>
                 </div>
+              </div>
+
+              <!-- Pediatrics Pricing -->
+              <div>
+                <h5
+                  class="text-lg font-semibold text-brand-wood dark:text-brand-wood mb-2"
+                >
+                  Pediatrics
+                </h5>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  <div
+                    class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >Foundation</span
+                    >
+                    <div
+                      id="price-peds-foundation"
+                      class="font-bold text-lg text-gray-800 dark:text-gray-200"
+                    >
+                      1800
+                    </div>
+                  </div>
+                  <div
+                    class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >Standard (45m)</span
+                    >
+                    <div
+                      id="price-peds-standard"
+                      class="font-bold text-lg text-gray-800 dark:text-gray-200"
+                    >
+                      1200
+                    </div>
+                  </div>
+                  <div
+                    class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-gray-500 dark:text-gray-400"
+                      >Premium</span
+                    >
+                    <div
+                      id="price-peds-premium"
+                      class="font-bold text-lg text-gray-800 dark:text-gray-200"
+                    >
+                      2000
+                    </div>
+                  </div>
+                  <div
+                    class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center"
+                  >
+                    <span class="text-xs text-brand-secondary"
+                      >Express (C)</span
+                    >
+                    <div
+                      id="price-peds-express"
+                      class="font-bold text-lg text-brand-secondary"
+                    >
+                      900
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        <!-- Strategic Advantages -->
-        <section id="advantages" class="mb-20 pt-20">
-            <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">Strategic Advantages
-            </h3>
-            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                <div class="flex items-start space-x-3">
-                    <i data-lucide="check-circle-2"
-                        class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
-                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong
-                            class="font-semibold text-brand-dark dark:text-white">Consistent Coverage:</strong>
-                        Predictable multi-shift operations ensure reliable patient care.</p>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <i data-lucide="check-circle-2"
-                        class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
-                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong
-                            class="font-semibold text-brand-dark dark:text-white">Expanded Access:</strong> Evening and
-                        future morning hours cater to professionals and students.</p>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <i data-lucide="check-circle-2"
-                        class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
-                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong
-                            class="font-semibold text-brand-dark dark:text-white">Premium Offerings:</strong>
-                        Differentiated session types (Premium, Express) increase perceived value.</p>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <i data-lucide="check-circle-2"
-                        class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
-                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong
-                            class="font-semibold text-brand-dark dark:text-white">Scalable Architecture:</strong> Tiered
-                        staffing with floaters allows for flexible, demand-based growth.</p>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <i data-lucide="check-circle-2"
-                        class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
-                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong
-                            class="font-semibold text-brand-dark dark:text-white">Sustainable Revenue:</strong> Model is
-                        profitable even at low-to-mid occupancy rates.</p>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <i data-lucide="check-circle-2"
-                        class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"></i>
-                    <p class="text-lg text-gray-700 dark:text-gray-300"><strong
-                            class="font-semibold text-brand-dark dark:text-white">Community Trust:</strong> The
-                        CareBridge™ program builds a strong, positive public-facing brand.</p>
-                </div>
-            </div>
-        </section>
-
+      <!-- Strategic Advantages -->
+      <section id="advantages" class="mb-20 pt-20">
+        <h3
+          class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center"
+        >
+          Strategic Advantages
+        </h3>
+        <div
+          class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4"
+        >
+          <div class="flex items-start space-x-3">
+            <i
+              data-lucide="check-circle-2"
+              class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"
+            ></i>
+            <p class="text-lg text-gray-700 dark:text-gray-300">
+              <strong class="font-semibold text-brand-dark dark:text-white"
+                >Consistent Coverage:</strong
+              >
+              Predictable multi-shift operations ensure reliable patient care.
+            </p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <i
+              data-lucide="check-circle-2"
+              class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"
+            ></i>
+            <p class="text-lg text-gray-700 dark:text-gray-300">
+              <strong class="font-semibold text-brand-dark dark:text-white"
+                >Expanded Access:</strong
+              >
+              Evening and future morning hours cater to professionals and
+              students.
+            </p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <i
+              data-lucide="check-circle-2"
+              class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"
+            ></i>
+            <p class="text-lg text-gray-700 dark:text-gray-300">
+              <strong class="font-semibold text-brand-dark dark:text-white"
+                >Premium Offerings:</strong
+              >
+              Differentiated session types (Premium, Express) increase perceived
+              value.
+            </p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <i
+              data-lucide="check-circle-2"
+              class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"
+            ></i>
+            <p class="text-lg text-gray-700 dark:text-gray-300">
+              <strong class="font-semibold text-brand-dark dark:text-white"
+                >Scalable Architecture:</strong
+              >
+              Tiered staffing with floaters allows for flexible, demand-based
+              growth.
+            </p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <i
+              data-lucide="check-circle-2"
+              class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"
+            ></i>
+            <p class="text-lg text-gray-700 dark:text-gray-300">
+              <strong class="font-semibold text-brand-dark dark:text-white"
+                >Sustainable Revenue:</strong
+              >
+              Model is profitable even at low-to-mid occupancy rates.
+            </p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <i
+              data-lucide="check-circle-2"
+              class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"
+            ></i>
+            <p class="text-lg text-gray-700 dark:text-gray-300">
+              <strong class="font-semibold text-brand-dark dark:text-white"
+                >Community Trust:</strong
+              >
+              The CareBridge™ program builds a strong, positive public-facing
+              brand.
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- Footer -->
     <footer class="bg-brand-dark dark:bg-black mt-20">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
-            <p class="text-brand-light dark:text-gray-400">&copy; <span id="footer-year"></span> Motion Mechanics &
-                Purrfect Universe. All rights reserved.</p>
-            <p class="text-sm text-brand-light/70 dark:text-gray-500 mt-1">Strategic Proposal Microsite v2.6.3</p>
-        </div>
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+        <p class="text-brand-light dark:text-gray-400">
+          &copy; <span id="footer-year"></span> Motion Mechanics & Purrfect
+          Universe. All rights reserved.
+        </p>
+        <p class="text-sm text-brand-light/70 dark:text-gray-500 mt-1">
+          Strategic Proposal Microsite v2.6.3
+        </p>
+      </div>
     </footer>
 
     <!-- QoL: Back to Top Button -->
-    <a href="#home" id="back-to-top"
-        class="bg-brand-highlight dark:bg-brand-highlight-light text-white dark:text-brand-dark p-3 rounded-full shadow-lg hover:bg-brand-highlight/80 dark:hover:bg-brand-highlight-light/80 transition-all duration-300">
-        <i data-lucide="arrow-up" class="w-6 h-6"></i>
+    <a
+      href="#home"
+      id="back-to-top"
+      class="bg-brand-highlight dark:bg-brand-highlight-light text-white dark:text-brand-dark p-3 rounded-full shadow-lg hover:bg-brand-highlight/80 dark:hover:bg-brand-highlight-light/80 transition-all duration-300"
+    >
+      <i data-lucide="arrow-up" class="w-6 h-6"></i>
     </a>
 
     <!-- Custom Application Logic -->
     <script src="index.js?v=2.6.3-97ebc825"></script>
-</body>
-
+  </body>
 </html>

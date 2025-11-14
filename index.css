@@ -248,3 +248,19 @@ html.dark .grand-total-row td {
   color: #ffffff; /* text-white */
   border-top: 2px solid #3cb06f; /* border-brand-light */
 }
+
+@keyframes scaleOpen {
+    0% {
+      transform: scaleY(0);
+      opacity: 0;
+    }
+    100% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+  
+  .animate-scaleOpen {
+    animation: scaleOpen 0.25s ease-out forwards;
+  }
+  
