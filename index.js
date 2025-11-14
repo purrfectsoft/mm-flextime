@@ -1219,6 +1219,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // Init Theme
     updateThemeIcons(currentTheme === 'dark');
 
+    // --- LOGO INTERACTIONS ---
+    const puLogoWrapper = document.getElementById('pu-logo-wrapper');
+    const logoContainer = document.getElementById('logo-container');
+
+    if (puLogoWrapper && logoContainer) {
+        // Handle mobile click to expand/collapse
+        puLogoWrapper.addEventListener('click', (e) => {
+            if (window.innerWidth <= 640) {
+                e.preventDefault();
+                e.stopPropagation();
+                puLogoWrapper.classList.toggle('active');
+            }
+        });
+
+        // Close on click outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 640 && !logoContainer.contains(e.target)) {
+                puLogoWrapper.classList.remove('active');
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 640) {
+                puLogoWrapper.classList.remove('active');
+            }
+        });
+    }
+
     // Init Theme Toggle Buttons
     themeToggleBtn.addEventListener('click', toggleTheme);
     themeToggleBtnMobile.addEventListener('click', toggleTheme);

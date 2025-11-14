@@ -197,6 +197,86 @@ html.dark .nav-active {
     color: #60a5fa !important; /* dark:brand-highlight-light */
 }
 
+/* Logo Animation Styles */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* PU Logo Wrapper - Expands on hover, shows icon by default */
+.pu-logo-wrapper {
+    position: relative;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 0.125rem;
+    transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* PU Logo image - Show left portion (icon only) by default */
+.pu-logo-wrapper img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+    object-position: left center;
+    display: block;
+}
+
+/* On hover - expand to show full logo */
+.pu-logo-wrapper:hover {
+    width: 6.25rem;
+}
+
+/* MM Logo Wrapper - Always maintains aspect ratio */
+.mm-logo-wrapper {
+    flex-shrink: 0;
+    height: 2.5rem;
+    overflow: hidden;
+    border-radius: 0.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.mm-logo-wrapper img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: left center;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+    .pu-logo-wrapper {
+        transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .mm-logo-wrapper {
+        transition:
+            width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+            aspect-ratio 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* When PU logo is expanded on mobile (via click or hover), MM shrinks to square icon */
+    .pu-logo-wrapper.active ~ .mm-logo-wrapper,
+    .pu-logo-wrapper:hover ~ .mm-logo-wrapper {
+        width: 2.5rem;
+        min-width: 2.5rem;
+        aspect-ratio: 1;
+    }
+
+    .pu-logo-wrapper.active {
+        width: 6.25rem;
+    }
+
+    .pu-logo-wrapper:hover {
+        width: 6.25rem;
+    }
+}
+
 /* Back to Top Button */
 #back-to-top {
     position: fixed;

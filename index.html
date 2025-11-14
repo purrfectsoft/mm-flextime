@@ -28,30 +28,56 @@
         >
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-20">
-                    <!-- Logo -->
-                    <a href="#home" class="flex items-center space-x-3 flex-shrink-0">
-                        <img
-                            src="assets/images/pu-logo-tp.png"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                            alt="Purrfect Universe Logo"
-                            class="h-10 w-10"
-                        />
+                    <!-- Logo Container -->
+                    <a
+                        href="#home"
+                        class="flex items-center gap-1 sm:gap-2 flex-shrink-0 logo-container"
+                        id="logo-container"
+                    >
+                        <!-- PU Logo (Left - Crop/Expand Animation) -->
                         <div
-                            style="display: none"
-                            class="h-10 w-10 rounded-full bg-brand-wood flex items-center justify-center text-white font-bold text-xl"
+                            class="pu-logo-wrapper h-10 w-10 flex-shrink-0 rounded-sm overflow-hidden cursor-pointer flex items-center justify-center group"
+                            id="pu-logo-wrapper"
                         >
-                            P
+                            <img
+                                src="assets/images/pu-logo-tp-wide.png"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                alt="Purrfect Universe Logo"
+                                class="h-10 object-cover origin-left"
+                                style="width: auto; aspect-ratio: 860/345"
+                            />
+                            <div
+                                style="display: none"
+                                class="h-10 w-10 rounded-sm bg-brand-wood flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+                            >
+                                PU
+                            </div>
                         </div>
 
-                        <img
-                            src="assets/images/mm-logo-tp.png"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
-                            alt="Motion Mechanics Logo"
-                            class="h-10 w-auto"
-                        />
-                        <span style="display: none" class="text-2xl font-bold text-brand-dark dark:text-brand-light"
-                            >Motion Mechanics</span
+                        <!-- MM Logo (Right - Responsive) -->
+                        <div
+                            class="mm-logo-wrapper h-10 flex-shrink-0 rounded-sm overflow-hidden"
+                            style="aspect-ratio: 977/331"
                         >
+                            <img
+                                src="assets/images/mm-logo-tp-dark.png"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                alt="Motion Mechanics Logo"
+                                class="h-full w-full object-contain dark:block hidden"
+                            />
+                            <img
+                                src="assets/images/mm-logo-tp.png"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                alt="Motion Mechanics Logo"
+                                class="h-full w-full object-contain dark:hidden block"
+                            />
+                            <div
+                                style="display: none"
+                                class="h-full w-full rounded-sm bg-brand-wood flex items-center justify-center text-white font-bold text-lg"
+                            >
+                                MM
+                            </div>
+                        </div>
                     </a>
 
                     <!-- Desktop Nav -->
