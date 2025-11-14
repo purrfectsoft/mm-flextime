@@ -179,9 +179,9 @@ function displayStatus(version, hashes, url) {
   console.log('');
   console.log(`  📦 Version:      ${version}`);
   console.log(`  📄 HTML Hash:    ${hashes.html}`);
-  console.log(`  🎨 CSS Hash:     ${hashes.css}`);
-  console.log(`  ⚙️  JS Hash:      ${hashes.js}`);
-  console.log(`  🌐 URL:          ${urlWithHash}`);
+  console.log(`  🎨  CSS Hash:    ${hashes.css}`);
+  console.log(`  ⚙️   JS Hash:    ${hashes.js}`);
+  console.log(`  🌐       URL:    ${urlWithHash}`);
   console.log('');
   console.log('═'.repeat(67));
   console.log('');
