@@ -14,7 +14,7 @@ Example: `index.css?v=1.0.0-2b0e0feb`
 
 ### Automatic Updates
 
-When you bump the version using npm, the system automatically:
+When you bump the version using yarn, the system automatically:
 
 1. **Updates `package.json`** with the new version
 2. **Calculates file hashes** for `index.css` and `index.js`
@@ -27,22 +27,22 @@ When you bump the version using npm, the system automatically:
 
 ```bash
 # Patch release (1.0.0 → 1.0.1)
-npm version patch
+yarn version patch
 
 # Minor release (1.0.0 → 1.1.0)
-npm version minor
+yarn version minor
 
 # Major release (1.0.0 → 2.0.0)
-npm version major
+yarn version major
 
 # Specific version
-npm version 1.5.0
+yarn version 1.5.0
 ```
 
 ### What Happens Behind the Scenes
 
 ```
-npm version patch
+yarn version patch
     ↓
 Updates package.json version
     ↓
@@ -64,7 +64,7 @@ Runs "postversion" script
 
 ✅ **Browser Cache Busting**: Unique hash on every file change  
 ✅ **Deterministic**: Same version = same hash (useful for tracking)  
-✅ **Semantic Versioning**: Standard npm versioning practices  
+✅ **Semantic Versioning**: Standard yarn versioning practices  
 ✅ **Automated**: No manual hash updates needed  
 ✅ **Auditable**: Git history shows all version changes  
 ✅ **CDN-Friendly**: Different query parameters mean different cache entries  
@@ -72,7 +72,7 @@ Runs "postversion" script
 ## Example Scenario
 
 1. You make changes to `index.css`
-2. Run `npm version patch`
+2. Run `yarn version patch`
 3. Script detects the file changed → new hash calculated
 4. HTML automatically updated: `index.css?v=1.0.1-9c3f2a1e`
 5. Browser fetches new CSS instead of using cached version
@@ -84,13 +84,13 @@ Runs "postversion" script
 
 Calculates SHA256 hashes of CSS and JS files and updates the HTML.
 
-**Triggered by**: `npm version` command  
+**Triggered by**: `yarn version` command  
 **Modifies**: `index.html`  
 **Output**: Console log showing version and hashes
 
-### npm Hooks
+### Yarn Hooks
 
-- **`version`** script: Runs before git tag is created
+- **version** script: Runs before git tag is created
 - **`postversion`** script: Runs after git tag is created, pushes commits
 
 ## Manual Hash Update
@@ -122,7 +122,7 @@ git push origin develop
 
 To skip the automatic push temporarily, you can run:
 ```bash
-npm version patch --no-git-tag-version
+yarn version patch --no-git-tag-version
 node scripts/update-hashes.js
 ```
 
