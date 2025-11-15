@@ -1808,6 +1808,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (visitmixStandardLabel) visitmixStandardLabel.textContent = `${s}%`;
         if (visitmixPremiumLabel) visitmixPremiumLabel.textContent = `${p}%`;
         if (visitmixExpressLabel) visitmixExpressLabel.textContent = `${e}%`;
+        updateAllVisitMixGradients([f, s, p, e]);
     };
 
     const ensureVisitMixTotal = (changedIndex, newVal) => {
@@ -1863,6 +1864,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.warn('Could not save visit mix', err);
         }
+        updateAllVisitMixGradients(vals);
     };
     // Attach listeners
     const vmSliders = [visitmixFoundation, visitmixStandard, visitmixPremium, visitmixExpress];
@@ -1875,6 +1877,31 @@ document.addEventListener('DOMContentLoaded', () => {
         if (i === 2) el.classList.add('thumb-premium');
         if (i === 3) el.classList.add('thumb-express');
     });
+
+    const VISIT_MIX_COLORS = ['#854d0e', '#167a42', '#3cb06f', '#f97316'];
+
+    const setSliderGradient = (sliderEl, value, color) => {
+        if (!sliderEl) return;
+        const pct = Number.isFinite(+value) ? +value : parseInt(sliderEl.value, 10) || 0;
+        const pctClamped = Math.max(0, Math.min(100, pct));
+        // Gradient: color from 0 to pct, then base background
+        const baseTrack = window.getComputedStyle(document.documentElement).getPropertyValue('--range-track') || '#d1d5db';
+        // If dark mode, nicer base
+        const darkBase = '#374151';
+        const base = document.documentElement.classList.contains('dark') ? darkBase : baseTrack || '#d1d5db';
+        sliderEl.style.background = `linear-gradient(to right, ${color} 0%, ${color} ${pctClamped}%, ${base} ${pctClamped}%, ${base} 100%)`;
+    };
+
+    // Update gradient for all visit mix sliders
+    const updateAllVisitMixGradients = (vals) => {
+        const colors = VISIT_MIX_COLORS;
+        const sliders = [visitmixFoundation, visitmixStandard, visitmixPremium, visitmixExpress];
+        const v = vals || getVisitMixValues();
+        sliders.forEach((s, i) => {
+            if (!s) return;
+            setSliderGradient(s, v[i], colors[i]);
+        });
+    };
 
     // Payroll Breakdown Toggle
     if (togglePayrollBreakdown) {
