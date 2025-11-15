@@ -213,10 +213,8 @@ const resetDefaults = () => {
     if (visitmixStandard) visitmixStandard.value = 50;
     if (visitmixPremium) visitmixPremium.value = 25;
     if (visitmixExpress) visitmixExpress.value = 5;
-    if (visitMixChart) {
-        visitMixChart.data.datasets[0].data = [20, 50, 25, 5];
-        visitMixChart.update();
-    }
+    // Trigger update to refresh slider backgrounds and chart
+    updateVisitMixSliders(null);
     updateOccupancyMetrics();
     updateOccupancyLockNote();
     // Clear persisted UI values (not saved scenarios)
@@ -1621,26 +1619,164 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Visit Mix Inputs
-    const updateVisitMixFromInputs = () => {
-        const f = parseInt(visitmixFoundation?.value || 0, 10);
-        const s = parseInt(visitmixStandard?.value || 0, 10);
-        const p = parseInt(visitmixPremium?.value || 0, 10);
-        const e = parseInt(visitmixExpress?.value || 0, 10);
+    // Visit Mix Sliders with 100% Cap Enforcement
+    const updateVisitMixSliders = (changedSlider) => {
+        let f = parseInt(visitmixFoundation?.value || 0, 10);
+        let s = parseInt(visitmixStandard?.value || 0, 10);
+        let p = parseInt(visitmixPremium?.value || 0, 10);
+        let e = parseInt(visitmixExpress?.value || 0, 10);
+        
+        // Calculate total
+        let total = f + s + p + e;
+        
+        // If total exceeds 100, reduce the others proportionally (excluding the changed slider)
+        if (total > 100) {
+            const excess = total - 100;
+            
+            if (changedSlider === visitmixFoundation) {
+                // Reduce others
+                const otherTotal = s + p + e;
+                if (otherTotal > 0) {
+                    const factor = (100 - f) / otherTotal;
+                    s = Math.max(0, Math.round(s * factor));
+                    p = Math.max(0, Math.round(p * factor));
+                    e = Math.max(0, Math.round(e * factor));
+                }
+            } else if (changedSlider === visitmixStandard) {
+                const otherTotal = f + p + e;
+                if (otherTotal > 0) {
+                    const factor = (100 - s) / otherTotal;
+                    f = Math.max(0, Math.round(f * factor));
+                    p = Math.max(0, Math.round(p * factor));
+                    e = Math.max(0, Math.round(e * factor));
+                }
+            } else if (changedSlider === visitmixPremium) {
+                const otherTotal = f + s + e;
+                if (otherTotal > 0) {
+                    const factor = (100 - p) / otherTotal;
+                    f = Math.max(0, Math.round(f * factor));
+                    s = Math.max(0, Math.round(s * factor));
+                    e = Math.max(0, Math.round(e * factor));
+                }
+            } else if (changedSlider === visitmixExpress) {
+                const otherTotal = f + s + p;
+                if (otherTotal > 0) {
+                    const factor = (100 - e) / otherTotal;
+                    f = Math.max(0, Math.round(f * factor));
+                    s = Math.max(0, Math.round(s * factor));
+                    p = Math.max(0, Math.round(p * factor));
+                }
+            }
+            
+            // Ensure we don't exceed 100 due to rounding
+            const newTotal = f + s + p + e;
+            if (newTotal > 100) {
+                // Reduce the largest non-changed value
+                if (changedSlider !== visitmixFoundation && f >= Math.max(s, p, e)) {
+                    f = Math.max(0, f - (newTotal - 100));
+                } else if (changedSlider !== visitmixStandard && s >= Math.max(f, p, e)) {
+                    s = Math.max(0, s - (newTotal - 100));
+                } else if (changedSlider !== visitmixPremium && p >= Math.max(f, s, e)) {
+                    p = Math.max(0, p - (newTotal - 100));
+                } else if (changedSlider !== visitmixExpress && e >= Math.max(f, s, p)) {
+                    e = Math.max(0, e - (newTotal - 100));
+                }
+            }
+        }
+        
+        // Update slider values
+        if (visitmixFoundation) visitmixFoundation.value = f;
+        if (visitmixStandard) visitmixStandard.value = s;
+        if (visitmixPremium) visitmixPremium.value = p;
+        if (visitmixExpress) visitmixExpress.value = e;
+        
+        // Update slider backgrounds to show fill
+        const updateSliderBackground = (slider, value) => {
+            if (slider) {
+                const percentage = value;
+                const colors = {
+                    'visitmix-foundation': { filled: '#854d0e', empty: '#e5e7eb' },
+                    'visitmix-standard': { filled: '#167a42', empty: '#e5e7eb' },
+                    'visitmix-premium': { filled: '#3cb06f', empty: '#e5e7eb' },
+                    'visitmix-express': { filled: '#f97316', empty: '#e5e7eb' }
+                };
+                const classNames = Array.from(slider.classList);
+                let colorSet = colors['visitmix-foundation'];
+                classNames.forEach(cn => {
+                    if (colors[cn]) colorSet = colors[cn];
+                });
+                slider.style.background = `linear-gradient(to right, ${colorSet.filled} 0%, ${colorSet.filled} ${percentage}%, ${colorSet.empty} ${percentage}%, ${colorSet.empty} 100%)`;
+            }
+        };
+        
+        updateSliderBackground(visitmixFoundation, f);
+        updateSliderBackground(visitmixStandard, s);
+        updateSliderBackground(visitmixPremium, p);
+        updateSliderBackground(visitmixExpress, e);
+        
+        // Update value displays
+        const foundationValueEl = document.getElementById('visitmix-foundation-value');
+        const standardValueEl = document.getElementById('visitmix-standard-value');
+        const premiumValueEl = document.getElementById('visitmix-premium-value');
+        const expressValueEl = document.getElementById('visitmix-express-value');
+        const totalEl = document.getElementById('visitmix-total');
+        const errorEl = document.getElementById('visitmix-error');
+        
+        if (foundationValueEl) foundationValueEl.textContent = `${f}%`;
+        if (standardValueEl) standardValueEl.textContent = `${s}%`;
+        if (premiumValueEl) premiumValueEl.textContent = `${p}%`;
+        if (expressValueEl) expressValueEl.textContent = `${e}%`;
+        
+        const finalTotal = f + s + p + e;
+        if (totalEl) totalEl.textContent = `${finalTotal}%`;
+        
+        // Show/hide error message
+        if (errorEl) {
+            if (finalTotal !== 100) {
+                errorEl.classList.remove('hidden');
+            } else {
+                errorEl.classList.add('hidden');
+            }
+        }
+        
+        // Update chart
         const arr = [f, s, p, e];
         if (visitMixChart) {
             visitMixChart.data.datasets[0].data = arr;
+            visitMixChart.data.labels = [`Foundation (${f}%)`, `Standard (${s}%)`, `Premium (${p}%)`, `Express (${e}%)`];
             visitMixChart.update();
         }
+        
+        // Persist to localStorage
         try {
             localStorage.setItem('selectedVisitMix', JSON.stringify(arr));
         } catch (err) {
             console.warn('Could not save visit mix', err);
         }
     };
+    
     [visitmixFoundation, visitmixStandard, visitmixPremium, visitmixExpress].forEach((el) => {
-        if (el) el.addEventListener('input', updateVisitMixFromInputs);
+        if (el) {
+            el.addEventListener('input', (e) => updateVisitMixSliders(e.target));
+        }
     });
+    
+    // Initialize slider backgrounds on page load
+    const initializeSliderBackgrounds = () => {
+        const sliders = [
+            { el: visitmixFoundation, color: '#854d0e' },
+            { el: visitmixStandard, color: '#167a42' },
+            { el: visitmixPremium, color: '#3cb06f' },
+            { el: visitmixExpress, color: '#f97316' }
+        ];
+        sliders.forEach(({ el, color }) => {
+            if (el) {
+                const value = parseInt(el.value, 10);
+                el.style.background = `linear-gradient(to right, ${color} 0%, ${color} ${value}%, #e5e7eb ${value}%, #e5e7eb 100%)`;
+            }
+        });
+    };
+    initializeSliderBackgrounds();
 
     // Payroll Breakdown Toggle
     if (togglePayrollBreakdown) {
@@ -1759,10 +1895,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (visitmixStandard) visitmixStandard.value = arr[1];
                 if (visitmixPremium) visitmixPremium.value = arr[2];
                 if (visitmixExpress) visitmixExpress.value = arr[3];
-                if (visitMixChart) {
-                    visitMixChart.data.datasets[0].data = arr;
-                    visitMixChart.update();
-                }
+                // Trigger update to refresh display
+                updateVisitMixSliders(null);
             }
         }
     } catch (err) {
