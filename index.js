@@ -51,6 +51,52 @@ const showToast = (message, type = 'success', timeout = 3000) => {
     }, timeout);
 };
 
+// showModal returns a Promise resolving { confirmed: boolean, checkbox: boolean }
+const showModal = ({ title = 'Confirm', message = 'Are you sure?', confirmText = 'Confirm', cancelText = 'Cancel', checkboxLabel = null } = {}) => {
+    return new Promise((resolve) => {
+        if (!confirmModal) return resolve({ confirmed: false, checkbox: false });
+        confirmModalTitle.textContent = title;
+        confirmModalMessage.textContent = message;
+        confirmModalConfirm.textContent = confirmText;
+        confirmModalCancel.textContent = cancelText;
+        if (checkboxLabel) {
+            confirmModalCheckboxContainer.classList.remove('hidden');
+            confirmModalCheckbox.checked = false;
+            if (confirmModalCheckboxLabel) confirmModalCheckboxLabel.textContent = checkboxLabel;
+        } else {
+            confirmModalCheckboxContainer.classList.add('hidden');
+        }
+        // Show
+        confirmModal.classList.add('show');
+        // Focus confirm button
+        confirmModalConfirm.focus();
+
+        const cleanup = () => {
+            confirmModal.classList.remove('show');
+            confirmModalConfirm.removeEventListener('click', onConfirm);
+            confirmModalCancel.removeEventListener('click', onCancel);
+            document.removeEventListener('keydown', onKey);
+        };
+        const onConfirm = () => {
+            const cb = confirmModalCheckbox ? confirmModalCheckbox.checked : false;
+            cleanup();
+            resolve({ confirmed: true, checkbox: cb });
+        };
+        const onCancel = () => {
+            const cb = confirmModalCheckbox ? confirmModalCheckbox.checked : false;
+            cleanup();
+            resolve({ confirmed: false, checkbox: cb });
+        };
+        const onKey = (e) => {
+            if (e.key === 'Escape') onCancel();
+            if (e.key === 'Enter') onConfirm();
+        };
+        confirmModalConfirm.addEventListener('click', onConfirm);
+        confirmModalCancel.addEventListener('click', onCancel);
+        document.addEventListener('keydown', onKey);
+    });
+};
+
 const STORAGE_SCENARIOS_KEY = 'flextime.scenarios';
 const STORAGE_LAST_SELECTED_SCENARIO = 'flextime.selectedScenario';
 
@@ -130,12 +176,38 @@ const applySnapshot = (snap) => {
         updatePricingTable(snap.selectedPriceRate / 100);
     }
     if (Array.isArray(snap.visitMix) && snap.visitMix.length === 4) {
+        // Normalize if they don't sum to 100
+        const normalizeVisitMix = (arr) => {
+            const total = arr.reduce((a, b) => a + b, 0);
+            if (total <= 100) return arr.map((x) => Math.max(0, Math.min(100, parseInt(x || 0, 10))));
+            const factor = 100 / total;
+            // Scale and round
+            let scaled = arr.map((x) => Math.round(x * factor));
+            // Fix rounding residual to ensure sum == 100
+            let ssum = scaled.reduce((a, b) => a + b, 0);
+            let diff = ssum - 100;
+            while (diff !== 0) {
+                // Adjust largest value downward if diff > 0, otherwise adjust smallest upward
+                if (diff > 0) {
+                    let maxIdx = scaled.reduce((mi, v, i) => (v > scaled[mi] ? i : mi), 0);
+                    scaled[maxIdx] = scaled[maxIdx] - 1;
+                    diff -= 1;
+                } else {
+                    let minIdx = scaled.reduce((mi, v, i) => (v < scaled[mi] ? i : mi), 0);
+                    scaled[minIdx] = scaled[minIdx] + 1;
+                    diff += 1;
+                }
+            }
+            return scaled;
+        };
         if (visitmixFoundation) visitmixFoundation.value = snap.visitMix[0];
         if (visitmixStandard) visitmixStandard.value = snap.visitMix[1];
         if (visitmixPremium) visitmixPremium.value = snap.visitMix[2];
         if (visitmixExpress) visitmixExpress.value = snap.visitMix[3];
+        const nm = normalizeVisitMix(snap.visitMix.map((x) => parseInt(x || 0, 10)));
+        setVisitMixValues(nm);
         if (visitMixChart) {
-            visitMixChart.data.datasets[0].data = snap.visitMix;
+            visitMixChart.data.datasets[0].data = nm;
             visitMixChart.update();
         }
     }
@@ -653,10 +725,10 @@ const scenarioSelect = document.getElementById('scenario-select');
 const btnDeleteScenario = document.getElementById('btn-delete-scenario');
 
 // Visit Mix Controls
-const visitmixFoundation = document.getElementById('visitmix-foundation');
-const visitmixStandard = document.getElementById('visitmix-standard');
-const visitmixPremium = document.getElementById('visitmix-premium');
-const visitmixExpress = document.getElementById('visitmix-express');
+    const visitmixFoundation = document.getElementById('visitmix-foundation');
+    const visitmixStandard = document.getElementById('visitmix-standard');
+    const visitmixPremium = document.getElementById('visitmix-premium');
+    const visitmixExpress = document.getElementById('visitmix-express');
 const visitmixFoundationLabel = document.getElementById('visitmix-foundation-label');
 const visitmixStandardLabel = document.getElementById('visitmix-standard-label');
 const visitmixPremiumLabel = document.getElementById('visitmix-premium-label');
@@ -668,6 +740,15 @@ const payrollTableWrapper = document.querySelector('#dynamic-payroll-table-body'
 
 // Toast container
 const toastContainer = document.getElementById('toast-container');
+// Confirm Modal Elements
+const confirmModal = document.getElementById('confirm-modal');
+const confirmModalTitle = document.getElementById('confirm-modal-title');
+const confirmModalMessage = document.getElementById('confirm-modal-message');
+const confirmModalConfirm = document.getElementById('confirm-modal-confirm');
+const confirmModalCancel = document.getElementById('confirm-modal-cancel');
+const confirmModalCheckbox = document.getElementById('confirm-modal-checkbox');
+const confirmModalCheckboxContainer = document.getElementById('confirm-modal-checkbox-container');
+const confirmModalCheckboxLabel = document.getElementById('confirm-modal-checkbox-label');
 
 // Dynamic Launch Model A Elements
 const modelATierLabel = document.getElementById('model-a-tier-label');
@@ -1621,10 +1702,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     if (btnDeleteScenario) {
-        btnDeleteScenario.addEventListener('click', () => {
+        btnDeleteScenario.addEventListener('click', async () => {
             const name = scenarioSelect?.value;
             if (!name) return showToast('Choose a scenario to delete', 'error');
-            if (!window.confirm(`Delete scenario "${name}"? This action cannot be undone.`)) {
+            const res = await showModal({
+                title: 'Delete Scenario',
+                message: `Delete scenario "${name}"? This action cannot be undone.`,
+                confirmText: 'Delete',
+                cancelText: 'Cancel',
+            });
+            if (!res.confirmed) {
                 showToast('Delete canceled', 'info');
                 return;
             }
@@ -1652,7 +1739,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     if (inputImportScenarios) {
-        inputImportScenarios.addEventListener('change', (e) => {
+        inputImportScenarios.addEventListener('change', async (e) => {
             const file = e.target.files && e.target.files[0];
             if (!file) return;
             const reader = new FileReader();
@@ -1664,23 +1751,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     let overwritten = 0;
                     let skipped = 0;
                     let added = 0;
-                    json.forEach((item) => {
+                    let overwriteAll = false;
+                    for (const item of json) {
                         if (!item || !item.name || !item.snapshot) return skipped++;
                         const idx = existing.findIndex((s) => s.name === item.name);
                         if (idx >= 0) {
-                            // Ask user to overwrite
-                            const ok = window.confirm(`Scenario "${item.name}" exists. Overwrite?`);
-                            if (ok) {
+                            if (overwriteAll) {
                                 existing[idx] = item;
                                 overwritten += 1;
                             } else {
-                                skipped += 1;
+                                // Ask user to overwrite and optionally apply to all
+                                const res = await showModal({ title: 'Overwrite Scenario', message: `Scenario "${item.name}" exists. Overwrite?`, confirmText: 'Overwrite', cancelText: 'Skip', checkboxLabel: 'Apply to all conflicts' });
+                                if (res.confirmed) {
+                                    existing[idx] = item;
+                                    overwritten += 1;
+                                    if (res.checkbox) overwriteAll = true;
+                                } else {
+                                    skipped += 1;
+                                }
                             }
                         } else {
                             existing.push(item);
                             added += 1;
                         }
-                    });
+                    }
                     setSavedScenarios(existing);
                     populateScenarioSelect();
                     showToast(`Imported: ${added} added, ${overwritten} overwritten, ${skipped} skipped`);
@@ -1775,6 +1869,11 @@ document.addEventListener('DOMContentLoaded', () => {
     vmSliders.forEach((el, i) => {
         if (!el) return;
         el.addEventListener('input', () => updateVisitMixFromSliders(i));
+        // Apply color thumb classes to match chart
+        if (i === 0) el.classList.add('thumb-foundation');
+        if (i === 1) el.classList.add('thumb-standard');
+        if (i === 2) el.classList.add('thumb-premium');
+        if (i === 3) el.classList.add('thumb-express');
     });
 
     // Payroll Breakdown Toggle
@@ -1793,8 +1892,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reset Defaults + Clear Scenarios
     const btnResetDefaultsEl = document.getElementById('btn-reset-defaults');
     if (btnResetDefaultsEl)
-        btnResetDefaultsEl.addEventListener('click', () => {
-            if (!window.confirm('Reset to defaults? This will clear persisted UI values.')) {
+        btnResetDefaultsEl.addEventListener('click', async () => {
+            const res = await showModal({ title: 'Reset Defaults', message: 'Reset to defaults? This will clear persisted UI values.', confirmText: 'Reset', cancelText: 'Cancel' });
+            if (!res.confirmed) {
                 showToast('Reset canceled', 'info');
                 return;
             }
@@ -1802,8 +1902,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     const btnClearScenariosEl = document.getElementById('btn-clear-scenarios');
     if (btnClearScenariosEl)
-        btnClearScenariosEl.addEventListener('click', () => {
-            if (!window.confirm('Clear all saved scenarios? This cannot be undone.')) {
+        btnClearScenariosEl.addEventListener('click', async () => {
+            const res = await showModal({ title: 'Clear Scenarios', message: 'Clear all saved scenarios? This cannot be undone.', confirmText: 'Clear', cancelText: 'Cancel' });
+            if (!res.confirmed) {
                 showToast('Clear scenarios canceled', 'info');
                 return;
             }

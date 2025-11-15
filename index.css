@@ -389,3 +389,37 @@ html.dark .grand-total-row td {
         opacity 0.25s ease,
         transform 0.25s ease;
 }
+
+/* Confirm modal */
+#confirm-modal {
+    display: none;
+}
+#confirm-modal.show {
+    display: flex;
+}
+
+/* Visit mix slider thumb colors */
+input[type='range'].thumb-foundation::-webkit-slider-thumb {
+    background: #854d0e;
+}
+input[type='range'].thumb-foundation::-moz-range-thumb {
+    background: #854d0e;
+}
+input[type='range'].thumb-standard::-webkit-slider-thumb {
+    background: #167a42;
+}
+input[type='range'].thumb-standard::-moz-range-thumb {
+    background: #167a42;
+}
+input[type='range'].thumb-premium::-webkit-slider-thumb {
+    background: #3cb06f;
+}
+input[type='range'].thumb-premium::-moz-range-thumb {
+    background: #3cb06f;
+}
+input[type='range'].thumb-express::-webkit-slider-thumb {
+    background: #f97316;
+}
+input[type='range'].thumb-express::-moz-range-thumb {
+    background: #f97316;
+}
