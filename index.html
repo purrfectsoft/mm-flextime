@@ -880,6 +880,24 @@
                         </table>
                     </div>
                 </div>
+                <div class="mt-3 flex items-center space-x-4">
+                    <label class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <input id="toggle-payroll-breakdown" type="checkbox" class="mr-2 accent-brand-base" />
+                        Show payroll breakdown (FT/PT)
+                    </label>
+                    <button
+                        id="btn-reset-defaults"
+                        class="ml-auto bg-white dark:bg-gray-700 border px-3 py-1 rounded text-sm"
+                    >
+                        Reset Defaults
+                    </button>
+                    <button
+                        id="btn-clear-scenarios"
+                        class="ml-2 bg-white dark:bg-gray-700 border px-3 py-1 rounded text-sm"
+                    >
+                        Clear Saved Scenarios
+                    </button>
+                </div>
             </section>
 
             <!-- Interactive Financial Projections (UPDATED) -->
@@ -887,6 +905,30 @@
                 <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">
                     Dynamic Capacity Modeler
                 </h3>
+
+                <!-- Scenario Manager (Save/Load/Delete) -->
+                <div class="max-w-3xl mx-auto mb-6 flex items-center justify-center space-x-3">
+                    <input
+                        id="scenario-name"
+                        type="text"
+                        placeholder="Scenario name"
+                        class="px-3 py-1 border rounded text-sm bg-gray-50 dark:bg-gray-700"
+                    />
+                    <button id="btn-save-scenario" class="bg-brand-base text-white px-3 py-1 rounded text-sm">
+                        Save Scenario
+                    </button>
+                    <select id="scenario-select" class="px-2 py-1 border rounded text-sm">
+                        <option value="">Load Scenario...</option>
+                    </select>
+                    <button id="btn-delete-scenario" class="bg-red-500 text-white px-3 py-1 rounded text-sm">
+                        Delete
+                    </button>
+                    <button id="btn-export-scenarios" class="bg-white border px-3 py-1 rounded text-sm">Export</button>
+                    <label class="px-3 py-1 rounded border bg-white dark:bg-gray-700 text-sm cursor-pointer">
+                        Import
+                        <input id="input-import-scenarios" type="file" accept="application/json" class="hidden" />
+                    </label>
+                </div>
 
                 <div
                     class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
@@ -1577,6 +1619,56 @@
                         <div class="max-w-xs mx-auto">
                             <canvas id="visitMixChart"></canvas>
                         </div>
+                        <div class="mt-3 grid grid-cols-2 gap-2 max-w-xs mx-auto">
+                            <div class="text-left text-xs">
+                                <label class="block font-medium mb-1">Foundation (%)</label>
+                                <input
+                                    id="visitmix-foundation"
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    value="20"
+                                    class="w-full h-2 appearance-none range-lg"
+                                />
+                                <div id="visitmix-foundation-label" class="text-xs mt-1">20%</div>
+                            </div>
+                            <div class="text-left text-xs">
+                                <label class="block font-medium mb-1">Standard (%)</label>
+                                <input
+                                    id="visitmix-standard"
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    value="50"
+                                    class="w-full h-2 appearance-none range-lg"
+                                />
+                                <div id="visitmix-standard-label" class="text-xs mt-1">50%</div>
+                            </div>
+                            <div class="text-left text-xs">
+                                <label class="block font-medium mb-1">Premium (%)</label>
+                                <input
+                                    id="visitmix-premium"
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    value="25"
+                                    class="w-full h-2 appearance-none range-lg mt-2"
+                                />
+                                <div id="visitmix-premium-label" class="text-xs mt-1">25%</div>
+                            </div>
+                            <div class="text-left text-xs">
+                                <label class="block font-medium mb-1">Express (%)</label>
+                                <input
+                                    id="visitmix-express"
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    value="5"
+                                    class="w-full h-2 appearance-none range-lg mt-2"
+                                />
+                                <div id="visitmix-express-label" class="text-xs mt-1">5%</div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Pricing Tables -->
@@ -1827,6 +1919,8 @@
                 </div>
             </section>
         </main>
+
+        <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
         <!-- Footer -->
         <footer class="bg-brand-dark dark:bg-black mt-20">

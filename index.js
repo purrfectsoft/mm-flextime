@@ -36,6 +36,215 @@ tailwind.config = {
     },
 };
 
+// --- VISUALS, SCENARIO & TOAST HELPERS ---
+const showToast = (message, type = 'success', timeout = 3000) => {
+    if (!toastContainer) return;
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    toastContainer.appendChild(toast);
+    setTimeout(() => {
+        toast.classList.add('hide');
+        toast.addEventListener('transitionend', () => {
+            toast.remove();
+        });
+    }, timeout);
+};
+
+const STORAGE_SCENARIOS_KEY = 'flextime.scenarios';
+const STORAGE_LAST_SELECTED_SCENARIO = 'flextime.selectedScenario';
+
+const getSavedScenarios = () => {
+    try {
+        const raw = localStorage.getItem(STORAGE_SCENARIOS_KEY);
+        return raw ? JSON.parse(raw) : [];
+    } catch (err) {
+        console.warn('Could not read scenarios', err);
+        return [];
+    }
+};
+
+const setSavedScenarios = (arr) => {
+    try {
+        localStorage.setItem(STORAGE_SCENARIOS_KEY, JSON.stringify(arr));
+    } catch (err) {
+        console.warn('Could not save scenarios', err);
+    }
+};
+
+const populateScenarioSelect = () => {
+    if (!scenarioSelect) return;
+    const scenarios = getSavedScenarios();
+    // Reset select
+    scenarioSelect.innerHTML = '<option value="">Load Scenario...</option>';
+    scenarios.forEach((s) => {
+        const opt = document.createElement('option');
+        opt.value = s.name;
+        opt.textContent = `${s.name} — ${new Date(s.createdAt).toLocaleString()}`;
+        scenarioSelect.appendChild(opt);
+    });
+};
+
+const getSnapshot = () => {
+    const priceRate = (() => {
+        const active = Array.from(priceToggleButtons).find((b) => b.getAttribute('aria-pressed') === 'true');
+        if (!active) return 0;
+        return parseInt(active.id.split('-')[2], 10) || 0;
+    })();
+    const visitMix = [
+        parseInt(visitmixFoundation?.value || 20, 10),
+        parseInt(visitmixStandard?.value || 50, 10),
+        parseInt(visitmixPremium?.value || 25, 10),
+        parseInt(visitmixExpress?.value || 5, 10),
+    ];
+    return {
+        selectedTier: parseInt(staffingSlider.value, 10),
+        selectedOccupancy: currentOccupancy,
+        occupancyLocked: isOccupancyLocked,
+        selectedPriceRate: priceRate,
+        visitMix: visitMix,
+        payrollBreakdown: !!togglePayrollBreakdown?.checked,
+        theme: currentTheme,
+    };
+};
+
+const applySnapshot = (snap) => {
+    if (!snap) return;
+    if (typeof snap.selectedTier === 'number') {
+        staffingSlider.value = snap.selectedTier;
+        updateStaffingTier(snap.selectedTier);
+    }
+    if (typeof snap.selectedOccupancy === 'number') {
+        currentOccupancy = snap.selectedOccupancy;
+        occupancySlider.value = snap.selectedOccupancy;
+    }
+    if (typeof snap.occupancyLocked === 'boolean') {
+        isOccupancyLocked = snap.occupancyLocked;
+        occupancyLockIcon.setAttribute('data-lucide', isOccupancyLocked ? 'lock' : 'unlock');
+        occupancyLockToggle.classList.toggle('text-brand-highlight', isOccupancyLocked);
+        occupancyLockToggle.classList.toggle('dark:text-brand-highlight-light', isOccupancyLocked);
+        occupancyLockToggle.classList.toggle('text-gray-400', !isOccupancyLocked);
+        occupancyLockToggle.classList.toggle('dark:text-gray-500', !isOccupancyLocked);
+    }
+    if (typeof snap.selectedPriceRate === 'number') {
+        updatePricingTable(snap.selectedPriceRate / 100);
+    }
+    if (Array.isArray(snap.visitMix) && snap.visitMix.length === 4) {
+        if (visitmixFoundation) visitmixFoundation.value = snap.visitMix[0];
+        if (visitmixStandard) visitmixStandard.value = snap.visitMix[1];
+        if (visitmixPremium) visitmixPremium.value = snap.visitMix[2];
+        if (visitmixExpress) visitmixExpress.value = snap.visitMix[3];
+        if (visitMixChart) {
+            visitMixChart.data.datasets[0].data = snap.visitMix;
+            visitMixChart.update();
+        }
+    }
+    if (typeof snap.payrollBreakdown === 'boolean') {
+        if (togglePayrollBreakdown) togglePayrollBreakdown.checked = snap.payrollBreakdown;
+        if (payrollTableWrapper) {
+            payrollTableWrapper.classList.toggle('hidden-payroll', !snap.payrollBreakdown);
+        }
+    }
+    updateOccupancyMetrics();
+    updateOccupancyLockNote();
+    updateLaunchProjections();
+};
+
+const saveScenario = (name) => {
+    if (!name) {
+        showToast('Please provide a name for the scenario', 'error');
+        return;
+    }
+    const snap = getSnapshot();
+    const scenarios = getSavedScenarios();
+    const existingIndex = scenarios.findIndex((s) => s.name === name);
+    const payload = { name, createdAt: new Date().toISOString(), snapshot: snap };
+    if (existingIndex >= 0) {
+        scenarios[existingIndex] = payload;
+    } else {
+        scenarios.push(payload);
+    }
+    setSavedScenarios(scenarios);
+    populateScenarioSelect();
+    localStorage.setItem(STORAGE_LAST_SELECTED_SCENARIO, name);
+    if (scenarioSelect) scenarioSelect.value = name;
+    showToast(`Saved scenario: ${name}`);
+};
+
+const loadScenario = (name) => {
+    if (!name) return;
+    const scenarios = getSavedScenarios();
+    const s = scenarios.find((sc) => sc.name === name);
+    if (!s) {
+        showToast(`Scenario not found: ${name}`, 'error');
+        return;
+    }
+    applySnapshot(s.snapshot);
+    localStorage.setItem(STORAGE_LAST_SELECTED_SCENARIO, name);
+    showToast(`Loaded scenario: ${name}`);
+};
+
+const deleteScenario = (name) => {
+    if (!name) return;
+    let scenarios = getSavedScenarios();
+    scenarios = scenarios.filter((s) => s.name !== name);
+    setSavedScenarios(scenarios);
+    populateScenarioSelect();
+    localStorage.removeItem(STORAGE_LAST_SELECTED_SCENARIO);
+    // If we deleted the selected scenario, reset dropdown and UI defaults
+    if (scenarioSelect) {
+        scenarioSelect.value = '';
+    }
+    showToast(`Deleted scenario: ${name}`);
+};
+
+const resetDefaults = () => {
+    staffingSlider.value = 2;
+    updateStaffingTier(2);
+    occupancySlider.value = 60;
+    currentOccupancy = 60;
+    isOccupancyLocked = false;
+    occupancyLockIcon.setAttribute('data-lucide', 'unlock');
+    occupancyLockToggle.classList.remove('text-brand-highlight');
+    occupancyLockToggle.classList.remove('dark:text-brand-highlight-light');
+    togglePayrollBreakdown.checked = true;
+    if (payrollTableWrapper) payrollTableWrapper.classList.remove('hidden-payroll');
+    if (visitmixFoundation) visitmixFoundation.value = 20;
+    if (visitmixStandard) visitmixStandard.value = 50;
+    if (visitmixPremium) visitmixPremium.value = 25;
+    if (visitmixExpress) visitmixExpress.value = 5;
+    if (visitMixChart) {
+        visitMixChart.data.datasets[0].data = [20, 50, 25, 5];
+        visitMixChart.update();
+    }
+    updateOccupancyMetrics();
+    updateOccupancyLockNote();
+    // Clear persisted UI values (not saved scenarios)
+    try {
+        localStorage.removeItem('selectedTier');
+        localStorage.removeItem('selectedOccupancy');
+        localStorage.removeItem('selectedPriceRate');
+        localStorage.removeItem('selectedVisitMix');
+        localStorage.removeItem('selectedPayrollBreakdown');
+        localStorage.removeItem('occupancyLocked');
+    } catch (err) {
+        console.warn('Could not clear persisted defaults', err);
+    }
+    showToast('Reset to defaults');
+};
+
+const clearSavedScenarios = () => {
+    try {
+        localStorage.removeItem(STORAGE_SCENARIOS_KEY);
+        localStorage.removeItem(STORAGE_LAST_SELECTED_SCENARIO);
+        populateScenarioSelect();
+        showToast('Cleared saved scenarios');
+    } catch (err) {
+        console.warn('Could not clear scenarios', err);
+        showToast('Error clearing saved scenarios', 'error');
+    }
+};
+
 // --- CONSTANTS & DATA ---
 
 // Financial Constants
@@ -436,6 +645,29 @@ const projAnnualProfit = document.getElementById('proj-annual-profit');
 // Price Toggle Elements
 const priceToggleButtons = document.querySelectorAll('.price-toggle-btn');
 const priceToggleNoteEl = document.getElementById('price-toggle-note');
+
+// Scenario Manager Elements
+const scenarioNameInput = document.getElementById('scenario-name');
+const btnSaveScenario = document.getElementById('btn-save-scenario');
+const scenarioSelect = document.getElementById('scenario-select');
+const btnDeleteScenario = document.getElementById('btn-delete-scenario');
+
+// Visit Mix Controls
+const visitmixFoundation = document.getElementById('visitmix-foundation');
+const visitmixStandard = document.getElementById('visitmix-standard');
+const visitmixPremium = document.getElementById('visitmix-premium');
+const visitmixExpress = document.getElementById('visitmix-express');
+const visitmixFoundationLabel = document.getElementById('visitmix-foundation-label');
+const visitmixStandardLabel = document.getElementById('visitmix-standard-label');
+const visitmixPremiumLabel = document.getElementById('visitmix-premium-label');
+const visitmixExpressLabel = document.getElementById('visitmix-express-label');
+
+// Payroll controls
+const togglePayrollBreakdown = document.getElementById('toggle-payroll-breakdown');
+const payrollTableWrapper = document.querySelector('#dynamic-payroll-table-body')?.closest('table');
+
+// Toast container
+const toastContainer = document.getElementById('toast-container');
 
 // Dynamic Launch Model A Elements
 const modelATierLabel = document.getElementById('model-a-tier-label');
@@ -1371,6 +1603,213 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- Scenario Manager Event Listeners ---
+    const btnExportScenarios = document.getElementById('btn-export-scenarios');
+    const inputImportScenarios = document.getElementById('input-import-scenarios');
+
+    if (btnSaveScenario) {
+        btnSaveScenario.addEventListener('click', () => {
+            const name = scenarioNameInput?.value?.trim();
+            saveScenario(name);
+            populateScenarioSelect();
+        });
+    }
+    if (scenarioSelect) {
+        scenarioSelect.addEventListener('change', (e) => {
+            const name = e.target.value;
+            if (name) loadScenario(name);
+        });
+    }
+    if (btnDeleteScenario) {
+        btnDeleteScenario.addEventListener('click', () => {
+            const name = scenarioSelect?.value;
+            if (!name) return showToast('Choose a scenario to delete', 'error');
+            if (!window.confirm(`Delete scenario "${name}"? This action cannot be undone.`)) {
+                showToast('Delete canceled', 'info');
+                return;
+            }
+            deleteScenario(name);
+        });
+    }
+
+    // Export / Import handlers
+    if (btnExportScenarios) {
+        btnExportScenarios.addEventListener('click', () => {
+            const scenarios = getSavedScenarios();
+            if (!scenarios || scenarios.length === 0) return showToast('No scenarios to export', 'error');
+            const data = JSON.stringify(scenarios, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const name = `flextime-scenarios-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+            showToast('Exported scenarios');
+        });
+    }
+    if (inputImportScenarios) {
+        inputImportScenarios.addEventListener('change', (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                try {
+                    const json = JSON.parse(evt.target.result);
+                    if (!Array.isArray(json)) throw new Error('Invalid format: expected array');
+                    const existing = getSavedScenarios();
+                    let overwritten = 0;
+                    let skipped = 0;
+                    let added = 0;
+                    json.forEach((item) => {
+                        if (!item || !item.name || !item.snapshot) return skipped++;
+                        const idx = existing.findIndex((s) => s.name === item.name);
+                        if (idx >= 0) {
+                            // Ask user to overwrite
+                            const ok = window.confirm(`Scenario "${item.name}" exists. Overwrite?`);
+                            if (ok) {
+                                existing[idx] = item;
+                                overwritten += 1;
+                            } else {
+                                skipped += 1;
+                            }
+                        } else {
+                            existing.push(item);
+                            added += 1;
+                        }
+                    });
+                    setSavedScenarios(existing);
+                    populateScenarioSelect();
+                    showToast(`Imported: ${added} added, ${overwritten} overwritten, ${skipped} skipped`);
+                } catch (err) {
+                    console.warn('Import error', err);
+                    showToast('Invalid scenario file', 'error');
+                }
+            };
+            reader.readAsText(file);
+            // Clear value to allow same file re-upload if needed
+            inputImportScenarios.value = '';
+        });
+    }
+
+    // Visit Mix Inputs
+    const getVisitMixValues = () => [
+        parseInt(visitmixFoundation?.value || 0, 10),
+        parseInt(visitmixStandard?.value || 0, 10),
+        parseInt(visitmixPremium?.value || 0, 10),
+        parseInt(visitmixExpress?.value || 0, 10),
+    ];
+
+    const setVisitMixValues = (arr) => {
+        if (!Array.isArray(arr) || arr.length !== 4) return;
+        const [f, s, p, e] = arr.map((x) => Math.max(0, Math.min(100, parseInt(x || 0, 10))));
+        if (visitmixFoundation) visitmixFoundation.value = f;
+        if (visitmixStandard) visitmixStandard.value = s;
+        if (visitmixPremium) visitmixPremium.value = p;
+        if (visitmixExpress) visitmixExpress.value = e;
+        if (visitmixFoundationLabel) visitmixFoundationLabel.textContent = `${f}%`;
+        if (visitmixStandardLabel) visitmixStandardLabel.textContent = `${s}%`;
+        if (visitmixPremiumLabel) visitmixPremiumLabel.textContent = `${p}%`;
+        if (visitmixExpressLabel) visitmixExpressLabel.textContent = `${e}%`;
+    };
+
+    const ensureVisitMixTotal = (changedIndex, newVal) => {
+        // Get current values
+        const vals = getVisitMixValues();
+        vals[changedIndex] = Math.max(0, Math.min(100, newVal));
+        let total = vals.reduce((a, b) => a + b, 0);
+        if (total <= 100) return vals;
+        // Need to reduce others (greedy: largest first)
+        let excess = total - 100;
+        const others = [];
+        for (let i = 0; i < vals.length; i++) if (i !== changedIndex) others.push(i);
+        // Create mutable copy
+        const newVals = vals.slice();
+        while (excess > 0) {
+            // Find other index with max value
+            let maxIndex = -1;
+            let maxVal = 0;
+            for (const idx of others) {
+                if (newVals[idx] > maxVal) {
+                    maxVal = newVals[idx];
+                    maxIndex = idx;
+                }
+            }
+            if (maxIndex === -1 || maxVal === 0) {
+                // Nothing to reduce; reduce changedIndex instead
+                const reduce = Math.min(excess, newVals[changedIndex]);
+                newVals[changedIndex] = newVals[changedIndex] - reduce;
+                excess -= reduce;
+                break;
+            }
+            const reduce = Math.min(excess, newVals[maxIndex]);
+            newVals[maxIndex] = newVals[maxIndex] - reduce;
+            excess -= reduce;
+        }
+        return newVals;
+    };
+
+    const updateVisitMixFromSliders = (changedIndex) => {
+        const sliders = [visitmixFoundation, visitmixStandard, visitmixPremium, visitmixExpress];
+        const labels = [visitmixFoundationLabel, visitmixStandardLabel, visitmixPremiumLabel, visitmixExpressLabel];
+        const newVal = parseInt(sliders[changedIndex].value, 10);
+        const vals = ensureVisitMixTotal(changedIndex, newVal);
+        // Apply values
+        setVisitMixValues(vals);
+        // Update chart and persist
+        if (visitMixChart) {
+            visitMixChart.data.datasets[0].data = vals;
+            visitMixChart.update();
+        }
+        try {
+            localStorage.setItem('selectedVisitMix', JSON.stringify(vals));
+        } catch (err) {
+            console.warn('Could not save visit mix', err);
+        }
+    };
+    // Attach listeners
+    const vmSliders = [visitmixFoundation, visitmixStandard, visitmixPremium, visitmixExpress];
+    vmSliders.forEach((el, i) => {
+        if (!el) return;
+        el.addEventListener('input', () => updateVisitMixFromSliders(i));
+    });
+
+    // Payroll Breakdown Toggle
+    if (togglePayrollBreakdown) {
+        togglePayrollBreakdown.addEventListener('change', (e) => {
+            const checked = e.target.checked;
+            if (payrollTableWrapper) payrollTableWrapper.classList.toggle('hidden-payroll', !checked);
+            try {
+                localStorage.setItem('selectedPayrollBreakdown', checked ? 'true' : 'false');
+            } catch (err) {
+                console.warn('Could not save payroll break state', err);
+            }
+        });
+    }
+
+    // Reset Defaults + Clear Scenarios
+    const btnResetDefaultsEl = document.getElementById('btn-reset-defaults');
+    if (btnResetDefaultsEl)
+        btnResetDefaultsEl.addEventListener('click', () => {
+            if (!window.confirm('Reset to defaults? This will clear persisted UI values.')) {
+                showToast('Reset canceled', 'info');
+                return;
+            }
+            resetDefaults();
+        });
+    const btnClearScenariosEl = document.getElementById('btn-clear-scenarios');
+    if (btnClearScenariosEl)
+        btnClearScenariosEl.addEventListener('click', () => {
+            if (!window.confirm('Clear all saved scenarios? This cannot be undone.')) {
+                showToast('Clear scenarios canceled', 'info');
+                return;
+            }
+            clearSavedScenarios();
+        });
+
     // Init Scroll Listeners (QoL)
     window.addEventListener('scroll', handleScroll);
     navSections.forEach((section) => {
@@ -1456,6 +1895,43 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
         updatePricingTable(0);
         console.warn('Could not read selectedPriceRate from localStorage', err);
+    }
+
+    // Init Scenario Select and Visit Mix / Payroll persisted UI state
+    populateScenarioSelect();
+    try {
+        const storedVisitMix = localStorage.getItem('selectedVisitMix');
+        if (storedVisitMix) {
+            const arr = JSON.parse(storedVisitMix);
+            if (Array.isArray(arr) && arr.length === 4) {
+                setVisitMixValues(arr);
+                if (visitMixChart) {
+                    visitMixChart.data.datasets[0].data = arr;
+                    visitMixChart.update();
+                }
+            }
+        }
+    } catch (err) {
+        console.warn('Could not restore visitMix from localStorage', err);
+    }
+    try {
+        const storedPayroll = localStorage.getItem('selectedPayrollBreakdown');
+        const val = storedPayroll === 'true';
+        if (togglePayrollBreakdown) togglePayrollBreakdown.checked = val;
+        if (payrollTableWrapper) payrollTableWrapper.classList.toggle('hidden-payroll', !val);
+    } catch (err) {
+        console.warn('Could not restore selected payroll breakdown', err);
+    }
+    // If a scenario was last selected, load it
+    try {
+        const last = localStorage.getItem(STORAGE_LAST_SELECTED_SCENARIO);
+        if (last) {
+            loadScenario(last);
+            // Select in dropdown
+            if (scenarioSelect) scenarioSelect.value = last;
+        }
+    } catch (err) {
+        console.warn('Could not restore selected scenario', err);
     }
 
     // Render Charts
