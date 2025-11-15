@@ -7,6 +7,7 @@
         "version": "npm run format:fix && node scripts/update-hashes.js && git add index.html",
         "postversion": "git push && git push --tags",
         "deploy": "node scripts/deploy.js",
+        "publish": "npm version patch && npm run deploy",
         "format": "prettier --check .",
         "format:fix": "prettier --write ."
     },
