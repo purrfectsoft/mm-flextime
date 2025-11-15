@@ -623,6 +623,28 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <!-- Import/Export Section -->
+                            <div class="border-t border-gray-300 dark:border-gray-600 pt-4">
+                                <label class="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-2">
+                                    <i data-lucide="share-2" class="w-4 h-4 inline mr-2"></i>
+                                    Import / Export Scenarios
+                                </label>
+                                <div class="flex gap-2">
+                                    <button id="btn-export-scenarios" class="flex-1 bg-brand-base hover:bg-brand-light dark:bg-brand-light dark:hover:bg-brand-base text-white dark:text-brand-dark px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center">
+                                        <i data-lucide="download" class="w-4 h-4 inline mr-2"></i>
+                                        Export All Scenarios (JSON)
+                                    </button>
+                                    <button id="btn-import-scenarios" class="flex-1 bg-brand-secondary hover:bg-brand-secondary-light dark:bg-brand-secondary-light dark:hover:bg-brand-secondary text-white dark:text-brand-dark px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center">
+                                        <i data-lucide="upload" class="w-4 h-4 inline mr-2"></i>
+                                        Import Scenarios (JSON)
+                                    </button>
+                                    <input id="scenario-import-file" type="file" accept=".json" class="hidden" />
+                                </div>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                    Export your scenarios as JSON to backup, share, or transfer to another device. Importing will merge with existing scenarios.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

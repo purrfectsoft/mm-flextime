@@ -198,6 +198,98 @@ const deleteScenario = (name) => {
     showToast(`Deleted scenario: ${name}`);
 };
 
+const exportScenarios = () => {
+    const scenarios = getSavedScenarios();
+    if (scenarios.length === 0) {
+        showToast('No scenarios to export', 'error');
+        return;
+    }
+    
+    // Create export object with metadata
+    const exportData = {
+        version: '1.0',
+        exportedAt: new Date().toISOString(),
+        count: scenarios.length,
+        scenarios: scenarios
+    };
+    
+    // Convert to JSON string
+    const jsonString = JSON.stringify(exportData, null, 2);
+    
+    // Create blob and download
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `flextime-scenarios-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    showToast(`Exported ${scenarios.length} scenario(s)`);
+};
+
+const importScenarios = (file) => {
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const importData = JSON.parse(e.target.result);
+            
+            // Validate structure
+            if (!Array.isArray(importData.scenarios)) {
+                showToast('Invalid file format: missing scenarios array', 'error');
+                return;
+            }
+            
+            // Get existing scenarios
+            const existing = getSavedScenarios();
+            const existingNames = new Set(existing.map(s => s.name));
+            
+            // Import new scenarios, avoiding duplicates (user can overwrite manually)
+            let importedCount = 0;
+            let skippedCount = 0;
+            
+            importData.scenarios.forEach((scenario) => {
+                // Validate scenario structure
+                if (!scenario.name || !scenario.snapshot) {
+                    console.warn('Skipping invalid scenario:', scenario);
+                    return;
+                }
+                
+                if (existingNames.has(scenario.name)) {
+                    skippedCount++;
+                    console.log(`Scenario "${scenario.name}" already exists (skipped)`);
+                } else {
+                    existing.push(scenario);
+                    importedCount++;
+                }
+            });
+            
+            // Save merged scenarios
+            setSavedScenarios(existing);
+            populateScenarioSelect();
+            
+            if (importedCount > 0) {
+                showToast(`Imported ${importedCount} scenario(s)${skippedCount > 0 ? ` (${skippedCount} skipped - already exist)` : ''}`);
+            } else {
+                showToast(`No new scenarios imported (${skippedCount} already exist)`, 'info');
+            }
+        } catch (err) {
+            console.error('Import error:', err);
+            showToast('Error importing scenarios: Invalid JSON', 'error');
+        }
+    };
+    
+    reader.onerror = () => {
+        showToast('Error reading file', 'error');
+    };
+    
+    reader.readAsText(file);
+};
+
 const resetDefaults = () => {
     staffingSlider.value = 2;
     updateStaffingTier(2);
@@ -1616,6 +1708,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = scenarioSelect?.value;
             if (!name) return showToast('Choose a scenario to delete', 'error');
             deleteScenario(name);
+        });
+    }
+
+    // Import/Export Scenarios
+    const btnExportScenarios = document.getElementById('btn-export-scenarios');
+    const btnImportScenarios = document.getElementById('btn-import-scenarios');
+    const scenarioImportFile = document.getElementById('scenario-import-file');
+
+    if (btnExportScenarios) {
+        btnExportScenarios.addEventListener('click', exportScenarios);
+    }
+
+    if (btnImportScenarios) {
+        btnImportScenarios.addEventListener('click', () => {
+            if (scenarioImportFile) scenarioImportFile.click();
+        });
+    }
+
+    if (scenarioImportFile) {
+        scenarioImportFile.addEventListener('change', (e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+                importScenarios(file);
+                // Reset file input
+                e.target.value = '';
+            }
         });
     }
 
