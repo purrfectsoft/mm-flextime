@@ -1,3 +1,8 @@
 {
-    "liveServer.settings.port": 5503
+    "editor.defaultFormatter": "esbenp.prettier-vscode", // required
+    "editor.formatOnPaste": true, // optional
+    "editor.formatOnSave": true, // optional
+    "editor.formatOnSaveMode": "file", // required to format on save
+    "editor.formatOnType": false, // required
+    "files.autoSave": "onFocusChange" // optional but recommended
 }
