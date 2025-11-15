@@ -256,7 +256,7 @@
                 <h2 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-secondary mb-8">
                     & Financial Model
                 </h2>
-                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                <p class="lg:text-xl text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
                     A strategic proposal for premium, accessible, and sustainable physiotherapy care in Bangladesh.
                 </p>
             </section>
@@ -586,11 +586,11 @@
                         <div
                             class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 px-1"
                         >
-                            <span class="text-xs md:text-sm">Minimum Viable Opening</span>
-                            <span class="text-xs md:text-sm">Stable Launch</span>
-                            <span class="text-xs md:text-sm">Baseline Full Ops</span>
-                            <span class="text-xs md:text-sm">Expanded Ops</span>
-                            <span class="text-xs md:text-sm">Full Ecosystem</span>
+                            <span class="text-[8px] leading-none md:text-sm">Minimum Viable Opening</span>
+                            <span class="text-[8px] leading-none md:text-sm">Stable Launch</span>
+                            <span class="text-[8px] leading-none md:text-sm">Baseline Full Ops</span>
+                            <span class="text-[8px] leading-none md:text-sm">Expanded Ops</span>
+                            <span class="text-[8px] leading-none md:text-sm">Full Ecosystem</span>
                         </div>
                         <input
                             id="staffing-tier-slider"
@@ -904,15 +904,15 @@
                         <div class="flex justify-between items-center mb-2">
                             <label
                                 for="occupancy-slider"
-                                class="text-lg font-semibold text-gray-700 dark:text-gray-300"
+                                class="lg:text-lg text-sm font-semibold text-gray-700 dark:text-gray-300"
                             >
                                 Total Capacity Utilization:
-                                <span id="occupancy-value" class="text-2xl font-bold text-brand-highlight">60%</span>
+                                <span id="occupancy-value" class="lg:text-2xl text-lg lg:font-bold font-semibold text-brand-highlight">60%</span>
                             </label>
                             <div class="flex items-center space-x-2">
                                 <span
                                     id="occupancy-recommendation"
-                                    class="text-sm font-medium bg-brand-extralight text-brand-base dark:bg-brand-dark/50 dark:text-brand-light px-3 py-1 rounded-full"
+                                    class="lg:text-sm text-[8px] font-medium bg-brand-extralight text-brand-base dark:bg-brand-dark/50 dark:text-brand-light lg:px-3 px-2 py-1 rounded-full"
                                 >
                                     Recommended for Tier 2
                                 </span>
@@ -922,11 +922,11 @@
                                     type="button"
                                     class="text-gray-400 dark:text-gray-500 hover:text-brand-highlight dark:hover:text-brand-highlight-light focus:outline-none p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
                                 >
-                                    <i id="occupancy-lock-icon" data-lucide="unlock" class="w-5 h-5"></i>
+                                    <i id="occupancy-lock-icon" data-lucide="unlock" class="lg:w-5 w-3 lg:h-5 h-3"></i>
                                 </button>
                                 <span
                                     id="occupancy-lock-note"
-                                    class="text-xs text-gray-500 dark:text-gray-400 ml-3"
+                                    class="lg:text-xs text-[8px] text-gray-500 dark:text-gray-400 ml-3"
                                     aria-live="polite"
                                 ></span>
                             </div>
@@ -943,7 +943,7 @@
                     </div>
 
                     <!-- Occupancy Warning (conditional) -->
-                    <div class="h-[52px] -mt-5 mb-4">
+                    <div class="lg:h-[52px] h-[132px] -mt-5 mb-4">
                         <div
                             id="occupancy-warning"
                             class="hidden bg-orange-50 dark:bg-orange-900 border-l-4 border-orange-500 p-4 rounded-2xl animate-scaleOpen origin-top"
@@ -966,60 +966,60 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                         <!-- Daily Revenue -->
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                            <span class="text-sm text-gray-600 dark:text-gray-300 font-medium">Daily Revenue</span>
-                            <div id="daily-revenue" class="text-3xl font-bold text-brand-secondary-light">82,383</div>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
+                            <span class="lg:text-sm text-xs text-gray-600 dark:text-gray-300 font-medium">Daily Revenue</span>
+                            <div id="daily-revenue" class="lg:text-3xl text-xl font-bold text-brand-secondary-light">82,383</div>
+                            <span class="lg:text-sm text-xs text-gray-500 dark:text-gray-400">BDT</span>
                         </div>
                         <!-- Monthly Revenue -->
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                            <span class="text-sm text-gray-600 dark:text-gray-300 font-medium">Monthly Revenue</span>
-                            <div id="monthly-revenue" class="text-3xl font-bold text-brand-secondary">1,812,426</div>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
+                            <span class="lg:text-sm text-xs text-gray-600 dark:text-gray-300 font-medium">Monthly Revenue</span>
+                            <div id="monthly-revenue" class="lg:text-3xl text-xl font-bold text-brand-secondary">1,812,426</div>
+                            <span class="lg:text-sm text-xs text-gray-500 dark:text-gray-400">BDT</span>
                         </div>
                         <!-- Monthly Profit -->
                         <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                            <span class="text-sm text-brand-base dark:text-brand-light font-medium"
+                            <span class="lg:text-sm text-xs text-brand-base dark:text-brand-light font-medium"
                                 >Monthly Profit</span
                             >
-                            <div id="monthly-profit" class="text-3xl font-bold text-brand-base dark:text-brand-light">
+                            <div id="monthly-profit" class="lg:text-3xl text-xl font-bold text-brand-base dark:text-brand-light">
                                 +884,676
                             </div>
-                            <span class="text-xs text-brand-base dark:text-brand-light">BDT</span>
+                            <span class="lg:text-sm text-xs text-brand-base dark:text-brand-light">BDT</span>
                         </div>
                         <!-- Monthly Profit % -->
                         <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                            <span class="text-sm text-brand-base dark:text-brand-light font-medium">Profit Margin</span>
+                            <span class="lg:text-sm text-xs text-brand-base dark:text-brand-light font-medium">Profit Margin</span>
                             <div
                                 id="monthly-profit-percent"
-                                class="text-3xl font-bold text-brand-base dark:text-brand-light"
+                                class="lg:text-3xl text-xl font-bold text-brand-base dark:text-brand-light"
                             >
                                 +48.8%
                             </div>
-                            <span class="text-xs text-brand-base dark:text-brand-light">vs Revenue</span>
+                            <span class="lg:text-sm text-xs text-brand-base dark:text-brand-light">vs Revenue</span>
                         </div>
                         <!-- Annual Revenue -->
                         <div class="col-span-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                            <span class="text-sm text-gray-600 dark:text-gray-300 font-medium">Annual Revenue</span>
+                            <span class="lg:text-sm text-xs text-gray-600 dark:text-gray-300 font-medium">Annual Revenue</span>
                             <div
                                 id="annual-revenue"
-                                class="text-3xl md:text-2xl lg:text-3xl font-bold text-brand-secondary"
+                                class="lg:text-3xl text-xl md:text-2xl font-bold text-brand-secondary"
                             >
                                 21,749,112
                             </div>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">BDT</span>
+                            <span class="lg:text-sm text-xs text-gray-500 dark:text-gray-400">BDT</span>
                         </div>
                         <!-- Annual Profit -->
                         <div class="col-span-2 bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                            <span class="text-sm text-brand-base dark:text-brand-light font-medium"
+                            <span class="lg:text-sm text-xs text-brand-base dark:text-brand-light font-medium"
                                 >Annual Profit (vs Payroll)</span
                             >
                             <div
                                 id="annual-profit"
-                                class="text-3xl md:text-2xl lg:text-3xl font-bold text-brand-base dark:text-brand-light"
+                                class="lg:text-3xl text-xl md:text-2xl  font-bold text-brand-base dark:text-brand-light"
                             >
                                 +10,616,112
                             </div>
-                            <span class="text-xs text-brand-base dark:text-brand-light">BDT</span>
+                            <span class="lg:text-sm text-xs text-brand-base dark:text-brand-light">BDT</span>
                         </div>
                     </div>
                 </div>
@@ -1048,7 +1048,7 @@
                                 <span class="tooltip">
                                     <i
                                         data-lucide="info"
-                                        class="w-5 h-5 text-gray-400 dark:text-gray-500 cursor-help"
+                                        class="w-5 h-5 text-gray-400 dark:text-gray-500 cursor-help  mt-1.5"
                                     ></i>
                                     <span class="tooltiptext"
                                         >Model A shows a fixed-staffing scenario using your currently selected tier. It
@@ -1157,14 +1157,14 @@
                         <div class="min-h-[110px]">
                             <div class="flex justify-between items-start mb-3">
                                 <div class="flex-1">
-                                    <div class="flex items-start gap-2 mb-1">
+                                    <div class="flex lg:items-center items-start justify-between gap-2 mb-1">
                                         <h4 class="text-2xl font-bold text-brand-secondary">
                                             Model B: Ramp-Up Scenario
                                         </h4>
                                         <span class="tooltip">
                                             <i
                                                 data-lucide="info"
-                                                class="w-5 h-5 text-gray-400 dark:text-gray-500 cursor-help"
+                                                class="w-5 h-5 text-gray-400 dark:text-gray-500 cursor-help mr-1 lg:mt-0 mt-1.5"
                                             ></i>
                                             <span class="tooltiptext"
                                                 >Model B shows a realistic growth path with both occupancy and staffing
@@ -1295,7 +1295,7 @@
                             >
                             <div
                                 id="proj-monthly-profit"
-                                class="text-5xl font-extrabold text-brand-base dark:text-brand-light my-2"
+                                class="lg:text-5xl text-3xl font-extrabold text-brand-base dark:text-brand-light my-2"
                             >
                                 +884,676
                             </div>
@@ -1306,7 +1306,7 @@
                             <span class="text-lg font-medium text-gray-600 dark:text-gray-300"
                                 >Projected Annual Revenue</span
                             >
-                            <div id="proj-annual-revenue" class="text-5xl font-extrabold text-brand-secondary my-2">
+                            <div id="proj-annual-revenue" class="lg:text-5xl text-3xl font-extrabold text-brand-secondary my-2">
                                 21,749,112
                             </div>
                             <span class="text-base text-gray-500 dark:text-gray-400">BDT / year</span>
@@ -1318,7 +1318,7 @@
                             >
                             <div
                                 id="proj-annual-profit"
-                                class="text-5xl font-extrabold text-brand-base dark:text-brand-light my-2"
+                                class="lg:text-5xl text-3xl font-extrabold text-brand-base dark:text-brand-light my-2"
                             >
                                 +10,616,112
                             </div>
