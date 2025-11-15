@@ -543,6 +543,91 @@
                 </div>
             </section>
 
+            <!-- Scenario Manager Section (NEW) -->
+            <section id="scenario-manager" class="mb-20 pt-20">
+                <div
+                    class="bg-gradient-to-br from-brand-extralight to-white dark:from-brand-dark/50 dark:to-gray-800 p-8 rounded-2xl shadow-xl border-2 border-brand-base/30 dark:border-brand-light/30"
+                >
+                    <div class="flex items-center mb-6">
+                        <i data-lucide="save" class="w-8 h-8 text-brand-base dark:text-brand-light mr-4"></i>
+                        <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light">
+                            Scenario Manager
+                        </h3>
+                    </div>
+                    <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6">
+                        Save your financial modeling configurations as scenarios to quickly compare different strategies. Each scenario captures your current staffing tier, occupancy rate, pricing strategy, and visit mix assumptions.
+                    </p>
+
+                    <!-- What's Saved Info Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 max-w-3xl mx-auto">
+                        <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm border-l-4 border-brand-base dark:border-brand-light">
+                            <h5 class="text-sm font-bold text-brand-base dark:text-brand-light mb-2 flex items-center">
+                                <i data-lucide="layers" class="w-4 h-4 mr-2"></i>
+                                Configuration
+                            </h5>
+                            <ul class="text-xs text-gray-700 dark:text-gray-300 space-y-1">
+                                <li>• Selected staffing tier level</li>
+                                <li>• Total capacity utilization %</li>
+                                <li>• Occupancy lock status</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm border-l-4 border-brand-secondary dark:border-brand-secondary-light">
+                            <h5 class="text-sm font-bold text-brand-secondary dark:text-brand-secondary-light mb-2 flex items-center">
+                                <i data-lucide="pie-chart" class="w-4 h-4 mr-2"></i>
+                                Visit Mix & Pricing
+                            </h5>
+                            <ul class="text-xs text-gray-700 dark:text-gray-300 space-y-1">
+                                <li>• Foundation/Standard/Premium/Express %</li>
+                                <li>• Applied discount rate (0%, 20%, or 30%)</li>
+                                <li>• Payroll breakdown preference</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Scenario Manager Controls -->
+                    <div class="max-w-3xl mx-auto">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg space-y-4">
+                            <!-- Save Section -->
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-2">
+                                    <i data-lucide="plus-circle" class="w-4 h-4 inline mr-2"></i>
+                                    Save Current Configuration as Scenario
+                                </label>
+                                <div class="flex gap-2">
+                                    <input
+                                        id="scenario-name"
+                                        type="text"
+                                        placeholder="e.g., Conservative Growth, Aggressive Expansion..."
+                                        class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm placeholder-gray-500 dark:placeholder-gray-400"
+                                    />
+                                    <button id="btn-save-scenario" class="bg-brand-base hover:bg-brand-light dark:bg-brand-light dark:hover:bg-brand-base text-white dark:text-brand-dark px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                                        <i data-lucide="save" class="w-4 h-4 inline mr-2"></i>
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Load Section -->
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-2">
+                                    <i data-lucide="folder-open" class="w-4 h-4 inline mr-2"></i>
+                                    Load Saved Scenario
+                                </label>
+                                <div class="flex gap-2">
+                                    <select id="scenario-select" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm dark:text-gray-200">
+                                        <option value="">Choose a scenario to load...</option>
+                                    </select>
+                                    <button id="btn-delete-scenario" class="bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                                        <i data-lucide="trash-2" class="w-4 h-4 inline mr-2"></i>
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Interactive Staffing Tier Modeler -->
             <section id="staffing-modeler" class="mb-20 pt-20">
                 <div
@@ -905,25 +990,6 @@
                 <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">
                     Dynamic Capacity Modeler
                 </h3>
-
-                <!-- Scenario Manager (Save/Load/Delete) -->
-                <div class="max-w-3xl mx-auto mb-6 flex items-center justify-center space-x-3">
-                    <input
-                        id="scenario-name"
-                        type="text"
-                        placeholder="Scenario name"
-                        class="px-3 py-1 border rounded text-sm bg-gray-50 dark:bg-gray-700"
-                    />
-                    <button id="btn-save-scenario" class="bg-brand-base text-white px-3 py-1 rounded text-sm">
-                        Save Scenario
-                    </button>
-                    <select id="scenario-select" class="px-2 py-1 border rounded text-sm">
-                        <option value="">Load Scenario...</option>
-                    </select>
-                    <button id="btn-delete-scenario" class="bg-red-500 text-white px-3 py-1 rounded text-sm">
-                        Delete
-                    </button>
-                </div>
 
                 <div
                     class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
