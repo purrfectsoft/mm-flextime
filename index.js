@@ -376,6 +376,7 @@ let staffingTierChart;
 let currentStaffingTier = TIER_DATA[2]; // Start at baseline Tier 2
 let currentOccupancy = 60; // Start at 60%
 let isOccupancyLocked = false; // Occupancy lock
+let autoLockedOnRestore = false; // Tracks if occupancy was auto-locked on page load to preserve a stored occupancy
 
 // --- DOM ELEMENTS ---
 const themeToggleBtn = document.getElementById('theme-toggle');
@@ -417,6 +418,7 @@ const occupancyRecommendationEl = document.getElementById('occupancy-recommendat
 const occupancyWarningEl = document.getElementById('occupancy-warning');
 const occupancyLockToggle = document.getElementById('occupancy-lock-toggle');
 const occupancyLockIcon = document.getElementById('occupancy-lock-icon');
+const occupancyLockNoteEl = document.getElementById('occupancy-lock-note');
 const dailyRevenueEl = document.getElementById('daily-revenue');
 const monthlyRevenueEl = document.getElementById('monthly-revenue');
 const monthlyProfitEl = document.getElementById('monthly-profit');
@@ -433,6 +435,7 @@ const projAnnualProfit = document.getElementById('proj-annual-profit');
 
 // Price Toggle Elements
 const priceToggleButtons = document.querySelectorAll('.price-toggle-btn');
+const priceToggleNoteEl = document.getElementById('price-toggle-note');
 
 // Dynamic Launch Model A Elements
 const modelATierLabel = document.getElementById('model-a-tier-label');
@@ -765,6 +768,7 @@ const updatePricingTable = (discountRate = 0) => {
         btn.classList.toggle('dark:bg-gray-700', !isActive);
         btn.classList.toggle('text-brand-base', !isActive);
         btn.classList.toggle('dark:text-brand-light', !isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
 
     // Update prices
@@ -1063,6 +1067,14 @@ const updateStaffingTier = (tierIndex) => {
 
     // Update Model A in Launch Projections
     updateLaunchProjections();
+    // Persist the selected tier (so programmatic changes persist too)
+    try {
+        localStorage.setItem('selectedTier', String(tierIndex));
+        // Also persist occupancy (it may have been set to the tier's capacity above)
+        localStorage.setItem('selectedOccupancy', String(currentOccupancy));
+    } catch (err) {
+        console.warn('Could not save selectedTier to localStorage', err);
+    }
 };
 
 // Update Occupancy Slider Style (Simplified)
@@ -1265,13 +1277,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Init Staffing Tier Modeler
     staffingSlider.addEventListener('input', (e) => {
-        updateStaffingTier(parseInt(e.target.value));
+        const tierValue = parseInt(e.target.value, 10);
+        updateStaffingTier(tierValue);
+        // Persist the selection so it survives page refresh
+        try {
+            localStorage.setItem('selectedTier', String(tierValue));
+        } catch (err) {
+            // Ignore storage errors (e.g., private mode)
+            console.warn('Could not save selectedTier to localStorage', err);
+        }
     });
 
     // Init Occupancy Modeler
     occupancySlider.addEventListener('input', (e) => {
-        currentOccupancy = parseInt(e.target.value);
+        const occValue = parseInt(e.target.value, 10);
+        currentOccupancy = occValue;
         updateOccupancyMetrics();
+        // Persist occupancy selection
+        try {
+            localStorage.setItem('selectedOccupancy', String(occValue));
+        } catch (err) {
+            console.warn('Could not save selectedOccupancy to localStorage', err);
+        }
         // Also update max daily revenue display if occupancy crosses 100% threshold or vBeds are present
         const maxDailyRevenueEl = document.getElementById('model-max-daily-revenue');
         if (maxDailyRevenueEl) {
@@ -1309,6 +1336,21 @@ document.addEventListener('DOMContentLoaded', () => {
         occupancyLockToggle.classList.toggle('dark:text-brand-highlight-light', isOccupancyLocked);
         occupancyLockToggle.classList.toggle('text-gray-400', !isOccupancyLocked);
         occupancyLockToggle.classList.toggle('dark:text-gray-500', !isOccupancyLocked);
+        // Persist occupancy lock preference
+        try {
+            localStorage.setItem('occupancyLocked', isOccupancyLocked ? 'true' : 'false');
+        } catch (err) {
+            console.warn('Could not save occupancyLocked to localStorage', err);
+        }
+        // If user toggled lock, clear autoLock restore flag
+        autoLockedOnRestore = false;
+        // Update helper text and attributes
+        updateOccupancyLockNote();
+        occupancyLockToggle.setAttribute('aria-pressed', isOccupancyLocked ? 'true' : 'false');
+        occupancyLockToggle.setAttribute(
+            'title',
+            isOccupancyLocked ? 'Unlock occupancy (it remains saved)' : 'Lock occupancy (persisted across refreshes)'
+        );
     });
 
     // Init Price Toggles
@@ -1316,6 +1358,16 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', (e) => {
             const rate = e.currentTarget.id.split('-')[2]; // '0', '20', or '30'
             updatePricingTable(parseInt(rate) / 100);
+            // Persist price toggle selection
+            try {
+                localStorage.setItem('selectedPriceRate', String(parseInt(rate, 10)));
+            } catch (err) {
+                console.warn('Could not save selectedPriceRate to localStorage', err);
+            }
+            // Update UI note
+            if (priceToggleNoteEl) {
+                priceToggleNoteEl.textContent = 'Saved: Selected pricing will persist across refreshes.';
+            }
         });
     });
 
@@ -1328,13 +1380,83 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- INITIAL STATE ---
 
     // Set initial state for sliders and dependent models
-    staffingSlider.value = 2; // Baseline Tier 2
-    occupancySlider.value = 60;
-    currentOccupancy = 60;
-    updateStaffingTier(2); // This will call updateOccupancyMetrics internally
+    // If there are persisted selections, use them. Otherwise fall back to defaults.
+    let initialTier = 2; // Baseline Tier 2
+    let initialOccupancy = 60;
+    try {
+        const storedTier = localStorage.getItem('selectedTier');
+        const storedOcc = localStorage.getItem('selectedOccupancy');
+        const storedLock = localStorage.getItem('occupancyLocked');
+        if (storedTier !== null && !Number.isNaN(parseInt(storedTier, 10))) {
+            initialTier = parseInt(storedTier, 10);
+        }
+        if (storedOcc !== null && !Number.isNaN(parseInt(storedOcc, 10))) {
+            initialOccupancy = parseInt(storedOcc, 10);
+        }
+        // Restore occupancy locked state if persisted
+        if (storedLock !== null) {
+            isOccupancyLocked = storedLock === 'true';
+        }
+    } catch (err) {
+        // ignore localStorage read errors
+        console.warn('Could not read persisted selections from localStorage', err);
+    }
+
+    // Apply the persisted or default values
+    // If stored occupancy differs from tier default, ensure occupancy remains locked so value isn't overridden by updateStaffingTier
+    try {
+        const tierDefaultCapacity = TIER_DATA[initialTier].capacity;
+        if (!isOccupancyLocked && initialOccupancy !== tierDefaultCapacity) {
+            isOccupancyLocked = true;
+            autoLockedOnRestore = true;
+        }
+    } catch (err) {
+        // ignore and continue if TIER_DATA is not accessible here
+    }
+    // Clamp occupancy to slider min/max
+    try {
+        const minOcc = parseInt(occupancySlider.min, 10) || 0;
+        const maxOcc = parseInt(occupancySlider.max, 10) || 100;
+        if (initialOccupancy < minOcc) initialOccupancy = minOcc;
+        if (initialOccupancy > maxOcc) initialOccupancy = maxOcc;
+    } catch (err) {
+        // ignore
+    }
+
+    staffingSlider.value = initialTier;
+    occupancySlider.value = initialOccupancy;
+    currentOccupancy = initialOccupancy;
+
+    // Reflect persisted lock state in the UI
+    occupancyLockIcon.setAttribute('data-lucide', isOccupancyLocked ? 'lock' : 'unlock');
+    lucide.createIcons(); // Re-render the icon
+    occupancyLockToggle.classList.toggle('text-brand-highlight', isOccupancyLocked);
+    occupancyLockToggle.classList.toggle('dark:text-brand-highlight-light', isOccupancyLocked);
+    occupancyLockToggle.classList.toggle('text-gray-400', !isOccupancyLocked);
+    occupancyLockToggle.classList.toggle('dark:text-gray-500', !isOccupancyLocked);
+    occupancyLockToggle.setAttribute('aria-pressed', isOccupancyLocked ? 'true' : 'false');
+    occupancyLockToggle.setAttribute(
+        'title',
+        isOccupancyLocked ? 'Unlock occupancy (it remains saved)' : 'Lock occupancy (persisted across refreshes)'
+    );
+    updateStaffingTier(initialTier); // This will call updateOccupancyMetrics internally
 
     // Set initial state for pricing table
-    updatePricingTable(0); // Full Price
+    // Restore selected price rate if available
+    try {
+        const storedRate = localStorage.getItem('selectedPriceRate');
+        if (storedRate !== null && !Number.isNaN(parseInt(storedRate, 10))) {
+            updatePricingTable(parseInt(storedRate, 10) / 100);
+            if (priceToggleNoteEl)
+                priceToggleNoteEl.textContent = 'Saved: Selected pricing will persist across refreshes.';
+        } else {
+            updatePricingTable(0); // Full Price
+            if (priceToggleNoteEl) priceToggleNoteEl.textContent = 'Default: Full Price';
+        }
+    } catch (err) {
+        updatePricingTable(0);
+        console.warn('Could not read selectedPriceRate from localStorage', err);
+    }
 
     // Render Charts
     renderVisitMixChart();
@@ -1343,6 +1465,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ensure charts are updated on initial load *after* theme is set
     updateChartsTheme();
 
-    // Run initial launch projection calc
+    // Reflect persisted lock note state and run initial launch projection calc
+    updateOccupancyLockNote();
     updateLaunchProjections();
 });
+
+// Helper for updating occupancy lock helper text
+function updateOccupancyLockNote() {
+    if (!occupancyLockNoteEl) return;
+    if (isOccupancyLocked) {
+        if (autoLockedOnRestore) {
+            occupancyLockNoteEl.textContent =
+                'Locked — occupancy was restored from your previous session and locked to preserve your selection. Toggle to unlock.';
+        } else {
+            occupancyLockNoteEl.textContent =
+                'Locked — occupancy will not change when switching tiers. This setting is saved and will persist across refreshes.';
+        }
+    } else {
+        occupancyLockNoteEl.textContent =
+            "Unlocked — occupancy resets to this tier's default capacity when switching tiers.";
+    }
+}
