@@ -204,18 +204,18 @@ const exportScenarios = () => {
         showToast('No scenarios to export', 'error');
         return;
     }
-    
+
     // Create export object with metadata
     const exportData = {
         version: '1.0',
         exportedAt: new Date().toISOString(),
         count: scenarios.length,
-        scenarios: scenarios
+        scenarios: scenarios,
     };
-    
+
     // Convert to JSON string
     const jsonString = JSON.stringify(exportData, null, 2);
-    
+
     // Create blob and download
     const blob = new Blob([jsonString], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -226,39 +226,76 @@ const exportScenarios = () => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    
+
     showToast(`Exported ${scenarios.length} scenario(s)`);
+};
+
+const exportCurrentScenario = () => {
+    const lastSelected = localStorage.getItem(STORAGE_LAST_SELECTED_SCENARIO);
+    if (!lastSelected) {
+        showToast('No scenario currently loaded. Load or save a scenario first.', 'error');
+        return;
+    }
+
+    const scenarios = getSavedScenarios();
+    const current = scenarios.find((s) => s.name === lastSelected);
+
+    if (!current) {
+        showToast('Current scenario not found', 'error');
+        return;
+    }
+
+    // Create single-scenario export
+    const exportData = {
+        version: '1.0',
+        exportedAt: new Date().toISOString(),
+        count: 1,
+        scenarios: [current],
+    };
+
+    const jsonString = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `flextime-scenario-${current.name.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    showToast(`Exported scenario: ${current.name}`);
 };
 
 const importScenarios = (file) => {
     if (!file) return;
-    
+
     const reader = new FileReader();
     reader.onload = (e) => {
         try {
             const importData = JSON.parse(e.target.result);
-            
+
             // Validate structure
             if (!Array.isArray(importData.scenarios)) {
                 showToast('Invalid file format: missing scenarios array', 'error');
                 return;
             }
-            
+
             // Get existing scenarios
             const existing = getSavedScenarios();
-            const existingNames = new Set(existing.map(s => s.name));
-            
+            const existingNames = new Set(existing.map((s) => s.name));
+
             // Import new scenarios, avoiding duplicates (user can overwrite manually)
             let importedCount = 0;
             let skippedCount = 0;
-            
+
             importData.scenarios.forEach((scenario) => {
                 // Validate scenario structure
                 if (!scenario.name || !scenario.snapshot) {
                     console.warn('Skipping invalid scenario:', scenario);
                     return;
                 }
-                
+
                 if (existingNames.has(scenario.name)) {
                     skippedCount++;
                     console.log(`Scenario "${scenario.name}" already exists (skipped)`);
@@ -267,13 +304,15 @@ const importScenarios = (file) => {
                     importedCount++;
                 }
             });
-            
+
             // Save merged scenarios
             setSavedScenarios(existing);
             populateScenarioSelect();
-            
+
             if (importedCount > 0) {
-                showToast(`Imported ${importedCount} scenario(s)${skippedCount > 0 ? ` (${skippedCount} skipped - already exist)` : ''}`);
+                showToast(
+                    `Imported ${importedCount} scenario(s)${skippedCount > 0 ? ` (${skippedCount} skipped - already exist)` : ''}`
+                );
             } else {
                 showToast(`No new scenarios imported (${skippedCount} already exist)`, 'info');
             }
@@ -282,11 +321,11 @@ const importScenarios = (file) => {
             showToast('Error importing scenarios: Invalid JSON', 'error');
         }
     };
-    
+
     reader.onerror = () => {
         showToast('Error reading file', 'error');
     };
-    
+
     reader.readAsText(file);
 };
 
@@ -835,7 +874,7 @@ const getChartOptions = (theme) => {
                     },
                 },
             },
-            cutout: '50%',
+            cutout: '0%',
         },
         // Bar-specific options
         bar: {
@@ -1714,10 +1753,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Import/Export Scenarios
     const btnExportScenarios = document.getElementById('btn-export-scenarios');
     const btnImportScenarios = document.getElementById('btn-import-scenarios');
+    const btnExportCurrentScenario = document.getElementById('btn-export-current-scenario');
     const scenarioImportFile = document.getElementById('scenario-import-file');
 
     if (btnExportScenarios) {
         btnExportScenarios.addEventListener('click', exportScenarios);
+    }
+
+    if (btnExportCurrentScenario) {
+        btnExportCurrentScenario.addEventListener('click', exportCurrentScenario);
     }
 
     if (btnImportScenarios) {
@@ -1743,14 +1787,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let s = parseInt(visitmixStandard?.value || 0, 10);
         let p = parseInt(visitmixPremium?.value || 0, 10);
         let e = parseInt(visitmixExpress?.value || 0, 10);
-        
+
         // Calculate total
         let total = f + s + p + e;
-        
+
         // If total exceeds 100, reduce the others proportionally (excluding the changed slider)
         if (total > 100) {
             const excess = total - 100;
-            
+
             if (changedSlider === visitmixFoundation) {
                 // Reduce others
                 const otherTotal = s + p + e;
@@ -1785,7 +1829,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     p = Math.max(0, Math.round(p * factor));
                 }
             }
-            
+
             // Ensure we don't exceed 100 due to rounding
             const newTotal = f + s + p + e;
             if (newTotal > 100) {
@@ -1801,13 +1845,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
-        
+
         // Update slider values
         if (visitmixFoundation) visitmixFoundation.value = f;
         if (visitmixStandard) visitmixStandard.value = s;
         if (visitmixPremium) visitmixPremium.value = p;
         if (visitmixExpress) visitmixExpress.value = e;
-        
+
         // Update slider backgrounds to show fill
         const updateSliderBackground = (slider, value) => {
             if (slider) {
@@ -1816,22 +1860,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     'visitmix-foundation': { filled: '#854d0e', empty: '#e5e7eb' },
                     'visitmix-standard': { filled: '#167a42', empty: '#e5e7eb' },
                     'visitmix-premium': { filled: '#3cb06f', empty: '#e5e7eb' },
-                    'visitmix-express': { filled: '#f97316', empty: '#e5e7eb' }
+                    'visitmix-express': { filled: '#f97316', empty: '#e5e7eb' },
                 };
                 const classNames = Array.from(slider.classList);
                 let colorSet = colors['visitmix-foundation'];
-                classNames.forEach(cn => {
+                classNames.forEach((cn) => {
                     if (colors[cn]) colorSet = colors[cn];
                 });
                 slider.style.background = `linear-gradient(to right, ${colorSet.filled} 0%, ${colorSet.filled} ${percentage}%, ${colorSet.empty} ${percentage}%, ${colorSet.empty} 100%)`;
             }
         };
-        
+
         updateSliderBackground(visitmixFoundation, f);
         updateSliderBackground(visitmixStandard, s);
         updateSliderBackground(visitmixPremium, p);
         updateSliderBackground(visitmixExpress, e);
-        
+
         // Update value displays
         const foundationValueEl = document.getElementById('visitmix-foundation-value');
         const standardValueEl = document.getElementById('visitmix-standard-value');
@@ -1839,15 +1883,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const expressValueEl = document.getElementById('visitmix-express-value');
         const totalEl = document.getElementById('visitmix-total');
         const errorEl = document.getElementById('visitmix-error');
-        
+
         if (foundationValueEl) foundationValueEl.textContent = `${f}%`;
         if (standardValueEl) standardValueEl.textContent = `${s}%`;
         if (premiumValueEl) premiumValueEl.textContent = `${p}%`;
         if (expressValueEl) expressValueEl.textContent = `${e}%`;
-        
+
         const finalTotal = f + s + p + e;
         if (totalEl) totalEl.textContent = `${finalTotal}%`;
-        
+
         // Show/hide error message
         if (errorEl) {
             if (finalTotal !== 100) {
@@ -1856,15 +1900,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 errorEl.classList.add('hidden');
             }
         }
-        
+
         // Update chart
         const arr = [f, s, p, e];
         if (visitMixChart) {
             visitMixChart.data.datasets[0].data = arr;
-            visitMixChart.data.labels = [`Foundation (${f}%)`, `Standard (${s}%)`, `Premium (${p}%)`, `Express (${e}%)`];
+            visitMixChart.data.labels = [
+                `Foundation (${f}%)`,
+                `Standard (${s}%)`,
+                `Premium (${p}%)`,
+                `Express (${e}%)`,
+            ];
             visitMixChart.update();
         }
-        
+
         // Persist to localStorage
         try {
             localStorage.setItem('selectedVisitMix', JSON.stringify(arr));
@@ -1872,20 +1921,20 @@ document.addEventListener('DOMContentLoaded', () => {
             console.warn('Could not save visit mix', err);
         }
     };
-    
+
     [visitmixFoundation, visitmixStandard, visitmixPremium, visitmixExpress].forEach((el) => {
         if (el) {
             el.addEventListener('input', (e) => updateVisitMixSliders(e.target));
         }
     });
-    
+
     // Initialize slider backgrounds on page load
     const initializeSliderBackgrounds = () => {
         const sliders = [
             { el: visitmixFoundation, color: '#854d0e' },
             { el: visitmixStandard, color: '#167a42' },
             { el: visitmixPremium, color: '#3cb06f' },
-            { el: visitmixExpress, color: '#f97316' }
+            { el: visitmixExpress, color: '#f97316' },
         ];
         sliders.forEach(({ el, color }) => {
             if (el) {

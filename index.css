@@ -365,7 +365,36 @@ html.dark .grand-total-row td {
     transition: background 0.3s ease;
 }
 
-.visitmix-slider::-webkit-slider-thumb {
+/* Visit Mix Grid Layout - Two columns on tablet/desktop */
+.visitmix-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .visitmix-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+}
+
+/* Legend grid - Two columns on tablet/desktop */
+.legend-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .legend-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.visitmix-slider::-webkit-slider-thumb,
+input[type='range'].visitmix-slider::-webkit-slider-thumb {
     appearance: none;
     width: 22px;
     height: 22px;
@@ -376,12 +405,14 @@ html.dark .grand-total-row td {
     transition: all 0.2s ease;
 }
 
-.visitmix-slider::-webkit-slider-thumb:hover {
+.visitmix-slider::-webkit-slider-thumb:hover,
+input[type='range'].visitmix-slider::-webkit-slider-thumb:hover {
     transform: scale(1.15);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.visitmix-slider::-moz-range-thumb {
+.visitmix-slider::-moz-range-thumb,
+input[type='range'].visitmix-slider::-moz-range-thumb {
     width: 22px;
     height: 22px;
     border-radius: 50%;
@@ -391,40 +422,49 @@ html.dark .grand-total-row td {
     transition: all 0.2s ease;
 }
 
-.visitmix-slider::-moz-range-thumb:hover {
+.visitmix-slider::-moz-range-thumb:hover,
+input[type='range'].visitmix-slider::-moz-range-thumb:hover {
     transform: scale(1.15);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Foundation Slider Thumb (Wood Brown) */
-.visitmix-foundation::-webkit-slider-thumb {
+.visitmix-foundation::-webkit-slider-thumb,
+input[type='range'].visitmix-foundation::-webkit-slider-thumb {
     background: #854d0e;
 }
-.visitmix-foundation::-moz-range-thumb {
+.visitmix-foundation::-moz-range-thumb,
+input[type='range'].visitmix-foundation::-moz-range-thumb {
     background: #854d0e;
 }
 
 /* Standard Slider Thumb (Brand Base Green) */
-.visitmix-standard::-webkit-slider-thumb {
+.visitmix-standard::-webkit-slider-thumb,
+input[type='range'].visitmix-standard::-webkit-slider-thumb {
     background: #167a42;
 }
-.visitmix-standard::-moz-range-thumb {
+.visitmix-standard::-moz-range-thumb,
+input[type='range'].visitmix-standard::-moz-range-thumb {
     background: #167a42;
 }
 
 /* Premium Slider Thumb (Brand Light Green) */
-.visitmix-premium::-webkit-slider-thumb {
+.visitmix-premium::-webkit-slider-thumb,
+input[type='range'].visitmix-premium::-webkit-slider-thumb {
     background: #3cb06f;
 }
-.visitmix-premium::-moz-range-thumb {
+.visitmix-premium::-moz-range-thumb,
+input[type='range'].visitmix-premium::-moz-range-thumb {
     background: #3cb06f;
 }
 
 /* Express Slider Thumb (Brand Secondary Orange) */
-.visitmix-express::-webkit-slider-thumb {
+.visitmix-express::-webkit-slider-thumb,
+input[type='range'].visitmix-express::-webkit-slider-thumb {
     background: #f97316;
 }
-.visitmix-express::-moz-range-thumb {
+.visitmix-express::-moz-range-thumb,
+input[type='range'].visitmix-express::-moz-range-thumb {
     background: #f97316;
 }
 
@@ -434,6 +474,85 @@ html.dark .visitmix-slider::-webkit-slider-thumb {
 }
 html.dark .visitmix-slider::-moz-range-thumb {
     border-color: #1f2937;
+}
+
+/* Ensure visit mix thumb colors persist in dark mode */
+html.dark input[type='range'].visitmix-foundation::-webkit-slider-thumb,
+html.dark .visitmix-foundation::-webkit-slider-thumb {
+    background: #854d0e;
+}
+html.dark input[type='range'].visitmix-foundation::-moz-range-thumb,
+html.dark .visitmix-foundation::-moz-range-thumb {
+    background: #854d0e;
+}
+html.dark input[type='range'].visitmix-standard::-webkit-slider-thumb,
+html.dark .visitmix-standard::-webkit-slider-thumb {
+    background: #167a42;
+}
+html.dark input[type='range'].visitmix-standard::-moz-range-thumb,
+html.dark .visitmix-standard::-moz-range-thumb {
+    background: #167a42;
+}
+html.dark input[type='range'].visitmix-premium::-webkit-slider-thumb,
+html.dark .visitmix-premium::-webkit-slider-thumb {
+    background: #3cb06f;
+}
+html.dark input[type='range'].visitmix-premium::-moz-range-thumb,
+html.dark .visitmix-premium::-moz-range-thumb {
+    background: #3cb06f;
+}
+html.dark input[type='range'].visitmix-express::-webkit-slider-thumb,
+html.dark .visitmix-express::-webkit-slider-thumb {
+    background: #f97316;
+}
+html.dark input[type='range'].visitmix-express::-moz-range-thumb,
+html.dark .visitmix-express::-moz-range-thumb {
+    background: #f97316;
+}
+
+/* Visit Mix & Session Pricing Layout Optimization */
+/* Make chart container use available space better */
+.visitmix-chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    min-height: 350px;
+}
+
+.visitmix-chart-container canvas {
+    max-width: 80%;
+    max-height: 350px;
+    object-fit: contain;
+}
+
+/* Reduce padding in pricing section */
+.pricing-section {
+    padding: 0;
+    margin: 0;
+}
+
+/* Tighten spacing between section headers and pricing grids */
+.pricing-department h5 {
+    margin-bottom: 0.75rem;
+}
+
+.pricing-department {
+    margin-bottom: 1.5rem;
+}
+
+.pricing-department:last-child {
+    margin-bottom: 0;
+}
+
+/* Reduce gap in price grid for denser layout */
+.pricing-grid {
+    gap: 1rem;
+}
+
+/* Tighten legend spacing */
+.legend-grid {
+    margin-bottom: 1rem;
 }
 
 /* Toast notifications */
@@ -454,7 +573,19 @@ html.dark .visitmix-slider::-moz-range-thumb {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     font-size: 0.9rem;
 }
-.toast.success { background: #0f766e; }
-.toast.error { background: #991b1b; }
-.toast.info { background: #2563eb; }
-.toast.hide { opacity: 0; transform: translateY(8px); transition: opacity 0.25s ease, transform 0.25s ease; }
+.toast.success {
+    background: #0f766e;
+}
+.toast.error {
+    background: #991b1b;
+}
+.toast.info {
+    background: #2563eb;
+}
+.toast.hide {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
