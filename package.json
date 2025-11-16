@@ -1,6 +1,6 @@
 {
     "name": "mm-flextime-microsite",
-    "version": "2.8.1",
+    "version": "2.8.2",
     "description": "Motion Mechanics FlexTime™ Operations & Financial Model Interactive Microsite",
     "type": "module",
     "scripts": {
