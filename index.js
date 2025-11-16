@@ -36,6 +36,374 @@ tailwind.config = {
     },
 };
 
+// --- VISUALS, SCENARIO & TOAST HELPERS ---
+const showToast = (message, type = 'success', timeout = 3000) => {
+    if (!toastContainer) return;
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    toastContainer.appendChild(toast);
+    setTimeout(() => {
+        toast.classList.add('hide');
+        toast.addEventListener('transitionend', () => {
+            toast.remove();
+        });
+    }, timeout);
+};
+
+const STORAGE_SCENARIOS_KEY = 'flextime.scenarios';
+const STORAGE_LAST_SELECTED_SCENARIO = 'flextime.selectedScenario';
+const SCENARIO_MANAGER_COLLAPSED_KEY = 'flextime.scenarioManagerCollapsed';
+
+const getSavedScenarios = () => {
+    try {
+        const raw = localStorage.getItem(STORAGE_SCENARIOS_KEY);
+        return raw ? JSON.parse(raw) : [];
+    } catch (err) {
+        console.warn('Could not read scenarios', err);
+        return [];
+    }
+};
+
+const setSavedScenarios = (arr) => {
+    try {
+        localStorage.setItem(STORAGE_SCENARIOS_KEY, JSON.stringify(arr));
+    } catch (err) {
+        console.warn('Could not save scenarios', err);
+    }
+};
+
+const populateScenarioSelect = () => {
+    if (!scenarioSelect) return;
+    const scenarios = getSavedScenarios();
+    // Reset select
+    scenarioSelect.innerHTML = '<option value="">Load Scenario...</option>';
+    scenarios.forEach((s) => {
+        const opt = document.createElement('option');
+        opt.value = s.name;
+        opt.textContent = `${s.name} — ${new Date(s.createdAt).toLocaleString()}`;
+        scenarioSelect.appendChild(opt);
+    });
+};
+
+// (getSnapshot is declared earlier near the top of the file)
+
+const applySnapshot = (snap) => {
+    if (!snap) return;
+    if (typeof snap.selectedTier === 'number') {
+        staffingSlider.value = snap.selectedTier;
+        updateStaffingTier(snap.selectedTier);
+    }
+    if (typeof snap.selectedOccupancy === 'number') {
+        currentOccupancy = snap.selectedOccupancy;
+        occupancySlider.value = snap.selectedOccupancy;
+    }
+    if (typeof snap.occupancyLocked === 'boolean') {
+        isOccupancyLocked = snap.occupancyLocked;
+        occupancyLockIcon.setAttribute('data-lucide', isOccupancyLocked ? 'lock' : 'unlock');
+        occupancyLockToggle.classList.toggle('text-brand-highlight', isOccupancyLocked);
+        occupancyLockToggle.classList.toggle('dark:text-brand-highlight-light', isOccupancyLocked);
+        occupancyLockToggle.classList.toggle('text-gray-400', !isOccupancyLocked);
+        occupancyLockToggle.classList.toggle('dark:text-gray-500', !isOccupancyLocked);
+    }
+    if (typeof snap.selectedPriceRate === 'number') {
+        updatePricingTable(snap.selectedPriceRate / 100);
+    }
+    if (Array.isArray(snap.visitMix) && snap.visitMix.length === 4) {
+        if (visitmixFoundation) visitmixFoundation.value = snap.visitMix[0];
+        if (visitmixStandard) visitmixStandard.value = snap.visitMix[1];
+        if (visitmixPremium) visitmixPremium.value = snap.visitMix[2];
+        if (visitmixExpress) visitmixExpress.value = snap.visitMix[3];
+        if (visitMixChart) {
+            visitMixChart.data.datasets[0].data = snap.visitMix;
+            visitMixChart.update();
+        }
+    }
+    if (typeof snap.payrollBreakdown === 'boolean') {
+        if (togglePayrollBreakdown) togglePayrollBreakdown.checked = snap.payrollBreakdown;
+        if (payrollTableWrapper) {
+            payrollTableWrapper.classList.toggle('hidden-payroll', !snap.payrollBreakdown);
+        }
+    }
+    updateOccupancyMetrics();
+    updateOccupancyLockNote();
+    updateLaunchProjections();
+};
+
+const saveScenario = (name) => {
+    if (!name) {
+        showToast('Please provide a name for the scenario', 'error');
+        return;
+    }
+    const snap = getSnapshot();
+    const scenarios = getSavedScenarios();
+    const existingIndex = scenarios.findIndex((s) => s.name === name);
+    const payload = { name, createdAt: new Date().toISOString(), snapshot: snap };
+    if (existingIndex >= 0) {
+        scenarios[existingIndex] = payload;
+    } else {
+        scenarios.push(payload);
+    }
+    setSavedScenarios(scenarios);
+    populateScenarioSelect();
+    localStorage.setItem(STORAGE_LAST_SELECTED_SCENARIO, name);
+    if (scenarioSelect) scenarioSelect.value = name;
+    showToast(`Saved scenario: ${name}`);
+};
+
+const loadScenario = (name) => {
+    if (!name) return;
+    const scenarios = getSavedScenarios();
+    const s = scenarios.find((sc) => sc.name === name);
+    if (!s) {
+        showToast(`Scenario not found: ${name}`, 'error');
+        return;
+    }
+    applySnapshot(s.snapshot);
+    localStorage.setItem(STORAGE_LAST_SELECTED_SCENARIO, name);
+    showToast(`Loaded scenario: ${name}`);
+};
+
+const deleteScenario = (name) => {
+    if (!name) return;
+    let scenarios = getSavedScenarios();
+    scenarios = scenarios.filter((s) => s.name !== name);
+    setSavedScenarios(scenarios);
+    populateScenarioSelect();
+    localStorage.removeItem(STORAGE_LAST_SELECTED_SCENARIO);
+    // If we deleted the selected scenario, reset dropdown and UI defaults
+    if (scenarioSelect) {
+        scenarioSelect.value = '';
+    }
+    showToast(`Deleted scenario: ${name}`);
+};
+
+const exportScenarios = () => {
+    const scenarios = getSavedScenarios();
+    if (scenarios.length === 0) {
+        showToast('No scenarios to export', 'error');
+        return;
+    }
+
+    // Create export object with metadata
+    const exportData = {
+        version: '1.0',
+        exportedAt: new Date().toISOString(),
+        count: scenarios.length,
+        scenarios: scenarios,
+    };
+
+    // Convert to JSON string
+    const jsonString = JSON.stringify(exportData, null, 2);
+
+    // Create blob and download
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `flextime-scenarios-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    showToast(`Exported ${scenarios.length} scenario(s)`);
+};
+
+const exportCurrentScenario = () => {
+    // Gather a snapshot of the current UI state and export it
+    const snap = getSnapshot();
+    const proposedName =
+        (scenarioNameInput?.value || '').trim() ||
+        localStorage.getItem(STORAGE_LAST_SELECTED_SCENARIO) ||
+        `Current-${new Date().toISOString().split('T')[0]}`;
+    const payload = { name: proposedName, createdAt: new Date().toISOString(), snapshot: snap };
+
+    // Create single-scenario export
+    const exportData = {
+        version: '1.0',
+        exportedAt: new Date().toISOString(),
+        count: 1,
+        scenarios: [payload],
+    };
+
+    const jsonString = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `flextime-scenario-${payload.name.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    showToast(`Exported current configuration: ${payload.name}`);
+};
+const getSnapshot = () => {
+    const priceRate = (() => {
+        const active = Array.from(priceToggleButtons).find((b) => b.getAttribute('aria-pressed') === 'true');
+        if (!active) return 0;
+        return parseInt(active.id.split('-')[2], 10) || 0;
+    })();
+    const visitMix = [
+        parseInt(visitmixFoundation?.value || 20, 10),
+        parseInt(visitmixStandard?.value || 50, 10),
+        parseInt(visitmixPremium?.value || 25, 10),
+        parseInt(visitmixExpress?.value || 5, 10),
+    ];
+    return {
+        selectedTier: parseInt(staffingSlider.value, 10),
+        selectedOccupancy: currentOccupancy,
+        occupancyLocked: isOccupancyLocked,
+        selectedPriceRate: priceRate,
+        visitMix: visitMix,
+        payrollBreakdown: !!togglePayrollBreakdown?.checked,
+        theme: currentTheme,
+    };
+};
+
+// Apply collapse/expand state for Scenario Manager
+const applyScenarioManagerCollapsed = (collapsed, skipFocus = false) => {
+    if (!scenarioManagerBody || !scenarioManagerToggle) return;
+    if (collapsed) {
+        scenarioManagerBody.classList.add('hidden');
+        scenarioManagerBody.setAttribute('aria-hidden', 'true');
+        scenarioManagerToggle.setAttribute('aria-expanded', 'false');
+        const icon = scenarioManagerToggle.querySelector('i');
+        if (icon) icon.setAttribute('data-lucide', 'chevron-down');
+        // Announce to screen readers and (optionally) focus the toggle
+        if (scenarioManagerLive) scenarioManagerLive.textContent = 'Scenario Manager collapsed';
+        if (!skipFocus) setTimeout(() => scenarioManagerToggle.focus(), 60);
+    } else {
+        scenarioManagerBody.classList.remove('hidden');
+        scenarioManagerBody.setAttribute('aria-hidden', 'false');
+        scenarioManagerToggle.setAttribute('aria-expanded', 'true');
+        const icon = scenarioManagerToggle.querySelector('i');
+        if (icon) icon.setAttribute('data-lucide', 'chevron-up');
+        // Announce to screen readers and (optionally) focus the first relevant control
+        if (scenarioManagerLive) scenarioManagerLive.textContent = 'Scenario Manager expanded';
+        if (!skipFocus)
+            setTimeout(() => {
+                if (scenarioNameInput) scenarioNameInput.focus();
+                else if (btnSaveScenario) btnSaveScenario.focus();
+            }, 120);
+    }
+    lucide.createIcons();
+    try {
+        localStorage.setItem(SCENARIO_MANAGER_COLLAPSED_KEY, collapsed ? 'true' : 'false');
+    } catch (err) {
+        // ignore storage write errors
+    }
+};
+
+const importScenarios = (file) => {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const importData = JSON.parse(e.target.result);
+
+            // Validate structure
+            if (!Array.isArray(importData.scenarios)) {
+                showToast('Invalid file format: missing scenarios array', 'error');
+                return;
+            }
+
+            // Get existing scenarios
+            const existing = getSavedScenarios();
+            const existingNames = new Set(existing.map((s) => s.name));
+
+            // Import new scenarios, avoiding duplicates (user can overwrite manually)
+            let importedCount = 0;
+            let skippedCount = 0;
+
+            importData.scenarios.forEach((scenario) => {
+                // Validate scenario structure
+                if (!scenario.name || !scenario.snapshot) {
+                    console.warn('Skipping invalid scenario:', scenario);
+                    return;
+                }
+
+                if (existingNames.has(scenario.name)) {
+                    skippedCount++;
+                    console.log(`Scenario "${scenario.name}" already exists (skipped)`);
+                } else {
+                    existing.push(scenario);
+                    importedCount++;
+                }
+            });
+
+            // Save merged scenarios
+            setSavedScenarios(existing);
+            populateScenarioSelect();
+
+            if (importedCount > 0) {
+                showToast(
+                    `Imported ${importedCount} scenario(s)${skippedCount > 0 ? ` (${skippedCount} skipped - already exist)` : ''}`
+                );
+            } else {
+                showToast(`No new scenarios imported (${skippedCount} already exist)`, 'info');
+            }
+        } catch (err) {
+            console.error('Import error:', err);
+            showToast('Error importing scenarios: Invalid JSON', 'error');
+        }
+    };
+
+    reader.onerror = () => {
+        showToast('Error reading file', 'error');
+    };
+
+    reader.readAsText(file);
+};
+
+const resetDefaults = () => {
+    staffingSlider.value = 2;
+    updateStaffingTier(2);
+    occupancySlider.value = 60;
+    currentOccupancy = 60;
+    isOccupancyLocked = false;
+    occupancyLockIcon.setAttribute('data-lucide', 'unlock');
+    occupancyLockToggle.classList.remove('text-brand-highlight');
+    occupancyLockToggle.classList.remove('dark:text-brand-highlight-light');
+    togglePayrollBreakdown.checked = true;
+    if (payrollTableWrapper) payrollTableWrapper.classList.remove('hidden-payroll');
+    if (visitmixFoundation) visitmixFoundation.value = 20;
+    if (visitmixStandard) visitmixStandard.value = 50;
+    if (visitmixPremium) visitmixPremium.value = 25;
+    if (visitmixExpress) visitmixExpress.value = 5;
+    // Trigger update to refresh slider backgrounds and chart
+    updateVisitMixSliders(null);
+    updateOccupancyMetrics();
+    updateOccupancyLockNote();
+    // Clear persisted UI values (not saved scenarios)
+    try {
+        localStorage.removeItem('selectedTier');
+        localStorage.removeItem('selectedOccupancy');
+        localStorage.removeItem('selectedPriceRate');
+        localStorage.removeItem('selectedVisitMix');
+        localStorage.removeItem('selectedPayrollBreakdown');
+        localStorage.removeItem('occupancyLocked');
+    } catch (err) {
+        console.warn('Could not clear persisted defaults', err);
+    }
+    showToast('Reset to defaults');
+};
+
+const clearSavedScenarios = () => {
+    try {
+        localStorage.removeItem(STORAGE_SCENARIOS_KEY);
+        localStorage.removeItem(STORAGE_LAST_SELECTED_SCENARIO);
+        populateScenarioSelect();
+        showToast('Cleared saved scenarios');
+    } catch (err) {
+        console.warn('Could not clear scenarios', err);
+        showToast('Error clearing saved scenarios', 'error');
+    }
+};
+
 // --- CONSTANTS & DATA ---
 
 // Financial Constants
@@ -437,6 +805,30 @@ const projAnnualProfit = document.getElementById('proj-annual-profit');
 const priceToggleButtons = document.querySelectorAll('.price-toggle-btn');
 const priceToggleNoteEl = document.getElementById('price-toggle-note');
 
+// Scenario Manager Elements
+const scenarioNameInput = document.getElementById('scenario-name');
+const btnSaveScenario = document.getElementById('btn-save-scenario');
+const scenarioSelect = document.getElementById('scenario-select');
+const btnDeleteScenario = document.getElementById('btn-delete-scenario');
+const scenarioManagerToggle = document.getElementById('scenario-manager-toggle');
+const scenarioManagerBody = document.getElementById('scenario-manager-body');
+const scenarioManagerLink = document.getElementById('scenario-manager-link');
+// Optional live region to announce Scene Manager state changes to assistive tech
+const scenarioManagerLive = document.getElementById('scenario-manager-live');
+
+// Visit Mix Controls
+const visitmixFoundation = document.getElementById('visitmix-foundation');
+const visitmixStandard = document.getElementById('visitmix-standard');
+const visitmixPremium = document.getElementById('visitmix-premium');
+const visitmixExpress = document.getElementById('visitmix-express');
+
+// Payroll controls
+const togglePayrollBreakdown = document.getElementById('toggle-payroll-breakdown');
+const payrollTableWrapper = document.querySelector('#dynamic-payroll-table-body')?.closest('table');
+
+// Toast container
+const toastContainer = document.getElementById('toast-container');
+
 // Dynamic Launch Model A Elements
 const modelATierLabel = document.getElementById('model-a-tier-label');
 const modelAP1Profit = document.getElementById('model-a-p1-profit');
@@ -517,7 +909,7 @@ const getChartOptions = (theme) => {
                     },
                 },
             },
-            cutout: '50%',
+            cutout: '0%',
         },
         // Bar-specific options
         bar: {
@@ -1196,8 +1588,10 @@ const updateOccupancyMetrics = () => {
 const handleScroll = () => {
     if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
         backToTopBtn.classList.add('show');
+        if (scenarioManagerLink) scenarioManagerLink.classList.add('show');
     } else {
         backToTopBtn.classList.remove('show');
+        if (scenarioManagerLink) scenarioManagerLink.classList.remove('show');
     }
 };
 
@@ -1226,6 +1620,85 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Init Lucide icons
     lucide.createIcons();
+
+    // Restore Scenario Manager collapse state if saved
+    try {
+        const collapsed = localStorage.getItem(SCENARIO_MANAGER_COLLAPSED_KEY) === 'true';
+        // Restore without changing focus on initial page load
+        applyScenarioManagerCollapsed(collapsed, true);
+    } catch (err) {
+        // Ignore localStorage read errors
+    }
+
+    // When clicking the scenario manager link, expand and scroll into view
+    if (scenarioManagerLink) {
+        scenarioManagerLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Ensure expanded
+            applyScenarioManagerCollapsed(false);
+            // Update the location hash so this can be linked/shared, then smooth scroll
+            try {
+                history.pushState(null, null, '#scenario-manager');
+            } catch (err) {
+                // fallback: set directly
+                location.hash = '#scenario-manager';
+            }
+            const el = document.getElementById('scenario-manager');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }
+
+    // Setup toggle button for collapse behavior
+    if (scenarioManagerToggle && scenarioManagerBody) {
+        scenarioManagerToggle.addEventListener('click', () => {
+            const newCollapsed = !scenarioManagerBody.classList.contains('hidden');
+            applyScenarioManagerCollapsed(newCollapsed);
+        });
+    }
+
+    // Keyboard handling: close Scenario Manager with Escape when focus is inside the manager
+    document.addEventListener('keydown', (ev) => {
+        if (!scenarioManagerBody) return;
+        if (ev.key === 'Escape' || ev.key === 'Esc') {
+            if (
+                !scenarioManagerBody.classList.contains('hidden') &&
+                scenarioManagerBody.contains(document.activeElement)
+            ) {
+                applyScenarioManagerCollapsed(true);
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
+        }
+    });
+
+    // Ensure Import/Export buttons respect mobile/desktop layout
+    const importExportRow = document.querySelector('#scenario-manager .border-t > .flex');
+    const syncImportExportLayout = () => {
+        if (!importExportRow) return;
+        if (window.matchMedia('(min-width: 768px)').matches) {
+            importExportRow.style.flexDirection = 'row';
+        } else {
+            importExportRow.style.flexDirection = 'column';
+        }
+    };
+    // Initial sync & on resize
+    syncImportExportLayout();
+    window.addEventListener('resize', syncImportExportLayout);
+
+    // Expand the scenario manager if navigated directly via hash
+    if (location.hash === '#scenario-manager') {
+        applyScenarioManagerCollapsed(false);
+        const el = document.getElementById('scenario-manager');
+        if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    }
+    // If some other code changes the hash, open the scenario manager when requested
+    window.addEventListener('hashchange', () => {
+        if (location.hash === '#scenario-manager') {
+            applyScenarioManagerCollapsed(false);
+            const el = document.getElementById('scenario-manager');
+            if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+        }
+    });
 
     // (No JS fallback — use same CSS/markup pattern as FlexShift Z)
     // Init Theme
@@ -1371,8 +1844,246 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- Scenario Manager Event Listeners ---
+    if (btnSaveScenario) {
+        btnSaveScenario.addEventListener('click', () => {
+            const name = scenarioNameInput?.value?.trim();
+            saveScenario(name);
+            populateScenarioSelect();
+        });
+    }
+    if (scenarioSelect) {
+        scenarioSelect.addEventListener('change', (e) => {
+            const name = e.target.value;
+            if (name) loadScenario(name);
+        });
+    }
+    if (btnDeleteScenario) {
+        btnDeleteScenario.addEventListener('click', () => {
+            const name = scenarioSelect?.value;
+            if (!name) return showToast('Choose a scenario to delete', 'error');
+            deleteScenario(name);
+        });
+    }
+
+    // Import/Export Scenarios
+    const btnExportScenarios = document.getElementById('btn-export-scenarios');
+    const btnImportScenarios = document.getElementById('btn-import-scenarios');
+    const btnExportCurrentScenario = document.getElementById('btn-export-current-scenario');
+    const scenarioImportFile = document.getElementById('scenario-import-file');
+
+    if (btnExportScenarios) {
+        btnExportScenarios.addEventListener('click', exportScenarios);
+    }
+
+    if (btnExportCurrentScenario) {
+        btnExportCurrentScenario.addEventListener('click', exportCurrentScenario);
+    }
+
+    if (btnImportScenarios) {
+        btnImportScenarios.addEventListener('click', () => {
+            if (scenarioImportFile) scenarioImportFile.click();
+        });
+    }
+
+    if (scenarioImportFile) {
+        scenarioImportFile.addEventListener('change', (e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+                importScenarios(file);
+                // Reset file input
+                e.target.value = '';
+            }
+        });
+    }
+
+    // Visit Mix Sliders with 100% Cap Enforcement
+    const updateVisitMixSliders = (changedSlider) => {
+        let f = parseInt(visitmixFoundation?.value || 0, 10);
+        let s = parseInt(visitmixStandard?.value || 0, 10);
+        let p = parseInt(visitmixPremium?.value || 0, 10);
+        let e = parseInt(visitmixExpress?.value || 0, 10);
+
+        // Calculate total
+        let total = f + s + p + e;
+
+        // If total exceeds 100, reduce the others proportionally (excluding the changed slider)
+        if (total > 100) {
+            const excess = total - 100;
+
+            if (changedSlider === visitmixFoundation) {
+                // Reduce others
+                const otherTotal = s + p + e;
+                if (otherTotal > 0) {
+                    const factor = (100 - f) / otherTotal;
+                    s = Math.max(0, Math.round(s * factor));
+                    p = Math.max(0, Math.round(p * factor));
+                    e = Math.max(0, Math.round(e * factor));
+                }
+            } else if (changedSlider === visitmixStandard) {
+                const otherTotal = f + p + e;
+                if (otherTotal > 0) {
+                    const factor = (100 - s) / otherTotal;
+                    f = Math.max(0, Math.round(f * factor));
+                    p = Math.max(0, Math.round(p * factor));
+                    e = Math.max(0, Math.round(e * factor));
+                }
+            } else if (changedSlider === visitmixPremium) {
+                const otherTotal = f + s + e;
+                if (otherTotal > 0) {
+                    const factor = (100 - p) / otherTotal;
+                    f = Math.max(0, Math.round(f * factor));
+                    s = Math.max(0, Math.round(s * factor));
+                    e = Math.max(0, Math.round(e * factor));
+                }
+            } else if (changedSlider === visitmixExpress) {
+                const otherTotal = f + s + p;
+                if (otherTotal > 0) {
+                    const factor = (100 - e) / otherTotal;
+                    f = Math.max(0, Math.round(f * factor));
+                    s = Math.max(0, Math.round(s * factor));
+                    p = Math.max(0, Math.round(p * factor));
+                }
+            }
+
+            // Ensure we don't exceed 100 due to rounding
+            const newTotal = f + s + p + e;
+            if (newTotal > 100) {
+                // Reduce the largest non-changed value
+                if (changedSlider !== visitmixFoundation && f >= Math.max(s, p, e)) {
+                    f = Math.max(0, f - (newTotal - 100));
+                } else if (changedSlider !== visitmixStandard && s >= Math.max(f, p, e)) {
+                    s = Math.max(0, s - (newTotal - 100));
+                } else if (changedSlider !== visitmixPremium && p >= Math.max(f, s, e)) {
+                    p = Math.max(0, p - (newTotal - 100));
+                } else if (changedSlider !== visitmixExpress && e >= Math.max(f, s, p)) {
+                    e = Math.max(0, e - (newTotal - 100));
+                }
+            }
+        }
+
+        // Update slider values
+        if (visitmixFoundation) visitmixFoundation.value = f;
+        if (visitmixStandard) visitmixStandard.value = s;
+        if (visitmixPremium) visitmixPremium.value = p;
+        if (visitmixExpress) visitmixExpress.value = e;
+
+        // Update slider backgrounds to show fill
+        const updateSliderBackground = (slider, value) => {
+            if (slider) {
+                const percentage = value;
+                const colors = {
+                    'visitmix-foundation': { filled: '#854d0e', empty: '#e5e7eb' },
+                    'visitmix-standard': { filled: '#167a42', empty: '#e5e7eb' },
+                    'visitmix-premium': { filled: '#3cb06f', empty: '#e5e7eb' },
+                    'visitmix-express': { filled: '#f97316', empty: '#e5e7eb' },
+                };
+                const classNames = Array.from(slider.classList);
+                let colorSet = colors['visitmix-foundation'];
+                classNames.forEach((cn) => {
+                    if (colors[cn]) colorSet = colors[cn];
+                });
+                slider.style.background = `linear-gradient(to right, ${colorSet.filled} 0%, ${colorSet.filled} ${percentage}%, ${colorSet.empty} ${percentage}%, ${colorSet.empty} 100%)`;
+            }
+        };
+
+        updateSliderBackground(visitmixFoundation, f);
+        updateSliderBackground(visitmixStandard, s);
+        updateSliderBackground(visitmixPremium, p);
+        updateSliderBackground(visitmixExpress, e);
+
+        // Update value displays
+        const foundationValueEl = document.getElementById('visitmix-foundation-value');
+        const standardValueEl = document.getElementById('visitmix-standard-value');
+        const premiumValueEl = document.getElementById('visitmix-premium-value');
+        const expressValueEl = document.getElementById('visitmix-express-value');
+        const totalEl = document.getElementById('visitmix-total');
+        const errorEl = document.getElementById('visitmix-error');
+
+        if (foundationValueEl) foundationValueEl.textContent = `${f}%`;
+        if (standardValueEl) standardValueEl.textContent = `${s}%`;
+        if (premiumValueEl) premiumValueEl.textContent = `${p}%`;
+        if (expressValueEl) expressValueEl.textContent = `${e}%`;
+
+        const finalTotal = f + s + p + e;
+        if (totalEl) totalEl.textContent = `${finalTotal}%`;
+
+        // Show/hide error message
+        if (errorEl) {
+            if (finalTotal !== 100) {
+                errorEl.classList.remove('hidden');
+            } else {
+                errorEl.classList.add('hidden');
+            }
+        }
+
+        // Update chart
+        const arr = [f, s, p, e];
+        if (visitMixChart) {
+            visitMixChart.data.datasets[0].data = arr;
+            visitMixChart.data.labels = [
+                `Foundation (${f}%)`,
+                `Standard (${s}%)`,
+                `Premium (${p}%)`,
+                `Express (${e}%)`,
+            ];
+            visitMixChart.update();
+        }
+
+        // Persist to localStorage
+        try {
+            localStorage.setItem('selectedVisitMix', JSON.stringify(arr));
+        } catch (err) {
+            console.warn('Could not save visit mix', err);
+        }
+    };
+
+    [visitmixFoundation, visitmixStandard, visitmixPremium, visitmixExpress].forEach((el) => {
+        if (el) {
+            el.addEventListener('input', (e) => updateVisitMixSliders(e.target));
+        }
+    });
+
+    // Initialize slider backgrounds on page load
+    const initializeSliderBackgrounds = () => {
+        const sliders = [
+            { el: visitmixFoundation, color: '#854d0e' },
+            { el: visitmixStandard, color: '#167a42' },
+            { el: visitmixPremium, color: '#3cb06f' },
+            { el: visitmixExpress, color: '#f97316' },
+        ];
+        sliders.forEach(({ el, color }) => {
+            if (el) {
+                const value = parseInt(el.value, 10);
+                el.style.background = `linear-gradient(to right, ${color} 0%, ${color} ${value}%, #e5e7eb ${value}%, #e5e7eb 100%)`;
+            }
+        });
+    };
+    initializeSliderBackgrounds();
+
+    // Payroll Breakdown Toggle
+    if (togglePayrollBreakdown) {
+        togglePayrollBreakdown.addEventListener('change', (e) => {
+            const checked = e.target.checked;
+            if (payrollTableWrapper) payrollTableWrapper.classList.toggle('hidden-payroll', !checked);
+            try {
+                localStorage.setItem('selectedPayrollBreakdown', checked ? 'true' : 'false');
+            } catch (err) {
+                console.warn('Could not save payroll break state', err);
+            }
+        });
+    }
+
+    // Reset Defaults + Clear Scenarios
+    const btnResetDefaultsEl = document.getElementById('btn-reset-defaults');
+    if (btnResetDefaultsEl) btnResetDefaultsEl.addEventListener('click', resetDefaults);
+    const btnClearScenariosEl = document.getElementById('btn-clear-scenarios');
+    if (btnClearScenariosEl) btnClearScenariosEl.addEventListener('click', clearSavedScenarios);
+
     // Init Scroll Listeners (QoL)
     window.addEventListener('scroll', handleScroll);
+    // Run once to set initial state for back-to-top and quick links
+    handleScroll();
     navSections.forEach((section) => {
         if (section) navObserver.observe(section);
     });
@@ -1456,6 +2167,44 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
         updatePricingTable(0);
         console.warn('Could not read selectedPriceRate from localStorage', err);
+    }
+
+    // Init Scenario Select and Visit Mix / Payroll persisted UI state
+    populateScenarioSelect();
+    try {
+        const storedVisitMix = localStorage.getItem('selectedVisitMix');
+        if (storedVisitMix) {
+            const arr = JSON.parse(storedVisitMix);
+            if (Array.isArray(arr) && arr.length === 4) {
+                if (visitmixFoundation) visitmixFoundation.value = arr[0];
+                if (visitmixStandard) visitmixStandard.value = arr[1];
+                if (visitmixPremium) visitmixPremium.value = arr[2];
+                if (visitmixExpress) visitmixExpress.value = arr[3];
+                // Trigger update to refresh display
+                updateVisitMixSliders(null);
+            }
+        }
+    } catch (err) {
+        console.warn('Could not restore visitMix from localStorage', err);
+    }
+    try {
+        const storedPayroll = localStorage.getItem('selectedPayrollBreakdown');
+        const val = storedPayroll === 'true';
+        if (togglePayrollBreakdown) togglePayrollBreakdown.checked = val;
+        if (payrollTableWrapper) payrollTableWrapper.classList.toggle('hidden-payroll', !val);
+    } catch (err) {
+        console.warn('Could not restore selected payroll breakdown', err);
+    }
+    // If a scenario was last selected, load it
+    try {
+        const last = localStorage.getItem(STORAGE_LAST_SELECTED_SCENARIO);
+        if (last) {
+            loadScenario(last);
+            // Select in dropdown
+            if (scenarioSelect) scenarioSelect.value = last;
+        }
+    } catch (err) {
+        console.warn('Could not restore selected scenario', err);
     }
 
     // Render Charts

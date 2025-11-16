@@ -294,6 +294,23 @@ html.dark .nav-active {
     visibility: visible;
 }
 
+/* Quick access link to Scenario Manager - sits above Back to Top */
+#scenario-manager-link {
+    position: fixed;
+    bottom: 5.5rem; /* sits above the back-to-top button */
+    right: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+    z-index: 101; /* just above back-to-top */
+}
+#scenario-manager-link.show {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* Dynamic Payroll Table Styles */
 .dept-row th,
 .dept-row td {
@@ -345,4 +362,310 @@ html.dark .grand-total-row td {
 
 .animate-scaleOpen {
     animation: scaleOpen 0.25s ease-out forwards;
+}
+
+/* Hide payroll salary columns when toggled off */
+.hidden-payroll th:nth-child(5),
+.hidden-payroll th:nth-child(6),
+.hidden-payroll td:nth-child(5),
+.hidden-payroll td:nth-child(6) {
+    display: none;
+}
+
+/* Visit Mix Sliders */
+.visitmix-slider {
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+/* Visit Mix Grid Layout - Two columns on tablet/desktop */
+.visitmix-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .visitmix-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+}
+
+/* Legend grid - Two columns on tablet/desktop */
+.legend-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .legend-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.visitmix-slider::-webkit-slider-thumb,
+input[type='range'].visitmix-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.visitmix-slider::-webkit-slider-thumb:hover,
+input[type='range'].visitmix-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.visitmix-slider::-moz-range-thumb,
+input[type='range'].visitmix-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.visitmix-slider::-moz-range-thumb:hover,
+input[type='range'].visitmix-slider::-moz-range-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Foundation Slider Thumb (Wood Brown) */
+.visitmix-foundation::-webkit-slider-thumb,
+input[type='range'].visitmix-foundation::-webkit-slider-thumb {
+    background: #854d0e;
+}
+.visitmix-foundation::-moz-range-thumb,
+input[type='range'].visitmix-foundation::-moz-range-thumb {
+    background: #854d0e;
+}
+
+/* Standard Slider Thumb (Brand Base Green) */
+.visitmix-standard::-webkit-slider-thumb,
+input[type='range'].visitmix-standard::-webkit-slider-thumb {
+    background: #167a42;
+}
+.visitmix-standard::-moz-range-thumb,
+input[type='range'].visitmix-standard::-moz-range-thumb {
+    background: #167a42;
+}
+
+/* Premium Slider Thumb (Brand Light Green) */
+.visitmix-premium::-webkit-slider-thumb,
+input[type='range'].visitmix-premium::-webkit-slider-thumb {
+    background: #3cb06f;
+}
+.visitmix-premium::-moz-range-thumb,
+input[type='range'].visitmix-premium::-moz-range-thumb {
+    background: #3cb06f;
+}
+
+/* Express Slider Thumb (Brand Secondary Orange) */
+.visitmix-express::-webkit-slider-thumb,
+input[type='range'].visitmix-express::-webkit-slider-thumb {
+    background: #f97316;
+}
+.visitmix-express::-moz-range-thumb,
+input[type='range'].visitmix-express::-moz-range-thumb {
+    background: #f97316;
+}
+
+/* Dark mode adjustments for slider thumbs */
+html.dark .visitmix-slider::-webkit-slider-thumb {
+    border-color: #1f2937;
+}
+html.dark .visitmix-slider::-moz-range-thumb {
+    border-color: #1f2937;
+}
+
+/* Ensure visit mix thumb colors persist in dark mode */
+html.dark input[type='range'].visitmix-foundation::-webkit-slider-thumb,
+html.dark .visitmix-foundation::-webkit-slider-thumb {
+    background: #854d0e;
+}
+html.dark input[type='range'].visitmix-foundation::-moz-range-thumb,
+html.dark .visitmix-foundation::-moz-range-thumb {
+    background: #854d0e;
+}
+html.dark input[type='range'].visitmix-standard::-webkit-slider-thumb,
+html.dark .visitmix-standard::-webkit-slider-thumb {
+    background: #167a42;
+}
+html.dark input[type='range'].visitmix-standard::-moz-range-thumb,
+html.dark .visitmix-standard::-moz-range-thumb {
+    background: #167a42;
+}
+html.dark input[type='range'].visitmix-premium::-webkit-slider-thumb,
+html.dark .visitmix-premium::-webkit-slider-thumb {
+    background: #3cb06f;
+}
+html.dark input[type='range'].visitmix-premium::-moz-range-thumb,
+html.dark .visitmix-premium::-moz-range-thumb {
+    background: #3cb06f;
+}
+html.dark input[type='range'].visitmix-express::-webkit-slider-thumb,
+html.dark .visitmix-express::-webkit-slider-thumb {
+    background: #f97316;
+}
+html.dark input[type='range'].visitmix-express::-moz-range-thumb,
+html.dark .visitmix-express::-moz-range-thumb {
+    background: #f97316;
+}
+
+/* Visit Mix & Session Pricing Layout Optimization */
+/* Make chart container use available space better */
+.visitmix-chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    min-height: 200px; /* further reduced to minimize empty vertical space on desktop */
+}
+
+.visitmix-chart-container canvas {
+    max-width: 80%;
+    max-height: 350px;
+    object-fit: contain;
+}
+
+/* Scenario Manager cards: make child cards align to a consistent height and layout */
+.scenario-manager-controls > div {
+    /* Allow cards to size naturally and only push action row when needed */
+    min-height: 0; /* do not force a min-height anymore */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start; /* top-align content to avoid large gaps */
+}
+@media (min-width: 768px) {
+    .scenario-manager-controls > div {
+        min-height: 0; /* Avoid forcing tall heights on desktop */
+    }
+}
+.scenario-manager-summary-grid > div {
+    min-height: 0; /* don't force fixed min height; allow content to dictate height */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* top-align content to avoid vertical centering / empty space */
+}
+@media (min-width: 768px) {
+    .scenario-manager-summary-grid > div {
+        min-height: 6rem; /* reduced md+ summary card height to shrink desktop footprint */
+    }
+}
+
+.scenario-manager-controls input[type='text'],
+.scenario-manager-controls select {
+    min-width: 0; /* allow inputs/select to shrink inside flex containers */
+}
+
+.scenario-manager-controls button {
+    min-width: 80px; /* keep buttons tappable and readable */
+    white-space: nowrap;
+}
+
+.scenario-manager-controls .flex.mb-3 {
+    gap: 0.5rem;
+}
+
+/* Buttons inside scenario cards should expand to available space where appropriate */
+.scenario-manager-controls .flex {
+    width: 100%;
+}
+
+/* Ensure the last action row in each card is pushed to the bottom only if the card grows taller; prevents forcing card height */
+.scenario-manager-controls > div > .flex:last-child {
+    margin-top: auto;
+}
+
+/* Import/export card special case: keep buttons stacked for mobile while allowing horizontal layout on md */
+/* Import/export card: stacked on small screens, row on md+. Keep minimal vertical gaps by reducing padding */
+.scenario-manager-controls .border-t > .flex {
+    flex-direction: column !important;
+    gap: 0.5rem; /* small gap between stacked buttons to reduce overall vertical footprint */
+}
+@media (min-width: 768px) {
+    .scenario-manager-controls .border-t > .flex {
+        flex-direction: row !important;
+        gap: 0.75rem; /* small gap between horizontally aligned buttons */
+    }
+}
+
+/* Reduce padding in pricing section */
+.pricing-section {
+    padding: 0;
+    margin: 0;
+}
+
+/* Tighten spacing between section headers and pricing grids */
+.pricing-department h5 {
+    margin-bottom: 0.75rem;
+}
+
+.pricing-department {
+    margin-bottom: 1.5rem;
+}
+
+.pricing-department:last-child {
+    margin-bottom: 0;
+}
+
+/* Reduce gap in price grid for denser layout */
+.pricing-grid {
+    gap: 1rem;
+}
+
+/* Tighten legend spacing */
+.legend-grid {
+    margin-bottom: 1rem;
+}
+
+/* Toast notifications */
+#toast-container {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.toast {
+    background: #111827;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    font-size: 0.9rem;
+}
+.toast.success {
+    background: #0f766e;
+}
+.toast.error {
+    background: #991b1b;
+}
+.toast.info {
+    background: #2563eb;
+}
+.toast.hide {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
 }
