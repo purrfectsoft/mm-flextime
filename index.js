@@ -53,6 +53,7 @@ const showToast = (message, type = 'success', timeout = 3000) => {
 
 const STORAGE_SCENARIOS_KEY = 'flextime.scenarios';
 const STORAGE_LAST_SELECTED_SCENARIO = 'flextime.selectedScenario';
+const SCENARIO_MANAGER_COLLAPSED_KEY = 'flextime.scenarioManagerCollapsed';
 
 const getSavedScenarios = () => {
     try {
@@ -85,28 +86,7 @@ const populateScenarioSelect = () => {
     });
 };
 
-const getSnapshot = () => {
-    const priceRate = (() => {
-        const active = Array.from(priceToggleButtons).find((b) => b.getAttribute('aria-pressed') === 'true');
-        if (!active) return 0;
-        return parseInt(active.id.split('-')[2], 10) || 0;
-    })();
-    const visitMix = [
-        parseInt(visitmixFoundation?.value || 20, 10),
-        parseInt(visitmixStandard?.value || 50, 10),
-        parseInt(visitmixPremium?.value || 25, 10),
-        parseInt(visitmixExpress?.value || 5, 10),
-    ];
-    return {
-        selectedTier: parseInt(staffingSlider.value, 10),
-        selectedOccupancy: currentOccupancy,
-        occupancyLocked: isOccupancyLocked,
-        selectedPriceRate: priceRate,
-        visitMix: visitMix,
-        payrollBreakdown: !!togglePayrollBreakdown?.checked,
-        theme: currentTheme,
-    };
-};
+// (getSnapshot is declared earlier near the top of the file)
 
 const applySnapshot = (snap) => {
     if (!snap) return;
@@ -231,26 +211,20 @@ const exportScenarios = () => {
 };
 
 const exportCurrentScenario = () => {
-    const lastSelected = localStorage.getItem(STORAGE_LAST_SELECTED_SCENARIO);
-    if (!lastSelected) {
-        showToast('No scenario currently loaded. Load or save a scenario first.', 'error');
-        return;
-    }
-
-    const scenarios = getSavedScenarios();
-    const current = scenarios.find((s) => s.name === lastSelected);
-
-    if (!current) {
-        showToast('Current scenario not found', 'error');
-        return;
-    }
+    // Gather a snapshot of the current UI state and export it
+    const snap = getSnapshot();
+    const proposedName =
+        (scenarioNameInput?.value || '').trim() ||
+        localStorage.getItem(STORAGE_LAST_SELECTED_SCENARIO) ||
+        `Current-${new Date().toISOString().split('T')[0]}`;
+    const payload = { name: proposedName, createdAt: new Date().toISOString(), snapshot: snap };
 
     // Create single-scenario export
     const exportData = {
         version: '1.0',
         exportedAt: new Date().toISOString(),
         count: 1,
-        scenarios: [current],
+        scenarios: [payload],
     };
 
     const jsonString = JSON.stringify(exportData, null, 2);
@@ -258,13 +232,69 @@ const exportCurrentScenario = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `flextime-scenario-${current.name.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.json`;
+    link.download = `flextime-scenario-${payload.name.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    showToast(`Exported scenario: ${current.name}`);
+    showToast(`Exported current configuration: ${payload.name}`);
+};
+const getSnapshot = () => {
+    const priceRate = (() => {
+        const active = Array.from(priceToggleButtons).find((b) => b.getAttribute('aria-pressed') === 'true');
+        if (!active) return 0;
+        return parseInt(active.id.split('-')[2], 10) || 0;
+    })();
+    const visitMix = [
+        parseInt(visitmixFoundation?.value || 20, 10),
+        parseInt(visitmixStandard?.value || 50, 10),
+        parseInt(visitmixPremium?.value || 25, 10),
+        parseInt(visitmixExpress?.value || 5, 10),
+    ];
+    return {
+        selectedTier: parseInt(staffingSlider.value, 10),
+        selectedOccupancy: currentOccupancy,
+        occupancyLocked: isOccupancyLocked,
+        selectedPriceRate: priceRate,
+        visitMix: visitMix,
+        payrollBreakdown: !!togglePayrollBreakdown?.checked,
+        theme: currentTheme,
+    };
+};
+
+// Apply collapse/expand state for Scenario Manager
+const applyScenarioManagerCollapsed = (collapsed, skipFocus = false) => {
+    if (!scenarioManagerBody || !scenarioManagerToggle) return;
+    if (collapsed) {
+        scenarioManagerBody.classList.add('hidden');
+        scenarioManagerBody.setAttribute('aria-hidden', 'true');
+        scenarioManagerToggle.setAttribute('aria-expanded', 'false');
+        const icon = scenarioManagerToggle.querySelector('i');
+        if (icon) icon.setAttribute('data-lucide', 'chevron-down');
+        // Announce to screen readers and (optionally) focus the toggle
+        if (scenarioManagerLive) scenarioManagerLive.textContent = 'Scenario Manager collapsed';
+        if (!skipFocus) setTimeout(() => scenarioManagerToggle.focus(), 60);
+    } else {
+        scenarioManagerBody.classList.remove('hidden');
+        scenarioManagerBody.setAttribute('aria-hidden', 'false');
+        scenarioManagerToggle.setAttribute('aria-expanded', 'true');
+        const icon = scenarioManagerToggle.querySelector('i');
+        if (icon) icon.setAttribute('data-lucide', 'chevron-up');
+        // Announce to screen readers and (optionally) focus the first relevant control
+        if (scenarioManagerLive) scenarioManagerLive.textContent = 'Scenario Manager expanded';
+        if (!skipFocus)
+            setTimeout(() => {
+                if (scenarioNameInput) scenarioNameInput.focus();
+                else if (btnSaveScenario) btnSaveScenario.focus();
+            }, 120);
+    }
+    lucide.createIcons();
+    try {
+        localStorage.setItem(SCENARIO_MANAGER_COLLAPSED_KEY, collapsed ? 'true' : 'false');
+    } catch (err) {
+        // ignore storage write errors
+    }
 };
 
 const importScenarios = (file) => {
@@ -780,6 +810,11 @@ const scenarioNameInput = document.getElementById('scenario-name');
 const btnSaveScenario = document.getElementById('btn-save-scenario');
 const scenarioSelect = document.getElementById('scenario-select');
 const btnDeleteScenario = document.getElementById('btn-delete-scenario');
+const scenarioManagerToggle = document.getElementById('scenario-manager-toggle');
+const scenarioManagerBody = document.getElementById('scenario-manager-body');
+const scenarioManagerLink = document.getElementById('scenario-manager-link');
+// Optional live region to announce Scene Manager state changes to assistive tech
+const scenarioManagerLive = document.getElementById('scenario-manager-live');
 
 // Visit Mix Controls
 const visitmixFoundation = document.getElementById('visitmix-foundation');
@@ -1553,8 +1588,10 @@ const updateOccupancyMetrics = () => {
 const handleScroll = () => {
     if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
         backToTopBtn.classList.add('show');
+        if (scenarioManagerLink) scenarioManagerLink.classList.add('show');
     } else {
         backToTopBtn.classList.remove('show');
+        if (scenarioManagerLink) scenarioManagerLink.classList.remove('show');
     }
 };
 
@@ -1583,6 +1620,85 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Init Lucide icons
     lucide.createIcons();
+
+    // Restore Scenario Manager collapse state if saved
+    try {
+        const collapsed = localStorage.getItem(SCENARIO_MANAGER_COLLAPSED_KEY) === 'true';
+        // Restore without changing focus on initial page load
+        applyScenarioManagerCollapsed(collapsed, true);
+    } catch (err) {
+        // Ignore localStorage read errors
+    }
+
+    // When clicking the scenario manager link, expand and scroll into view
+    if (scenarioManagerLink) {
+        scenarioManagerLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Ensure expanded
+            applyScenarioManagerCollapsed(false);
+            // Update the location hash so this can be linked/shared, then smooth scroll
+            try {
+                history.pushState(null, null, '#scenario-manager');
+            } catch (err) {
+                // fallback: set directly
+                location.hash = '#scenario-manager';
+            }
+            const el = document.getElementById('scenario-manager');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }
+
+    // Setup toggle button for collapse behavior
+    if (scenarioManagerToggle && scenarioManagerBody) {
+        scenarioManagerToggle.addEventListener('click', () => {
+            const newCollapsed = !scenarioManagerBody.classList.contains('hidden');
+            applyScenarioManagerCollapsed(newCollapsed);
+        });
+    }
+
+    // Keyboard handling: close Scenario Manager with Escape when focus is inside the manager
+    document.addEventListener('keydown', (ev) => {
+        if (!scenarioManagerBody) return;
+        if (ev.key === 'Escape' || ev.key === 'Esc') {
+            if (
+                !scenarioManagerBody.classList.contains('hidden') &&
+                scenarioManagerBody.contains(document.activeElement)
+            ) {
+                applyScenarioManagerCollapsed(true);
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
+        }
+    });
+
+    // Ensure Import/Export buttons respect mobile/desktop layout
+    const importExportRow = document.querySelector('#scenario-manager .border-t > .flex');
+    const syncImportExportLayout = () => {
+        if (!importExportRow) return;
+        if (window.matchMedia('(min-width: 768px)').matches) {
+            importExportRow.style.flexDirection = 'row';
+        } else {
+            importExportRow.style.flexDirection = 'column';
+        }
+    };
+    // Initial sync & on resize
+    syncImportExportLayout();
+    window.addEventListener('resize', syncImportExportLayout);
+
+    // Expand the scenario manager if navigated directly via hash
+    if (location.hash === '#scenario-manager') {
+        applyScenarioManagerCollapsed(false);
+        const el = document.getElementById('scenario-manager');
+        if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    }
+    // If some other code changes the hash, open the scenario manager when requested
+    window.addEventListener('hashchange', () => {
+        if (location.hash === '#scenario-manager') {
+            applyScenarioManagerCollapsed(false);
+            const el = document.getElementById('scenario-manager');
+            if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+        }
+    });
 
     // (No JS fallback — use same CSS/markup pattern as FlexShift Z)
     // Init Theme
@@ -1966,6 +2082,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Init Scroll Listeners (QoL)
     window.addEventListener('scroll', handleScroll);
+    // Run once to set initial state for back-to-top and quick links
+    handleScroll();
     navSections.forEach((section) => {
         if (section) navObserver.observe(section);
     });

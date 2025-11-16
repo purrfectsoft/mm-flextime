@@ -294,6 +294,23 @@ html.dark .nav-active {
     visibility: visible;
 }
 
+/* Quick access link to Scenario Manager - sits above Back to Top */
+#scenario-manager-link {
+    position: fixed;
+    bottom: 5.5rem; /* sits above the back-to-top button */
+    right: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+    z-index: 101; /* just above back-to-top */
+}
+#scenario-manager-link.show {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* Dynamic Payroll Table Styles */
 .dept-row th,
 .dept-row td {
@@ -517,13 +534,76 @@ html.dark .visitmix-express::-moz-range-thumb {
     justify-content: center;
     align-items: center;
     flex: 1;
-    min-height: 350px;
+    min-height: 200px; /* further reduced to minimize empty vertical space on desktop */
 }
 
 .visitmix-chart-container canvas {
     max-width: 80%;
     max-height: 350px;
     object-fit: contain;
+}
+
+/* Scenario Manager cards: make child cards align to a consistent height and layout */
+.scenario-manager-controls > div {
+    /* Allow cards to size naturally and only push action row when needed */
+    min-height: 0; /* do not force a min-height anymore */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start; /* top-align content to avoid large gaps */
+}
+@media (min-width: 768px) {
+    .scenario-manager-controls > div {
+        min-height: 0; /* Avoid forcing tall heights on desktop */
+    }
+}
+.scenario-manager-summary-grid > div {
+    min-height: 0; /* don't force fixed min height; allow content to dictate height */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* top-align content to avoid vertical centering / empty space */
+}
+@media (min-width: 768px) {
+    .scenario-manager-summary-grid > div {
+        min-height: 6rem; /* reduced md+ summary card height to shrink desktop footprint */
+    }
+}
+
+.scenario-manager-controls input[type='text'],
+.scenario-manager-controls select {
+    min-width: 0; /* allow inputs/select to shrink inside flex containers */
+}
+
+.scenario-manager-controls button {
+    min-width: 80px; /* keep buttons tappable and readable */
+    white-space: nowrap;
+}
+
+.scenario-manager-controls .flex.mb-3 {
+    gap: 0.5rem;
+}
+
+/* Buttons inside scenario cards should expand to available space where appropriate */
+.scenario-manager-controls .flex {
+    width: 100%;
+}
+
+/* Ensure the last action row in each card is pushed to the bottom only if the card grows taller; prevents forcing card height */
+.scenario-manager-controls > div > .flex:last-child {
+    margin-top: auto;
+}
+
+/* Import/export card special case: keep buttons stacked for mobile while allowing horizontal layout on md */
+/* Import/export card: stacked on small screens, row on md+. Keep minimal vertical gaps by reducing padding */
+.scenario-manager-controls .border-t > .flex {
+    flex-direction: column !important;
+    gap: 0.5rem; /* small gap between stacked buttons to reduce overall vertical footprint */
+}
+@media (min-width: 768px) {
+    .scenario-manager-controls .border-t > .flex {
+        flex-direction: row !important;
+        gap: 0.75rem; /* small gap between horizontally aligned buttons */
+    }
 }
 
 /* Reduce padding in pricing section */
