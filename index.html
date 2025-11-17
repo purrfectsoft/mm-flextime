@@ -16,6 +16,8 @@
 
         <!-- Custom Styles -->
         <link rel="stylesheet" href="index.css?v=2.8.2-9ccc1cfd" />
+        <!-- Minimal i18n -->
+        <script src="scripts/i18n.js" defer></script>
     </head>
 
     <body
@@ -84,46 +86,55 @@
                     <nav class="hidden lg:flex items-center space-x-2 main-nav">
                         <a
                             href="#model"
+                            data-i18n="nav.service_model"
                             class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                             >Service Model</a
                         >
                         <a
                             href="#staffing-modeler"
+                            data-i18n="nav.staffing_modeler"
                             class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                             >Staffing Modeler</a
                         >
                         <a
                             href="#payroll-framework"
+                            data-i18n="nav.payroll"
                             class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                             >Payroll</a
                         >
                         <a
                             href="#projections"
+                            data-i18n="nav.capacity_modeler"
                             class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                             >Capacity Modeler</a
                         >
                         <a
                             href="#launch-projections"
+                            data-i18n="nav.launch_models"
                             class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                             >Launch Models</a
                         >
                         <a
                             href="#future-projections"
+                            data-i18n="nav.future_projections"
                             class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                             >Future Projections</a
                         >
                         <a
                             href="#access-care"
+                            data-i18n="nav.carebridge"
                             class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                             >CareBridge™</a
                         >
                         <a
                             href="#data-assumptions"
+                            data-i18n="nav.pricing"
                             class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                             >Pricing</a
                         >
                         <a
                             href="#data-tables"
+                            data-i18n="nav.core_data"
                             class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                             >Core Data</a
                         >
@@ -166,7 +177,7 @@
                         class="lg:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors"
                     >
                         <i data-lucide="menu" class="w-6 h-6"></i>
-                        <span class="sr-only">Open main menu</span>
+                        <span class="sr-only" data-i18n="nav.open_main_menu">Open main menu</span>
                     </button>
                 </div>
             </div>
@@ -179,46 +190,55 @@
                 <nav class="flex flex-col space-y-2 px-4 main-nav">
                     <a
                         href="#model"
+                        data-i18n="nav.service_model"
                         class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >Service Model</a
                     >
                     <a
                         href="#staffing-modeler"
+                        data-i18n="nav.staffing_modeler"
                         class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >Staffing Modeler</a
                     >
                     <a
                         href="#payroll-framework"
+                        data-i18n="nav.payroll"
                         class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >Payroll</a
                     >
                     <a
                         href="#projections"
+                        data-i18n="nav.capacity_modeler"
                         class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >Capacity Modeler</a
                     >
                     <a
                         href="#launch-projections"
+                        data-i18n="nav.launch_models"
                         class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >Launch Models</a
                     >
                     <a
                         href="#future-projections"
+                        data-i18n="nav.future_projections"
                         class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >Future Projections</a
                     >
                     <a
                         href="#access-care"
+                        data-i18n="nav.carebridge"
                         class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >CareBridge™</a
                     >
                     <a
                         href="#data-assumptions"
+                        data-i18n="nav.pricing"
                         class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >Pricing</a
                     >
                     <a
                         href="#data-tables"
+                        data-i18n="nav.core_data"
                         class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >Core Data</a
                     >
@@ -260,20 +280,29 @@
         <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
             <!-- Hero Section -->
             <section id="home" class="text-center mb-20 md:mb-24 pt-16">
-                <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-dark dark:text-brand-light mb-6">
+                <h1
+                    data-i18n="hero.h1"
+                    class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-dark dark:text-brand-light mb-6"
+                >
                     FlexTime™ Operations
                 </h1>
                 <h2 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-secondary mb-8">
-                    & Financial Model
+                    <span data-i18n="hero.h2">& Financial Model</span>
                 </h2>
                 <p class="lg:text-xl text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                    A strategic proposal for premium, accessible, and sustainable physiotherapy care in Bangladesh.
+                    <span data-i18n="hero.subtitle"
+                        >A strategic proposal for premium, accessible, and sustainable physiotherapy care in
+                        Bangladesh.</span
+                    >
                 </p>
             </section>
 
             <!-- Executive Overview -->
             <section id="overview" class="mb-20 pt-20">
-                <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">
+                <h3
+                    data-i18n="executive_overview.title"
+                    class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center"
+                >
                     Executive Overview
                 </h3>
                 <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center mb-10">
@@ -377,7 +406,10 @@
 
             <!-- FlexTime™ Service Model (UPDATED) -->
             <section id="model" class="mb-20 pt-20">
-                <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">
+                <h3
+                    data-i18n="section.model.title"
+                    class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center"
+                >
                     FlexTime™ Service Model
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -644,6 +676,7 @@
                                     <div>
                                         <label
                                             class="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-2"
+                                            data-i18n="scenario_manager.save_label"
                                         >
                                             <i data-lucide="plus-circle" class="w-4 h-4 inline mr-2"></i>
                                             Save Current Configuration as Scenario
@@ -652,11 +685,13 @@
                                             <input
                                                 id="scenario-name"
                                                 type="text"
+                                                data-i18n-placeholder="scenario_manager.save_placeholder"
                                                 placeholder="e.g., Conservative Growth, Aggressive Expansion..."
                                                 class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm placeholder-gray-500 dark:placeholder-gray-400"
                                             />
                                             <button
                                                 id="btn-save-scenario"
+                                                data-i18n="buttons.save"
                                                 class="bg-brand-base hover:bg-brand-light dark:bg-brand-light dark:hover:bg-brand-base text-white dark:text-brand-dark px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
                                             >
                                                 <i data-lucide="save" class="w-4 h-4 inline mr-2"></i>
@@ -669,6 +704,7 @@
                                     <div>
                                         <label
                                             class="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-2"
+                                            data-i18n="scenario_manager.load_label"
                                         >
                                             <i data-lucide="folder-open" class="w-4 h-4 inline mr-2"></i>
                                             Load Saved Scenario
@@ -682,6 +718,7 @@
                                             </select>
                                             <button
                                                 id="btn-delete-scenario"
+                                                data-i18n="buttons.delete"
                                                 class="bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
                                             >
                                                 <i data-lucide="trash-2" class="w-4 h-4 inline mr-2"></i>
@@ -703,6 +740,7 @@
                                         <div class="flex gap-2 mb-3">
                                             <button
                                                 id="btn-export-scenarios"
+                                                data-i18n="buttons.export_all"
                                                 class="flex-1 bg-brand-base hover:bg-brand-light dark:bg-brand-light dark:hover:bg-brand-base text-white dark:text-brand-dark px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center"
                                             >
                                                 <i data-lucide="download" class="w-4 h-4 inline mr-2"></i>
@@ -710,6 +748,7 @@
                                             </button>
                                             <button
                                                 id="btn-import-scenarios"
+                                                data-i18n="buttons.import"
                                                 class="flex-1 bg-brand-secondary hover:bg-brand-secondary-light dark:bg-brand-secondary-light dark:hover:bg-brand-secondary text-white dark:text-brand-dark px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center"
                                             >
                                                 <i data-lucide="upload" class="w-4 h-4 inline mr-2"></i>
@@ -725,6 +764,7 @@
                                         <div class="flex gap-2">
                                             <button
                                                 id="btn-export-current-scenario"
+                                                data-i18n="buttons.export_current"
                                                 class="flex-1 bg-gray-600 hover:bg-gray-700 dark:bg-gray-600 dark:hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center"
                                                 title="Export current configuration (even if unsaved)"
                                             >
@@ -746,6 +786,7 @@
                                         </label>
                                         <button
                                             id="btn-reset-defaults"
+                                            data-i18n="buttons.reset"
                                             class="bg-orange-100 dark:bg-orange-900/30 hover:bg-orange-200 dark:hover:bg-orange-900/50 text-orange-700 dark:text-orange-400 px-4 py-2 rounded-lg text-sm font-semibold transition-colors border border-orange-300 dark:border-orange-700"
                                         >
                                             <i data-lucide="rotate-ccw" class="w-4 h-4 inline mr-2"></i>
@@ -753,6 +794,7 @@
                                         </button>
                                         <button
                                             id="btn-clear-scenarios"
+                                            data-i18n="buttons.clear"
                                             class="bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 px-4 py-2 rounded-lg text-sm font-semibold transition-colors border border-red-300 dark:border-red-700"
                                         >
                                             <i data-lucide="alert-circle" class="w-4 h-4 inline mr-2"></i>
@@ -776,7 +818,10 @@
                 <div
                     class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
                 >
-                    <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-2 text-center">
+                    <h3
+                        data-i18n="staffing.title"
+                        class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-2 text-center"
+                    >
                         Interactive Staffing Tier Modeler
                     </h3>
                     <p class="text-center text-gray-600 dark:text-gray-400 mb-2 max-w-2xl mx-auto">
@@ -1045,7 +1090,10 @@
 
             <!-- Dynamic Payroll Framework (NEW) -->
             <section id="payroll-framework" class="mb-20 pt-20">
-                <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">
+                <h3
+                    data-i18n="payroll.title"
+                    class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center"
+                >
                     Dynamic Payroll Framework
                 </h3>
                 <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
@@ -1151,6 +1199,7 @@
                                 <span
                                     id="occupancy-recommendation"
                                     class="lg:text-sm text-[8px] font-medium bg-brand-extralight text-brand-base dark:bg-brand-dark/50 dark:text-brand-light lg:px-3 px-2 py-1 rounded-full"
+                                    data-i18n="occupancy.recommended"
                                 >
                                     Recommended for Tier 2
                                 </span>
@@ -1204,7 +1253,9 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                         <!-- Daily Revenue -->
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                            <span class="lg:text-sm text-xs text-gray-600 dark:text-gray-300 font-medium"
+                            <span
+                                data-i18n="financial.daily_revenue"
+                                class="lg:text-sm text-xs text-gray-600 dark:text-gray-300 font-medium"
                                 >Daily Revenue</span
                             >
                             <div id="daily-revenue" class="lg:text-3xl text-xl font-bold text-brand-secondary-light">
@@ -1214,7 +1265,9 @@
                         </div>
                         <!-- Monthly Revenue -->
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                            <span class="lg:text-sm text-xs text-gray-600 dark:text-gray-300 font-medium"
+                            <span
+                                data-i18n="financial.monthly_revenue"
+                                class="lg:text-sm text-xs text-gray-600 dark:text-gray-300 font-medium"
                                 >Monthly Revenue</span
                             >
                             <div id="monthly-revenue" class="lg:text-3xl text-xl font-bold text-brand-secondary">
@@ -1224,7 +1277,9 @@
                         </div>
                         <!-- Monthly Profit -->
                         <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                            <span class="lg:text-sm text-xs text-brand-base dark:text-brand-light font-medium"
+                            <span
+                                data-i18n="financial.monthly_profit"
+                                class="lg:text-sm text-xs text-brand-base dark:text-brand-light font-medium"
                                 >Monthly Profit</span
                             >
                             <div
@@ -1237,7 +1292,9 @@
                         </div>
                         <!-- Monthly Profit % -->
                         <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                            <span class="lg:text-sm text-xs text-brand-base dark:text-brand-light font-medium"
+                            <span
+                                data-i18n="financial.profit_margin"
+                                class="lg:text-sm text-xs text-brand-base dark:text-brand-light font-medium"
                                 >Profit Margin</span
                             >
                             <div
@@ -1250,7 +1307,9 @@
                         </div>
                         <!-- Annual Revenue -->
                         <div class="col-span-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                            <span class="lg:text-sm text-xs text-gray-600 dark:text-gray-300 font-medium"
+                            <span
+                                data-i18n="financial.annual_revenue"
+                                class="lg:text-sm text-xs text-gray-600 dark:text-gray-300 font-medium"
                                 >Annual Revenue</span
                             >
                             <div
@@ -1263,7 +1322,9 @@
                         </div>
                         <!-- Annual Profit -->
                         <div class="col-span-2 bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                            <span class="lg:text-sm text-xs text-brand-base dark:text-brand-light font-medium"
+                            <span
+                                data-i18n="financial.annual_profit"
+                                class="lg:text-sm text-xs text-brand-base dark:text-brand-light font-medium"
                                 >Annual Profit (vs Payroll)</span
                             >
                             <div
@@ -1280,7 +1341,10 @@
 
             <!-- Visit Mix & Session Pricing (relocated after Capacity Modeler) -->
             <section id="data-assumptions" class="mb-20 pt-20">
-                <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">
+                <h3
+                    data-i18n="data_assumptions.title"
+                    class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center"
+                >
                     Expected Visit Mix & Session Pricing
                 </h3>
 
@@ -1300,7 +1364,9 @@
                                 <!-- Foundation Slider (Wood Brown) -->
                                 <div>
                                     <div class="flex justify-between items-center mb-2">
-                                        <label class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                                        <label
+                                            data-i18n="pricing.foundation"
+                                            class="text-sm font-semibold text-gray-700 dark:text-gray-300"
                                             >Foundation</label
                                         >
                                         <span
@@ -1321,7 +1387,9 @@
                                 <!-- Standard Slider (Brand Base) -->
                                 <div>
                                     <div class="flex justify-between items-center mb-2">
-                                        <label class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                                        <label
+                                            data-i18n="pricing.standard"
+                                            class="text-sm font-semibold text-gray-700 dark:text-gray-300"
                                             >Standard</label
                                         >
                                         <span
@@ -1342,7 +1410,9 @@
                                 <!-- Premium Slider (Brand Light) -->
                                 <div>
                                     <div class="flex justify-between items-center mb-2">
-                                        <label class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                                        <label
+                                            data-i18n="pricing.premium"
+                                            class="text-sm font-semibold text-gray-700 dark:text-gray-300"
                                             >Premium</label
                                         >
                                         <span
@@ -1519,7 +1589,9 @@
                                     <div
                                         class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center"
                                     >
-                                        <span class="text-xs text-brand-secondary">Express (C)</span>
+                                        <span data-i18n="pricing.express" class="text-xs text-brand-secondary"
+                                            >Express (C)</span
+                                        >
                                         <div id="price-neuro-express" class="font-bold text-lg text-brand-secondary">
                                             1000
                                         </div>
@@ -2240,7 +2312,8 @@
         <footer class="bg-brand-dark dark:bg-black mt-20">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
                 <p class="text-brand-light dark:text-gray-400">
-                    &copy; <span id="footer-year"></span> Motion Mechanics & Purrfect Universe. All rights reserved.
+                    &copy; <span id="footer-year"></span>
+                    <span data-i18n="footer.copy">Motion Mechanics & Purrfect Universe</span>. All rights reserved.
                 </p>
                 <p class="text-sm text-brand-light/70 dark:text-gray-500 mt-1">Strategic Proposal Microsite v2.8.2</p>
             </div>

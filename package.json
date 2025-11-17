@@ -4,6 +4,7 @@
     "description": "Motion Mechanics FlexTime™ Operations & Financial Model Interactive Microsite",
     "type": "module",
     "scripts": {
+        "i18n:extract": "node scripts/extract-strings.cjs",
         "version": "npm run format:fix && node scripts/update-hashes.js && git add index.html",
         "postversion": "git push && git push --tags",
         "deploy": "node scripts/deploy.js",

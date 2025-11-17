@@ -77,7 +77,7 @@ const populateScenarioSelect = () => {
     if (!scenarioSelect) return;
     const scenarios = getSavedScenarios();
     // Reset select
-    scenarioSelect.innerHTML = '<option value="">Load Scenario...</option>';
+    scenarioSelect.innerHTML = `<option value="">${t('scenario_manager.load_placeholder')}</option>`;
     scenarios.forEach((s) => {
         const opt = document.createElement('option');
         opt.value = s.name;
@@ -132,7 +132,7 @@ const applySnapshot = (snap) => {
 
 const saveScenario = (name) => {
     if (!name) {
-        showToast('Please provide a name for the scenario', 'error');
+        showToast(t('toasts.provide_name'), 'error');
         return;
     }
     const snap = getSnapshot();
@@ -148,7 +148,7 @@ const saveScenario = (name) => {
     populateScenarioSelect();
     localStorage.setItem(STORAGE_LAST_SELECTED_SCENARIO, name);
     if (scenarioSelect) scenarioSelect.value = name;
-    showToast(`Saved scenario: ${name}`);
+    showToast(t('toasts.saved_scenario', { name }));
 };
 
 const loadScenario = (name) => {
@@ -156,12 +156,12 @@ const loadScenario = (name) => {
     const scenarios = getSavedScenarios();
     const s = scenarios.find((sc) => sc.name === name);
     if (!s) {
-        showToast(`Scenario not found: ${name}`, 'error');
+        showToast(t('toasts.scenario_not_found', { name }), 'error');
         return;
     }
     applySnapshot(s.snapshot);
     localStorage.setItem(STORAGE_LAST_SELECTED_SCENARIO, name);
-    showToast(`Loaded scenario: ${name}`);
+    showToast(t('toasts.loaded_scenario', { name }));
 };
 
 const deleteScenario = (name) => {
@@ -175,13 +175,13 @@ const deleteScenario = (name) => {
     if (scenarioSelect) {
         scenarioSelect.value = '';
     }
-    showToast(`Deleted scenario: ${name}`);
+    showToast(t('toasts.deleted_scenario', { name }));
 };
 
 const exportScenarios = () => {
     const scenarios = getSavedScenarios();
     if (scenarios.length === 0) {
-        showToast('No scenarios to export', 'error');
+        showToast(t('toasts.no_scenarios_export'), 'error');
         return;
     }
 
@@ -207,7 +207,7 @@ const exportScenarios = () => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    showToast(`Exported ${scenarios.length} scenario(s)`);
+    showToast(t('toasts.exported_count', { count: scenarios.length }));
 };
 
 const exportCurrentScenario = () => {
@@ -238,7 +238,7 @@ const exportCurrentScenario = () => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    showToast(`Exported current configuration: ${payload.name}`);
+    showToast(t('toasts.exported_current', { name: payload.name }));
 };
 const getSnapshot = () => {
     const priceRate = (() => {
@@ -273,7 +273,7 @@ const applyScenarioManagerCollapsed = (collapsed, skipFocus = false) => {
         const icon = scenarioManagerToggle.querySelector('i');
         if (icon) icon.setAttribute('data-lucide', 'chevron-down');
         // Announce to screen readers and (optionally) focus the toggle
-        if (scenarioManagerLive) scenarioManagerLive.textContent = 'Scenario Manager collapsed';
+        if (scenarioManagerLive) scenarioManagerLive.textContent = t('scenario_manager.aria_collapsed');
         if (!skipFocus) setTimeout(() => scenarioManagerToggle.focus(), 60);
     } else {
         scenarioManagerBody.classList.remove('hidden');
@@ -282,7 +282,7 @@ const applyScenarioManagerCollapsed = (collapsed, skipFocus = false) => {
         const icon = scenarioManagerToggle.querySelector('i');
         if (icon) icon.setAttribute('data-lucide', 'chevron-up');
         // Announce to screen readers and (optionally) focus the first relevant control
-        if (scenarioManagerLive) scenarioManagerLive.textContent = 'Scenario Manager expanded';
+        if (scenarioManagerLive) scenarioManagerLive.textContent = t('scenario_manager.aria_expanded');
         if (!skipFocus)
             setTimeout(() => {
                 if (scenarioNameInput) scenarioNameInput.focus();
@@ -307,7 +307,7 @@ const importScenarios = (file) => {
 
             // Validate structure
             if (!Array.isArray(importData.scenarios)) {
-                showToast('Invalid file format: missing scenarios array', 'error');
+                showToast(t('toasts.import_invalid_format'), 'error');
                 return;
             }
 
@@ -340,20 +340,18 @@ const importScenarios = (file) => {
             populateScenarioSelect();
 
             if (importedCount > 0) {
-                showToast(
-                    `Imported ${importedCount} scenario(s)${skippedCount > 0 ? ` (${skippedCount} skipped - already exist)` : ''}`
-                );
+                showToast(t('toasts.imported_some', { count: importedCount }));
             } else {
-                showToast(`No new scenarios imported (${skippedCount} already exist)`, 'info');
+                showToast(t('toasts.no_new_scenarios_imported', { skipped: skippedCount }));
             }
         } catch (err) {
             console.error('Import error:', err);
-            showToast('Error importing scenarios: Invalid JSON', 'error');
+            showToast(t('toasts.import_error_json'), 'error');
         }
     };
 
     reader.onerror = () => {
-        showToast('Error reading file', 'error');
+        showToast(t('toasts.error_reading_file'), 'error');
     };
 
     reader.readAsText(file);
@@ -389,7 +387,7 @@ const resetDefaults = () => {
     } catch (err) {
         console.warn('Could not clear persisted defaults', err);
     }
-    showToast('Reset to defaults');
+    showToast(t('toasts.reset_defaults'));
 };
 
 const clearSavedScenarios = () => {
@@ -397,10 +395,10 @@ const clearSavedScenarios = () => {
         localStorage.removeItem(STORAGE_SCENARIOS_KEY);
         localStorage.removeItem(STORAGE_LAST_SELECTED_SCENARIO);
         populateScenarioSelect();
-        showToast('Cleared saved scenarios');
+        showToast(t('toasts.cleared_saved_scenarios'));
     } catch (err) {
         console.warn('Could not clear scenarios', err);
-        showToast('Error clearing saved scenarios', 'error');
+        showToast(t('toasts.error_clearing_saved_scenarios'), 'error');
     }
 };
 
@@ -1822,7 +1820,7 @@ document.addEventListener('DOMContentLoaded', () => {
         occupancyLockToggle.setAttribute('aria-pressed', isOccupancyLocked ? 'true' : 'false');
         occupancyLockToggle.setAttribute(
             'title',
-            isOccupancyLocked ? 'Unlock occupancy (it remains saved)' : 'Lock occupancy (persisted across refreshes)'
+            isOccupancyLocked ? t('occupancy.lock.title.locked') : t('occupancy.lock.title.unlocked')
         );
     });
 
@@ -1839,7 +1837,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             // Update UI note
             if (priceToggleNoteEl) {
-                priceToggleNoteEl.textContent = 'Saved: Selected pricing will persist across refreshes.';
+                priceToggleNoteEl.textContent = t('toasts.saved_pricing_persist');
             }
         });
     });
@@ -1861,7 +1859,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnDeleteScenario) {
         btnDeleteScenario.addEventListener('click', () => {
             const name = scenarioSelect?.value;
-            if (!name) return showToast('Choose a scenario to delete', 'error');
+            if (!name) return showToast(t('toasts.choose_scenario_delete'), 'error');
             deleteScenario(name);
         });
     }
@@ -2162,7 +2160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 priceToggleNoteEl.textContent = 'Saved: Selected pricing will persist across refreshes.';
         } else {
             updatePricingTable(0); // Full Price
-            if (priceToggleNoteEl) priceToggleNoteEl.textContent = 'Default: Full Price';
+            if (priceToggleNoteEl) priceToggleNoteEl.textContent = t('pricing.default_full_price');
         }
     } catch (err) {
         updatePricingTable(0);
@@ -2217,6 +2215,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reflect persisted lock note state and run initial launch projection calc
     updateOccupancyLockNote();
     updateLaunchProjections();
+    // Ensure translations are applied to any dynamically updated nodes
+    if (window.i18n && typeof window.i18n.apply === 'function') {
+        try {
+            window.i18n.apply(document);
+        } catch (e) {
+            /* ignore */
+        }
+    }
 });
 
 // Helper for updating occupancy lock helper text
@@ -2224,14 +2230,11 @@ function updateOccupancyLockNote() {
     if (!occupancyLockNoteEl) return;
     if (isOccupancyLocked) {
         if (autoLockedOnRestore) {
-            occupancyLockNoteEl.textContent =
-                'Locked — occupancy was restored from your previous session and locked to preserve your selection. Toggle to unlock.';
+            occupancyLockNoteEl.textContent = t('occupancy.lock.note.restored');
         } else {
-            occupancyLockNoteEl.textContent =
-                'Locked — occupancy will not change when switching tiers. This setting is saved and will persist across refreshes.';
+            occupancyLockNoteEl.textContent = t('occupancy.lock.note.saved');
         }
     } else {
-        occupancyLockNoteEl.textContent =
-            "Unlocked — occupancy resets to this tier's default capacity when switching tiers.";
+        occupancyLockNoteEl.textContent = t('occupancy.lock.note.unlocked');
     }
 }
