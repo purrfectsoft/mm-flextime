@@ -3,36 +3,61 @@
     const i18n = {
         lang: 'en',
         translations: {},
+        // `init` returns a promise and sets `ready` to a Promise that resolves when translations are loaded.
         async init({ defaultLang = 'en', path = '/locales' } = {}) {
             this.lang = defaultLang;
-            try {
-                const resp = await fetch(`${path}/${this.lang}.json`);
-                if (!resp.ok) {
-                    console.warn('Could not load locale', resp.status);
-                    return;
+            this.ready = (async () => {
+                try {
+                    const resp = await fetch(`${path}/${this.lang}.json`);
+                    if (!resp.ok) {
+                        console.warn('Could not load locale', resp.status);
+                    } else {
+                        this.translations = await resp.json();
+                    }
+                } catch (err) {
+                    console.error('i18n init error', err);
                 }
-                this.translations = await resp.json();
-            } catch (err) {
-                console.error('i18n init error', err);
-            }
-            this.apply();
-            // Expose t globally for convenience
-            window.t = this.t.bind(this);
-            window.i18n = this;
+                // Apply to document once loaded (if possible)
+                try {
+                    this.apply();
+                    // Emit a global event so callers can react when i18n finishes loading
+                    try {
+                        window.dispatchEvent(new CustomEvent('i18n-ready', { detail: { lang: this.lang } }));
+                    } catch (e) {
+                        /* ignore */
+                    }
+                } catch (e) {
+                    /* ignore */
+                }
+                // Expose t globally for convenience
+                window.t = this.t.bind(this);
+                window.i18n = this;
+                return true;
+            })();
+            return this.ready;
         },
         async setLang(lang, { path = '/locales' } = {}) {
             this.lang = lang;
-            try {
-                const resp = await fetch(`${path}/${this.lang}.json`);
-                if (!resp.ok) {
-                    console.warn('Could not load locale', resp.status);
-                    return;
+            this.ready = (async () => {
+                try {
+                    const resp = await fetch(`${path}/${this.lang}.json`);
+                    if (!resp.ok) {
+                        console.warn('Could not load locale', resp.status);
+                    } else {
+                        this.translations = await resp.json();
+                    }
+                    this.apply();
+                    try {
+                        window.dispatchEvent(new CustomEvent('i18n-ready', { detail: { lang: this.lang } }));
+                    } catch (e) {
+                        /* ignore */
+                    }
+                } catch (err) {
+                    console.error('i18n setLang error', err);
                 }
-                this.translations = await resp.json();
-                this.apply();
-            } catch (err) {
-                console.error('i18n setLang error', err);
-            }
+                return true;
+            })();
+            return this.ready;
         },
         t(key, vars) {
             if (!key) return '';
@@ -80,11 +105,19 @@
         },
     };
 
-    // Provide a fallback t function early so other scripts don't break (returns key by default)
-    window.t = window.t || ((k) => k);
-    window.i18n = window.i18n || {};
+    // Set the i18n object on the window immediately and expose a t() bound to it.
+    // This ensures other scripts that execute during DOMContentLoaded can
+    // reliably detect `window.i18n.ready` and attach callbacks.
+    window.i18n = window.i18n || i18n;
+    window.t = window.t || i18n.t.bind(i18n);
     window.addEventListener('DOMContentLoaded', () => {
-        // Auto-init with default English
-        if (!window.i18n) i18n.init({ defaultLang: 'en', path: '/locales' });
+        // Auto-init with default English if no ready promise exists. `init` sets
+        // `i18n.ready` Promise synchronously so other scripts can attach `.then()` handlers.
+        if (!window.i18n.ready) {
+            i18n.init({ defaultLang: 'en', path: 'locales' });
+            // Re-bind global helpers in case they were overridden earlier by other scripts
+            window.i18n = window.i18n || i18n;
+            window.t = window.t || i18n.t.bind(i18n);
+        }
     });
 })();

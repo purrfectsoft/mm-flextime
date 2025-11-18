@@ -2269,13 +2269,100 @@ document.addEventListener('DOMContentLoaded', () => {
     updateOccupancyLockNote();
     updateLaunchProjections();
     // Ensure translations are applied to any dynamically updated nodes
-    if (window.i18n && typeof window.i18n.apply === 'function') {
+    // Re-apply translations and re-run dynamic UI updates once i18n is ready.
+    const _applyTranslationsAndRefreshUI = () => {
         try {
-            window.i18n.apply(document);
+            // Apply any data-i18n attributes
+            if (window.i18n && typeof window.i18n.apply === 'function') window.i18n.apply(document);
+        } catch (e) {
+            /* ignore */
+        }
+
+        // Re-run dynamic operations that use t() directly so they get updated values
+        try {
+            populateScenarioSelect();
+        } catch (e) {
+            /* ignore */
+        }
+        try {
+            updateStaffingTier(initialTier);
+        } catch (e) {
+            /* ignore */
+        }
+        try {
+            updateOccupancyMetrics();
+        } catch (e) {
+            /* ignore */
+        }
+        try {
+            updateVisitMixSliders(null);
+        } catch (e) {
+            /* ignore */
+        }
+        try {
+            if (visitMixChart) renderVisitMixChart();
+            if (staffingTierChart) renderStaffingTierChart();
+        } catch (e) {
+            /* ignore */
+        }
+        try {
+            updateModelAssumptions(initialTier);
+        } catch (e) {
+            /* ignore */
+        }
+        try {
+            // Refresh pricing table text & note
+            const storedRate = (() => {
+                try {
+                    return localStorage.getItem('selectedPriceRate');
+                } catch (e) {
+                    return null;
+                }
+            })();
+            const discount =
+                storedRate !== null && !Number.isNaN(parseInt(storedRate, 10)) ? parseInt(storedRate, 10) / 100 : 0;
+            updatePricingTable(discount);
+            if (priceToggleNoteEl) {
+                priceToggleNoteEl.textContent =
+                    storedRate !== null ? t('toasts.saved_pricing_persist') : t('pricing.default_full_price');
+            }
+        } catch (e) {
+            /* ignore */
+        }
+        try {
+            // Ensure any helper text updated by these helpers reflect the current translations
+            applyScenarioManagerCollapsed(
+                scenarioManagerBody && scenarioManagerBody.classList.contains('hidden'),
+                true
+            );
+        } catch (e) {
+            /* ignore */
+        }
+        try {
+            updateOccupancyLockNote();
+        } catch (e) {
+            /* ignore */
+        }
+        try {
+            updateDynamicPayrollTable(initialTier);
+        } catch (e) {
+            /* ignore */
+        }
+    };
+
+    if (window.i18n && window.i18n.ready && typeof window.i18n.apply === 'function') {
+        try {
+            window.i18n.ready.then(_applyTranslationsAndRefreshUI);
         } catch (e) {
             /* ignore */
         }
     }
+
+    // Fallback: the i18n loader emits a global event `i18n-ready` to ensure we can
+    // attach listeners even if a script loaded early or late.
+    window.addEventListener('i18n-ready', () => {
+        _applyTranslationsAndRefreshUI();
+    });
 });
 
 // Helper for updating occupancy lock helper text
