@@ -6,7 +6,6 @@
     "scripts": {
         "start": "python -m http.server 5500",
         "i18n:validate": "node scripts/validate-locales.cjs",
-        "i18n:curate": "node scripts/curate-locales.cjs",
         "i18n:curate:apply": "node scripts/curate-locales.cjs --auto-promote --apply",
         "i18n:extract": "node scripts/extract-strings.cjs",
         "version": "npm run format:fix && node scripts/update-hashes.js && git add index.html",
@@ -16,10 +15,7 @@
         "format": "prettier --check .",
         "format:fix": "prettier --write .",
         "test:e2e": "npx playwright test",
-        "ci:e2e": "npm run i18n:validate && npx playwright test --project=chromium",
-        "i18n:list-auto": "node scripts/list-auto-keys.cjs",
-        "i18n:propose-curations": "node scripts/propose-curations.cjs",
-        "i18n:prune-auto": "node scripts/prune-auto-duplicates.cjs"
+        "ci:e2e": "npm run i18n:validate && npx playwright test --project=chromium"
     },
     "dependencies": {
         "dotenv": "^17.2.3"
