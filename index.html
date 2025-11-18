@@ -45,6 +45,7 @@
                                 src="assets/images/pu-logo-tp-wide.png"
                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                                 alt="Purrfect Universe Logo"
+                                data-i18n="logo.alt.pu"
                                 class="h-10 object-cover origin-left"
                                 style="width: auto; aspect-ratio: 860/345"
                             />
@@ -65,12 +66,14 @@
                                 src="assets/images/mm-logo-tp-dark.png"
                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                                 alt="Motion Mechanics Logo"
+                                data-i18n="logo.alt.mm"
                                 class="h-full w-full object-contain dark:block hidden"
                             />
                             <img
                                 src="assets/images/mm-logo-tp.png"
                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                                 alt="Motion Mechanics Logo"
+                                data-i18n="logo.alt.mm"
                                 class="h-full w-full object-contain dark:hidden block"
                             />
                             <div
@@ -305,7 +308,10 @@
                 >
                     Executive Overview
                 </h3>
-                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center mb-10">
+                <p
+                    data-i18n-html="executive_overview.p1"
+                    class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center mb-10"
+                >
                     Motion Mechanics introduces
                     <strong class="font-bold text-brand-secondary">FlexTime™</strong>, a modern framework for
                     high-quality, sustainable care. Our system integrates five core pillars:
@@ -320,10 +326,13 @@
                             data-lucide="zap"
                             class="w-10 h-10 text-brand-secondary mb-4 group-hover:scale-110 transition-transform"
                         ></i>
-                        <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">
+                        <h4
+                            data-i18n="pillars.operations.title"
+                            class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+                        >
                             Multi-Shift Operations
                         </h4>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <p data-i18n-html="pillars.operations.desc" class="text-gray-600 dark:text-gray-400">
                             Structured shifts (Z, A, B, C), including the
                             <strong class="text-brand-wood dark:text-brand-wood">Nightfall FlexLab™</strong>, to expand
                             access for all patient schedules.
@@ -338,10 +347,13 @@
                             data-lucide="package-plus"
                             class="w-10 h-10 text-brand-wood mb-4 group-hover:scale-110 transition-transform"
                         ></i>
-                        <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">
+                        <h4
+                            data-i18n="pillars.session.title"
+                            class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+                        >
                             Diversified Session Model
                         </h4>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <p data-i18n="pillars.session.desc" class="text-gray-600 dark:text-gray-400">
                             A four-tier session model (Foundation, Standard, Premium, Express) aligned with clinical
                             value and patient needs.
                         </p>
@@ -355,10 +367,13 @@
                             data-lucide="users"
                             class="w-10 h-10 text-brand-highlight mb-4 group-hover:scale-110 transition-transform"
                         ></i>
-                        <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">
+                        <h4
+                            data-i18n="pillars.staffing.title"
+                            class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+                        >
                             Scalable Tiered Staffing
                         </h4>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <p data-i18n="pillars.staffing.desc" class="text-gray-600 dark:text-gray-400">
                             An interactive 5-tier staffing model that balances payroll costs with service capacity and
                             future growth.
                         </p>
@@ -372,10 +387,13 @@
                             data-lucide="heart-handshake"
                             class="w-10 h-10 text-brand-secondary mb-4 group-hover:scale-110 transition-transform"
                         ></i>
-                        <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">
+                        <h4
+                            data-i18n="pillars.carebridge.title"
+                            class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+                        >
                             CareBridge™ Program
                         </h4>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <p data-i18n="pillars.carebridge.desc" class="text-gray-600 dark:text-gray-400">
                             A compassionate, subsidized program to ensure equitable care is woven into our sustainable
                             model.
                         </p>
@@ -391,7 +409,10 @@
                                 class="w-10 h-10 text-brand-wood mb-4 group-hover:scale-110 transition-transform flex-shrink-0"
                             ></i>
                             <div>
-                                <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">
+                                <h4
+                                    data-i18n="pillars.financials.title"
+                                    class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+                                >
                                     Data-Driven Financials
                                 </h4>
                                 <p class="text-gray-600 dark:text-gray-400">
@@ -423,7 +444,7 @@
                                     data-lucide="sunrise"
                                     class="w-8 h-8 text-brand-highlight group-hover:scale-110 transition-transform"
                                 ></i>
-                                <h4 class="text-2xl font-bold text-brand-highlight">
+                                <h4 data-i18n="flexshift.z.title" class="text-2xl font-bold text-brand-highlight">
                                     FlexShift
                                     <span class="flex-shift-z-container">
                                         <span class="flex-shift-z">Z</span>
@@ -433,11 +454,14 @@
                             </div>
                             <span
                                 class="text-xs font-semibold bg-brand-highlight/20 text-brand-highlight px-2 py-0.5 rounded-full"
+                                data-i18n="service.badge.future"
                                 >FUTURE (Tier 3+)</span
                             >
                         </div>
-                        <p class="text-lg font-medium text-gray-700 dark:text-gray-300">06:00 – 09:00</p>
-                        <p class="text-gray-600 dark:text-gray-400 mt-2">
+                        <p data-i18n="flexshift.z.time" class="text-lg font-medium text-gray-700 dark:text-gray-300">
+                            06:00 – 09:00
+                        </p>
+                        <p data-i18n="flexshift.z.desc" class="text-gray-600 dark:text-gray-400 mt-2">
                             Early morning block for dedicated professionals and pre-work/school sessions.
                         </p>
                     </div>
@@ -449,15 +473,23 @@
                         <div class="flex justify-between items-center mb-2">
                             <div class="flex items-center space-x-3">
                                 <i data-lucide="clock" class="w-8 h-8 text-brand-wood"></i>
-                                <h4 class="text-2xl font-bold text-brand-wood dark:text-brand-wood">FlexStart</h4>
+                                <h4
+                                    data-i18n="flexstart.title"
+                                    class="text-2xl font-bold text-brand-wood dark:text-brand-wood"
+                                >
+                                    FlexStart
+                                </h4>
                             </div>
                             <span
                                 class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full"
+                                data-i18n="service.badge.no_late_penalty"
                                 >No Late Penalty</span
                             >
                         </div>
-                        <p class="text-lg font-medium text-gray-700 dark:text-gray-300">09:00 – 10:00</p>
-                        <p class="text-gray-600 dark:text-gray-400 mt-2">
+                        <p data-i18n="flexstart.time" class="text-lg font-medium text-gray-700 dark:text-gray-300">
+                            09:00 – 10:00
+                        </p>
+                        <p data-i18n="flexstart.desc" class="text-gray-600 dark:text-gray-400 mt-2">
                             Internal staff preparation, calibration, and emergency early-day cases.
                         </p>
                     </div>
@@ -468,10 +500,17 @@
                     >
                         <div class="flex items-center space-x-3 mb-2">
                             <i data-lucide="activity" class="w-8 h-8 text-brand-dark"></i>
-                            <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">FlexShift A</h4>
+                            <h4
+                                data-i18n="flexshift.a.title"
+                                class="text-2xl font-bold text-brand-dark dark:text-brand-light"
+                            >
+                                FlexShift A
+                            </h4>
                         </div>
-                        <p class="text-lg font-medium text-gray-700 dark:text-gray-300">10:00 – 13:00</p>
-                        <p class="text-gray-600 dark:text-gray-400 mt-2">
+                        <p data-i18n="flexshift.a.time" class="text-lg font-medium text-gray-700 dark:text-gray-300">
+                            10:00 – 13:00
+                        </p>
+                        <p data-i18n="flexshift.a.desc" class="text-gray-600 dark:text-gray-400 mt-2">
                             Morning care block emphasizing Neuro and Pediatric cases.
                         </p>
                     </div>
@@ -483,15 +522,20 @@
                         <div class="flex justify-between items-center mb-2">
                             <div class="flex items-center space-x-3">
                                 <i data-lucide="refresh-cw" class="w-8 h-8 text-brand-wood"></i>
-                                <h4 class="text-2xl font-bold text-brand-wood">Midday Reset</h4>
+                                <h4 data-i18n="midday_reset.title" class="text-2xl font-bold text-brand-wood">
+                                    Midday Reset
+                                </h4>
                             </div>
                             <span
                                 class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full"
+                                data-i18n="service.badge.turnover"
                                 >TURNOVER</span
                             >
                         </div>
-                        <p class="text-lg font-medium text-gray-700 dark:text-gray-300">13:00 – 14:00</p>
-                        <p class="text-gray-600 dark:text-gray-400 mt-2">
+                        <p data-i18n="midday_reset.time" class="text-lg font-medium text-gray-700 dark:text-gray-300">
+                            13:00 – 14:00
+                        </p>
+                        <p data-i18n="midday_reset.desc" class="text-gray-600 dark:text-gray-400 mt-2">
                             Buffer for turnover, sanitization, and staff reset between morning and afternoon blocks.
                         </p>
                     </div>
@@ -502,10 +546,17 @@
                     >
                         <div class="flex items-center space-x-3 mb-2">
                             <i data-lucide="book-open" class="w-8 h-8 text-brand-dark"></i>
-                            <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">FlexShift B</h4>
+                            <h4
+                                data-i18n="flexshift.b.title"
+                                class="text-2xl font-bold text-brand-dark dark:text-brand-light"
+                            >
+                                FlexShift B
+                            </h4>
                         </div>
-                        <p class="text-lg font-medium text-gray-700 dark:text-gray-300">14:00 – 17:00</p>
-                        <p class="text-gray-600 dark:text-gray-400 mt-2">
+                        <p data-i18n="flexshift.b.time" class="text-lg font-medium text-gray-700 dark:text-gray-300">
+                            14:00 – 17:00
+                        </p>
+                        <p data-i18n="flexshift.b.desc" class="text-gray-600 dark:text-gray-400 mt-2">
                             Afternoon block for evaluations, long-duration cases, and clinical training.
                         </p>
                     </div>
@@ -517,15 +568,21 @@
                         <div class="flex justify-between items-center mb-2">
                             <div class="flex items-center space-x-3">
                                 <i data-lucide="car" class="w-8 h-8 text-brand-wood flex-shrink-0"></i>
-                                <h4 class="text-2xl font-bold text-brand-wood dark:text-brand-wood">Commute Gap</h4>
+                                <h4
+                                    data-i18n="commute_gap.title"
+                                    class="text-2xl font-bold text-brand-wood dark:text-brand-wood"
+                                >
+                                    Commute Gap
+                                </h4>
                             </div>
                             <span
                                 class="text-xs font-semibold bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full"
+                                data-i18n="service.badge.safety"
                                 >SAFETY</span
                             >
                         </div>
                         <p class="text-lg font-medium text-gray-700 dark:text-gray-300">17:00 – 19:00</p>
-                        <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm">
+                        <p data-i18n="commute_gap.desc" class="text-gray-600 dark:text-gray-400 mt-2 text-sm">
                             Buffer for staff travel and deconfliction to reduce congestion and improve safety.
                         </p>
                     </div>
@@ -537,6 +594,7 @@
                         <div class="flex items-center space-x-3 mb-2">
                             <i data-lucide="moon" class="w-8 h-8 text-brand-secondary"></i>
                             <h4
+                                data-i18n="flexshift.c.title"
                                 class="text-2xl font-bold text-brand-secondary dark:text-brand-secondary-light flex-shift-c"
                             >
                                 FlexShift C
@@ -559,7 +617,7 @@
                                     data-lucide="rocket"
                                     class="w-8 h-8 text-brand-highlight group-hover:scale-110 transition-transform"
                                 ></i>
-                                <h4 class="text-2xl font-bold text-brand-highlight">
+                                <h4 data-i18n="flexnight.title" class="text-2xl font-bold text-brand-highlight">
                                     FlexShift
                                     <span class="flex-shift-z-container flex-shift-o-container">
                                         <span class="flex-shift-z flex-shift-o">O</span>
@@ -569,11 +627,12 @@
                             </div>
                             <span
                                 class="text-xs font-semibold bg-brand-highlight-light/20 text-brand-highlight px-2 py-0.5 rounded-full"
+                                data-i18n="service.badge.night"
                                 >NIGHT</span
                             >
                         </div>
                         <p class="text-lg font-medium text-gray-700 dark:text-gray-300">22:00 – 06:00</p>
-                        <p class="text-gray-600 dark:text-gray-400 mt-2">
+                        <p data-i18n="flexnight.desc" class="text-gray-600 dark:text-gray-400 mt-2">
                             Night shift operations for future or interplanetary operations —
                             <span class="text-brand-highlight dark:text-brand-highlight-light font-semibold"
                                 >Purrfect Software Limited</span
@@ -599,6 +658,7 @@
                         <div class="flex items-center">
                             <i data-lucide="save" class="w-8 h-8 text-brand-base dark:text-brand-light mr-4"></i>
                             <h3
+                                data-i18n="scenario_manager.title"
                                 id="scenario-manager-heading"
                                 class="text-3xl font-bold text-brand-dark dark:text-brand-light"
                             >
@@ -612,16 +672,18 @@
                                 aria-controls="scenario-manager-body"
                                 aria-expanded="true"
                                 class="ml-4 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg px-3 py-2 flex items-center text-sm"
+                                data-i18n-title="scenario_manager.toggle_title"
                                 title="Collapse / Expand Scenario Manager"
                             >
                                 <i data-lucide="chevron-up" class="w-5 h-5"></i>
-                                <span class="sr-only">Toggle Scenario Manager</span>
+                                <span class="sr-only" data-i18n="scenario_manager.toggle">Toggle Scenario Manager</span>
                             </button>
                         </div>
                     </div>
                     <div id="scenario-manager-body" aria-hidden="false">
                         <div id="scenario-manager-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
                         <p
+                            data-i18n="scenario_manager.summary"
                             class="text-lg text-gray-600 dark:text-gray-400 max-w-full mx-0 mb-3"
                             id="scenario-manager-summary"
                         >
@@ -638,30 +700,42 @@
                                 class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm border-l-4 border-brand-base dark:border-brand-light"
                             >
                                 <h5
+                                    data-i18n="scenario_manager.config_title"
                                     class="text-sm font-bold text-brand-base dark:text-brand-light mb-2 flex items-center"
                                 >
                                     <i data-lucide="layers" class="w-4 h-4 mr-2"></i>
                                     Configuration
                                 </h5>
                                 <ul class="text-xs text-gray-700 dark:text-gray-300 space-y-1">
-                                    <li>• Selected staffing tier level</li>
-                                    <li>• Total capacity utilization %</li>
-                                    <li>• Occupancy lock status</li>
+                                    <li data-i18n="scenario_manager.config_item_staffing">
+                                        • Selected staffing tier level
+                                    </li>
+                                    <li data-i18n="scenario_manager.config_item_capacity">
+                                        • Total capacity utilization %
+                                    </li>
+                                    <li data-i18n="scenario_manager.config_item_occupancy">• Occupancy lock status</li>
                                 </ul>
                             </div>
                             <div
                                 class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm border-l-4 border-brand-secondary dark:border-brand-secondary-light"
                             >
                                 <h5
+                                    data-i18n="scenario_manager.visitmix_title"
                                     class="text-sm font-bold text-brand-secondary dark:text-brand-secondary-light mb-2 flex items-center"
                                 >
                                     <i data-lucide="pie-chart" class="w-4 h-4 mr-2"></i>
                                     Visit Mix & Pricing
                                 </h5>
                                 <ul class="text-xs text-gray-700 dark:text-gray-300 space-y-1">
-                                    <li>• Foundation/Standard/Premium/Express %</li>
-                                    <li>• Applied discount rate (0%, 20%, or 30%)</li>
-                                    <li>• Payroll breakdown preference</li>
+                                    <li data-i18n="scenario_manager.config_item_visitmix">
+                                        • Foundation/Standard/Premium/Express %
+                                    </li>
+                                    <li data-i18n="scenario_manager.config_item_discount">
+                                        • Applied discount rate (0%, 20%, or 30%)
+                                    </li>
+                                    <li data-i18n="scenario_manager.config_item_payroll_breakdown">
+                                        • Payroll breakdown preference
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -714,7 +788,9 @@
                                                 id="scenario-select"
                                                 class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm dark:text-gray-200"
                                             >
-                                                <option value="">Choose a scenario to load...</option>
+                                                <option value="" data-i18n="scenario_manager.choose_scenario">
+                                                    Choose a scenario to load...
+                                                </option>
                                             </select>
                                             <button
                                                 id="btn-delete-scenario"
@@ -803,7 +879,10 @@
                                     </div>
                                 </div>
 
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                <p
+                                    data-i18n="scenario_manager.info"
+                                    class="text-xs text-gray-500 dark:text-gray-400 mt-2"
+                                >
                                     Export scenarios as JSON to backup, share, or transfer. Export the current
                                     configuration snapshot for quick sharing or archival.
                                 </p>
@@ -834,10 +913,13 @@
                         <div class="flex items-start">
                             <i data-lucide="info" class="w-5 h-5 text-brand-highlight flex-shrink-0 mt-0.5 mr-3"></i>
                             <div>
-                                <h4 class="text-sm font-semibold text-brand-dark dark:text-brand-light mb-1">
+                                <h4
+                                    data-i18n="staffing.howto_title"
+                                    class="text-sm font-semibold text-brand-dark dark:text-brand-light mb-1"
+                                >
                                     How to use this model:
                                 </h4>
-                                <p class="text-sm text-gray-700 dark:text-gray-300">
+                                <p data-i18n="staffing.howto_items" class="text-sm text-gray-700 dark:text-gray-300">
                                     <strong>1)</strong> Select a staffing tier below to set your team size and payroll
                                     baseline. <strong>2)</strong> Scroll to the Capacity Modeler to adjust occupancy and
                                     see revenue projections. <strong>3)</strong> Explore Launch Models and CareBridge™
@@ -850,7 +932,9 @@
                         <span
                             class="inline-block bg-brand-highlight/10 text-brand-highlight dark:bg-brand-highlight-light/20 dark:text-brand-highlight-light px-4 py-2 rounded-lg font-semibold text-lg"
                         >
-                            <span id="current-tier-label">Tier 2 — Baseline Full Operations</span>
+                            <span id="current-tier-label" data-i18n="staffing.current_tier_label"
+                                >Tier 2 — Baseline Full Operations</span
+                            >
                         </span>
                     </div>
 
@@ -859,11 +943,21 @@
                         <div
                             class="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 px-1"
                         >
-                            <span class="text-[8px] leading-none md:text-sm">Minimum Viable Opening</span>
-                            <span class="text-[8px] leading-none md:text-sm">Stable Launch</span>
-                            <span class="text-[8px] leading-none md:text-sm">Baseline Full Ops</span>
-                            <span class="text-[8px] leading-none md:text-sm">Expanded Ops</span>
-                            <span class="text-[8px] leading-none md:text-sm">Full Ecosystem</span>
+                            <span data-i18n="staffing.min_viable" class="text-[8px] leading-none md:text-sm"
+                                >Minimum Viable Opening</span
+                            >
+                            <span data-i18n="staffing.stable_launch" class="text-[8px] leading-none md:text-sm"
+                                >Stable Launch</span
+                            >
+                            <span data-i18n="staffing.baseline" class="text-[8px] leading-none md:text-sm"
+                                >Baseline Full Ops</span
+                            >
+                            <span data-i18n="staffing.expanded_ops" class="text-[8px] leading-none md:text-sm"
+                                >Expanded Ops</span
+                            >
+                            <span data-i18n="staffing.full_ecosystem" class="text-[8px] leading-none md:text-sm"
+                                >Full Ecosystem</span
+                            >
                         </div>
                         <input
                             id="staffing-tier-slider"
@@ -883,7 +977,9 @@
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <!-- FT Staff -->
                                 <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                                    <span class="text-sm text-brand-base dark:text-brand-light font-medium"
+                                    <span
+                                        data-i18n="staffing.full_time"
+                                        class="text-sm text-brand-base dark:text-brand-light font-medium"
                                         >Full-Time Staff</span
                                     >
                                     <div id="staff-ft" class="text-3xl font-bold text-brand-dark dark:text-brand-light">
@@ -892,7 +988,9 @@
                                 </div>
                                 <!-- PT Staff -->
                                 <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                                    <span class="text-sm text-brand-base dark:text-brand-light font-medium"
+                                    <span
+                                        data-i18n="staffing.part_time"
+                                        class="text-sm text-brand-base dark:text-brand-light font-medium"
                                         >Part-Time Staff</span
                                     >
                                     <div id="staff-pt" class="text-3xl font-bold text-brand-dark dark:text-brand-light">
@@ -901,7 +999,9 @@
                                 </div>
                                 <!-- Total Staff -->
                                 <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
-                                    <span class="text-sm text-brand-base dark:text-brand-light font-medium"
+                                    <span
+                                        data-i18n="staffing.total"
+                                        class="text-sm text-brand-base dark:text-brand-light font-medium"
                                         >Total Staff</span
                                     >
                                     <div
@@ -913,7 +1013,9 @@
                                 </div>
                                 <!-- Monthly Payroll -->
                                 <div class="bg-brand-wood/10 dark:bg-brand-wood/20 p-4 rounded-lg text-center">
-                                    <span class="text-sm text-brand-wood dark:text-brand-wood font-medium"
+                                    <span
+                                        data-i18n="staffing.monthly_payroll"
+                                        class="text-sm text-brand-wood dark:text-brand-wood font-medium"
                                         >Monthly Payroll</span
                                     >
                                     <div
@@ -922,7 +1024,9 @@
                                     >
                                         927,750
                                     </div>
-                                    <span class="text-sm text-brand-wood dark:text-brand-wood">BDT</span>
+                                    <span data-i18n="bdt" class="text-sm text-brand-wood dark:text-brand-wood"
+                                        >BDT</span
+                                    >
                                 </div>
                             </div>
                         </div>
@@ -940,7 +1044,9 @@
                                     </h5>
                                 </div>
                                 <div class="text-center">
-                                    <span class="text-sm text-brand-base dark:text-brand-light font-medium block"
+                                    <span
+                                        data-i18n="capacity.designed_capacity"
+                                        class="text-sm text-brand-base dark:text-brand-light font-medium block"
                                         >Designed Capacity</span
                                     >
                                     <div
@@ -954,7 +1060,10 @@
 
                             <!-- Service Coverage Badges -->
                             <div class="mb-6">
-                                <h6 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">
+                                <h6
+                                    data-i18n="service.coverage"
+                                    class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3"
+                                >
                                     Service Coverage:
                                 </h6>
                                 <div class="flex flex-wrap gap-3">
@@ -962,7 +1071,9 @@
                                         class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm"
                                     >
                                         <i data-lucide="calendar" class="w-4 h-4 text-brand-wood"></i>
-                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                        <span
+                                            data-i18n="weekend"
+                                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
                                             >Weekend:
                                             <span
                                                 id="coverage-weekend"
@@ -975,7 +1086,9 @@
                                         class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm"
                                     >
                                         <i data-lucide="sunrise" class="w-4 h-4 text-brand-highlight"></i>
-                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                        <span
+                                            data-i18n="flexshift.z"
+                                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
                                             >FlexShift Z:
                                             <span
                                                 id="coverage-early"
@@ -988,7 +1101,9 @@
                                         class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm"
                                     >
                                         <i data-lucide="home" class="w-4 h-4 text-brand-secondary"></i>
-                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                        <span
+                                            data-i18n="home.care"
+                                            class="text-sm font-medium text-gray-700 dark:text-gray-300"
                                             >Home Care:
                                             <span
                                                 id="coverage-home"
@@ -1005,7 +1120,10 @@
                         <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg lg:col-span-3">
                             <div class="flex items-center mb-4">
                                 <i data-lucide="unlock" class="w-6 h-6 text-brand-dark dark:text-brand-light mr-3"></i>
-                                <h5 class="text-xl font-semibold text-brand-dark dark:text-brand-light">
+                                <h5
+                                    data-i18n="services_unlocked.title"
+                                    class="text-xl font-semibold text-brand-dark dark:text-brand-light"
+                                >
                                     Services Unlocked at
                                     <span id="services-tier-label" class="text-brand-highlight">Tier 2</span>
                                 </h5>
@@ -1025,14 +1143,19 @@
                         <div
                             class="md:col-span-2 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-700"
                         >
-                            <h5 class="text-lg font-semibold text-brand-dark dark:text-brand-light mb-4">
+                            <h5
+                                data-i18n="tier.financials.at.assumed.occupancy"
+                                class="text-lg font-semibold text-brand-dark dark:text-brand-light mb-4"
+                            >
                                 Tier Financials (at Assumed Occupancy)
                                 <span class="tooltip">
                                     <i
                                         data-lucide="info"
                                         class="w-4 h-4 text-gray-400 dark:text-gray-500 inline-block ml-1 cursor-help"
                                     ></i>
-                                    <span class="tooltiptext"
+                                    <span
+                                        data-i18n="expected.revenue.is.modeled.using.fullprice.sessions.at.22.working.daysmonth.and"
+                                        class="tooltiptext"
                                         >Expected Revenue is modeled using full-price sessions at 22 working days/month
                                         and the assumed occupancy for this tier.</span
                                     >
@@ -1070,7 +1193,9 @@
                                 >
                                     ≈ 884,676
                                 </div>
-                                <span class="text-brand-base dark:text-brand-light">BDT / month</span>
+                                <span data-i18n="bdt.month" class="text-brand-base dark:text-brand-light"
+                                    >BDT / month</span
+                                >
                             </div>
                             <div class="text-center">
                                 <span class="text-sm text-brand-base dark:text-brand-light font-medium"
@@ -1110,36 +1235,42 @@
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
                                     <th
+                                        data-i18n="department"
                                         scope="col"
                                         class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
                                     >
                                         Department
                                     </th>
                                     <th
+                                        data-i18n="role"
                                         scope="col"
                                         class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
                                     >
                                         Role
                                     </th>
                                     <th
+                                        data-i18n="type"
                                         scope="col"
                                         class="px-6 py-3 text-left text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
                                     >
                                         Type
                                     </th>
                                     <th
+                                        data-i18n="count"
                                         scope="col"
                                         class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
                                     >
                                         Count
                                     </th>
                                     <th
+                                        data-i18n="salary.bdt"
                                         scope="col"
                                         class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
                                     >
                                         Salary (BDT)
                                     </th>
                                     <th
+                                        data-i18n="subtotal.bdt"
                                         scope="col"
                                         class="px-6 py-3 text-right text-xs font-bold text-brand-dark dark:text-brand-light uppercase tracking-wider"
                                     >
@@ -1159,7 +1290,7 @@
                 <div class="mt-3 flex items-center space-x-4">
                     <label class="flex items-center text-sm text-gray-600 dark:text-gray-400">
                         <input id="toggle-payroll-breakdown" type="checkbox" class="mr-2 accent-brand-base" />
-                        Show payroll breakdown (FT/PT)
+                        <span data-i18n="payroll.show_breakdown">Show payroll breakdown (FT/PT)</span>
                     </label>
                 </div>
             </section>
@@ -1261,7 +1392,7 @@
                             <div id="daily-revenue" class="lg:text-3xl text-xl font-bold text-brand-secondary-light">
                                 82,383
                             </div>
-                            <span class="lg:text-sm text-xs text-gray-500 dark:text-gray-400">BDT</span>
+                            <span data-i18n="bdt" class="lg:text-sm text-xs text-gray-500 dark:text-gray-400">BDT</span>
                         </div>
                         <!-- Monthly Revenue -->
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
@@ -1273,7 +1404,7 @@
                             <div id="monthly-revenue" class="lg:text-3xl text-xl font-bold text-brand-secondary">
                                 1,812,426
                             </div>
-                            <span class="lg:text-sm text-xs text-gray-500 dark:text-gray-400">BDT</span>
+                            <span data-i18n="bdt" class="lg:text-sm text-xs text-gray-500 dark:text-gray-400">BDT</span>
                         </div>
                         <!-- Monthly Profit -->
                         <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
@@ -1288,7 +1419,9 @@
                             >
                                 +884,676
                             </div>
-                            <span class="lg:text-sm text-xs text-brand-base dark:text-brand-light">BDT</span>
+                            <span data-i18n="bdt" class="lg:text-sm text-xs text-brand-base dark:text-brand-light"
+                                >BDT</span
+                            >
                         </div>
                         <!-- Monthly Profit % -->
                         <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
@@ -1303,7 +1436,11 @@
                             >
                                 +48.8%
                             </div>
-                            <span class="lg:text-sm text-xs text-brand-base dark:text-brand-light">vs Revenue</span>
+                            <span
+                                data-i18n="financial.vs_revenue"
+                                class="lg:text-sm text-xs text-brand-base dark:text-brand-light"
+                                >vs Revenue</span
+                            >
                         </div>
                         <!-- Annual Revenue -->
                         <div class="col-span-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
@@ -1353,7 +1490,10 @@
                     <div
                         class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 min-h-[550px] flex flex-col"
                     >
-                        <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light mb-6 text-center">
+                        <h4
+                            data-i18n="data_assumptions.chart_title"
+                            class="text-2xl font-bold text-brand-dark dark:text-brand-light mb-6 text-center"
+                        >
                             Expected Visit Mix
                         </h4>
                         <div class="visitmix-chart-container">
@@ -1454,11 +1594,17 @@
                             </div>
                             <!-- Total Indicator -->
                             <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg text-center">
-                                <span class="text-xs font-medium text-gray-600 dark:text-gray-300">Total:</span>
+                                <span data-i18n="total" class="text-xs font-medium text-gray-600 dark:text-gray-300"
+                                    >Total:</span
+                                >
                                 <span id="visitmix-total" class="text-lg font-bold text-gray-800 dark:text-white ml-2"
                                     >100%</span
                                 >
-                                <div id="visitmix-error" class="text-xs text-red-600 dark:text-red-400 mt-1 hidden">
+                                <div
+                                    id="visitmix-error"
+                                    class="text-xs text-red-600 dark:text-red-400 mt-1 hidden"
+                                    data-i18n="total.must.equal.100"
+                                >
                                     Total must equal 100%
                                 </div>
                             </div>
@@ -1469,7 +1615,10 @@
                     <div
                         class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 min-h-[550px] flex flex-col"
                     >
-                        <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">
+                        <h4
+                            data-i18n="session.pricing.modeler"
+                            class="text-2xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center"
+                        >
                             Session Pricing Modeler
                         </h4>
 
@@ -1478,6 +1627,7 @@
                             <button
                                 type="button"
                                 id="price-toggle-0"
+                                data-i18n="pricing.full_price"
                                 class="price-toggle-btn bg-brand-base text-white px-4 py-2 text-sm font-medium rounded-l-lg border border-brand-base"
                             >
                                 Full Price
@@ -1485,6 +1635,7 @@
                             <button
                                 type="button"
                                 id="price-toggle-20"
+                                data-i18n="pricing.20_off"
                                 class="price-toggle-btn bg-white dark:bg-gray-700 text-brand-base dark:text-brand-light px-4 py-2 text-sm font-medium border-t border-b border-brand-base hover:bg-gray-50 dark:hover:bg-gray-600"
                             >
                                 20% Off
@@ -1492,6 +1643,7 @@
                             <button
                                 type="button"
                                 id="price-toggle-30"
+                                data-i18n="pricing.30_off"
                                 class="price-toggle-btn bg-white dark:bg-gray-700 text-brand-base dark:text-brand-light px-4 py-2 text-sm font-medium rounded-r-lg border border-brand-base hover:bg-gray-50 dark:hover:bg-gray-600"
                             >
                                 30% Off
@@ -1517,8 +1669,12 @@
                                         class="inline-block w-2 h-2 rounded-full bg-brand-wood dark:bg-brand-wood mt-1 flex-shrink-0"
                                     ></span>
                                     <div>
-                                        <strong class="text-gray-800 dark:text-gray-100">Foundation:</strong>
-                                        <span>First visit, assessment and comprehensive care</span>
+                                        <strong data-i18n="foundation.1" class="text-gray-800 dark:text-gray-100"
+                                            >Foundation:</strong
+                                        >
+                                        <span data-i18n="first.visit.assessment.and.comprehensive.care"
+                                            >First visit, assessment and comprehensive care</span
+                                        >
                                     </div>
                                 </div>
                                 <div class="flex items-start gap-2">
@@ -1526,8 +1682,12 @@
                                         class="inline-block w-2 h-2 rounded-full bg-brand-base dark:bg-brand-base mt-1 flex-shrink-0"
                                     ></span>
                                     <div>
-                                        <strong class="text-gray-800 dark:text-gray-100">Standard:</strong>
-                                        <span>Core therapeutic sessions with full clinical assessment</span>
+                                        <strong data-i18n="standard.1" class="text-gray-800 dark:text-gray-100"
+                                            >Standard:</strong
+                                        >
+                                        <span data-i18n="core.therapeutic.sessions.with.full.clinical.assessment"
+                                            >Core therapeutic sessions with full clinical assessment</span
+                                        >
                                     </div>
                                 </div>
                                 <div class="flex items-start gap-2">
@@ -1535,8 +1695,11 @@
                                         class="inline-block w-2 h-2 rounded-full bg-brand-light dark:bg-brand-light mt-1 flex-shrink-0"
                                     ></span>
                                     <div>
-                                        <strong class="text-gray-800 dark:text-gray-100">Premium:</strong>
+                                        <strong data-i18n="premium.1" class="text-gray-800 dark:text-gray-100"
+                                            >Premium:</strong
+                                        >
                                         <span
+                                            data-i18n="extended.sessions.with.specialist.attention.advanced.tech.integration.and.person"
                                             >Extended sessions with specialist attention, advanced tech integration and
                                             personalized care</span
                                         >
@@ -1548,7 +1711,9 @@
                                     ></span>
                                     <div>
                                         <strong class="text-gray-800 dark:text-gray-100">Express (C):</strong>
-                                        <span>Concise 15-20 min sessions for quick assessments and follow-ups</span>
+                                        <span data-i18n="concise.1520.min.sessions.for.quick.assessments.and.followups"
+                                            >Concise 15-20 min sessions for quick assessments and follow-ups</span
+                                        >
                                     </div>
                                 </div>
                             </div>
@@ -1557,10 +1722,19 @@
                         <div class="pricing-section">
                             <!-- Neuro Pricing -->
                             <div class="pricing-department">
-                                <h5 class="text-lg font-semibold text-brand-wood dark:text-brand-wood">Neurology</h5>
+                                <h5
+                                    data-i18n="neurology"
+                                    class="text-lg font-semibold text-brand-wood dark:text-brand-wood"
+                                >
+                                    Neurology
+                                </h5>
                                 <div class="grid grid-cols-2 md:grid-cols-4 pricing-grid">
                                     <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">Foundation</span>
+                                        <span
+                                            data-i18n="pricing.foundation"
+                                            class="text-xs text-gray-500 dark:text-gray-400"
+                                            >Foundation</span
+                                        >
                                         <div
                                             id="price-neuro-foundation"
                                             class="font-bold text-lg text-gray-800 dark:text-gray-200"
@@ -1569,7 +1743,11 @@
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">Standard</span>
+                                        <span
+                                            data-i18n="pricing.standard"
+                                            class="text-xs text-gray-500 dark:text-gray-400"
+                                            >Standard</span
+                                        >
                                         <div
                                             id="price-neuro-standard"
                                             class="font-bold text-lg text-gray-800 dark:text-gray-200"
@@ -1578,7 +1756,11 @@
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">Premium</span>
+                                        <span
+                                            data-i18n="pricing.premium"
+                                            class="text-xs text-gray-500 dark:text-gray-400"
+                                            >Premium</span
+                                        >
                                         <div
                                             id="price-neuro-premium"
                                             class="font-bold text-lg text-gray-800 dark:text-gray-200"
@@ -1602,11 +1784,15 @@
                             <!-- MSK Pricing -->
                             <div class="pricing-department">
                                 <h5 class="text-lg font-semibold text-brand-wood dark:text-brand-wood">
-                                    MSK (Musculoskeletal)
+                                    <span data-i18n="msk.musculoskeletal">MSK (Musculoskeletal)</span>
                                 </h5>
                                 <div class="grid grid-cols-2 md:grid-cols-4 pricing-grid">
                                     <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">Foundation</span>
+                                        <span
+                                            data-i18n="pricing.foundation"
+                                            class="text-xs text-gray-500 dark:text-gray-400"
+                                            >Foundation</span
+                                        >
                                         <div
                                             id="price-msk-foundation"
                                             class="font-bold text-lg text-gray-800 dark:text-gray-200"
@@ -1615,7 +1801,11 @@
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">Standard</span>
+                                        <span
+                                            data-i18n="pricing.standard"
+                                            class="text-xs text-gray-500 dark:text-gray-400"
+                                            >Standard</span
+                                        >
                                         <div
                                             id="price-msk-standard"
                                             class="font-bold text-lg text-gray-800 dark:text-gray-200"
@@ -1624,7 +1814,11 @@
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">Premium</span>
+                                        <span
+                                            data-i18n="pricing.premium"
+                                            class="text-xs text-gray-500 dark:text-gray-400"
+                                            >Premium</span
+                                        >
                                         <div
                                             id="price-msk-premium"
                                             class="font-bold text-lg text-gray-800 dark:text-gray-200"
@@ -1635,7 +1829,9 @@
                                     <div
                                         class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center"
                                     >
-                                        <span class="text-xs text-brand-secondary">Express (C)</span>
+                                        <span data-i18n="pricing.express" class="text-xs text-brand-secondary"
+                                            >Express (C)</span
+                                        >
                                         <div id="price-msk-express" class="font-bold text-lg text-brand-secondary">
                                             800
                                         </div>
@@ -1645,10 +1841,19 @@
 
                             <!-- Pediatrics Pricing -->
                             <div class="pricing-department">
-                                <h5 class="text-lg font-semibold text-brand-wood dark:text-brand-wood">Pediatrics</h5>
+                                <h5
+                                    data-i18n="pediatrics"
+                                    class="text-lg font-semibold text-brand-wood dark:text-brand-wood"
+                                >
+                                    Pediatrics
+                                </h5>
                                 <div class="grid grid-cols-2 md:grid-cols-4 pricing-grid">
                                     <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">Foundation</span>
+                                        <span
+                                            data-i18n="pricing.foundation"
+                                            class="text-xs text-gray-500 dark:text-gray-400"
+                                            >Foundation</span
+                                        >
                                         <div
                                             id="price-peds-foundation"
                                             class="font-bold text-lg text-gray-800 dark:text-gray-200"
@@ -1657,7 +1862,11 @@
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">Standard (45m)</span>
+                                        <span
+                                            data-i18n="pricing.standard_45m"
+                                            class="text-xs text-gray-500 dark:text-gray-400"
+                                            >Standard (45m)</span
+                                        >
                                         <div
                                             id="price-peds-standard"
                                             class="font-bold text-lg text-gray-800 dark:text-gray-200"
@@ -1666,7 +1875,11 @@
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                                        <span class="text-xs text-gray-500 dark:text-gray-400">Premium</span>
+                                        <span
+                                            data-i18n="pricing.premium"
+                                            class="text-xs text-gray-500 dark:text-gray-400"
+                                            >Premium</span
+                                        >
                                         <div
                                             id="price-peds-premium"
                                             class="font-bold text-lg text-gray-800 dark:text-gray-200"
@@ -1677,7 +1890,9 @@
                                     <div
                                         class="bg-brand-secondary/10 dark:bg-brand-secondary/20 p-3 rounded-lg text-center"
                                     >
-                                        <span class="text-xs text-brand-secondary">Express (C)</span>
+                                        <span data-i18n="pricing.express" class="text-xs text-brand-secondary"
+                                            >Express (C)</span
+                                        >
                                         <div id="price-peds-express" class="font-bold text-lg text-brand-secondary">
                                             900
                                         </div>
@@ -1691,7 +1906,10 @@
 
             <!-- First Year Projection Models (UPDATED) -->
             <section id="launch-projections" class="mb-20 pt-20">
-                <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">
+                <h3
+                    data-i18n="launch_projections.title"
+                    class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center"
+                >
                     First-Year Launch Projection Models
                 </h3>
                 <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto">
@@ -1708,7 +1926,9 @@
                     >
                         <div class="min-h-[110px]">
                             <div class="flex items-start justify-between mb-3">
-                                <h4 class="text-2xl font-bold text-brand-highlight">Model A: Discounted Launch</h4>
+                                <h4 data-i18n="modelA.title" class="text-2xl font-bold text-brand-highlight">
+                                    Model A: Discounted Launch
+                                </h4>
                                 <span class="tooltip">
                                     <i
                                         data-lucide="info"
@@ -1735,7 +1955,9 @@
                             <!-- Phase 1 -->
                             <div>
                                 <div class="flex justify-between items-baseline mb-1">
-                                    <span class="font-semibold text-brand-dark dark:text-brand-light"
+                                    <span
+                                        data-i18n="modelA.p1_label"
+                                        class="font-semibold text-brand-dark dark:text-brand-light"
                                         >Months 1-3 (30% Discount)</span
                                     >
                                     <span
@@ -1755,7 +1977,9 @@
                             <!-- Phase 2 -->
                             <div>
                                 <div class="flex justify-between items-baseline mb-1">
-                                    <span class="font-semibold text-brand-dark dark:text-brand-light"
+                                    <span
+                                        data-i18n="modelA.p2_label"
+                                        class="font-semibold text-brand-dark dark:text-brand-light"
                                         >Months 4-6 (20% Discount)</span
                                     >
                                     <span
@@ -1775,7 +1999,9 @@
                             <!-- Phase 3 -->
                             <div>
                                 <div class="flex justify-between items-baseline mb-1">
-                                    <span class="font-semibold text-brand-dark dark:text-brand-light"
+                                    <span
+                                        data-i18n="modelA.p3_label"
+                                        class="font-semibold text-brand-dark dark:text-brand-light"
                                         >Months 7-12 (Full Price)</span
                                     >
                                     <span
@@ -1822,7 +2048,7 @@
                             <div class="flex justify-between items-start mb-3">
                                 <div class="flex-1">
                                     <div class="flex lg:items-center items-start justify-between gap-2 mb-1">
-                                        <h4 class="text-2xl font-bold text-brand-secondary">
+                                        <h4 data-i18n="modelB.title" class="text-2xl font-bold text-brand-secondary">
                                             Model B: Ramp-Up Scenario
                                         </h4>
                                         <span class="tooltip">
@@ -1846,6 +2072,7 @@
                                 </div>
                                 <span
                                     class="text-xs font-bold bg-brand-secondary/20 text-brand-secondary px-3 py-1 rounded-full mt-1 flex-shrink-0"
+                                    data-i18n="modelB.badge.recommended"
                                     >RECOMMENDED</span
                                 >
                             </div>
@@ -1855,7 +2082,9 @@
                             <!-- Phase 1 -->
                             <div>
                                 <div class="flex justify-between items-baseline mb-1">
-                                    <span class="font-semibold text-brand-dark dark:text-brand-light"
+                                    <span
+                                        data-i18n="modelB.p1_label"
+                                        class="font-semibold text-brand-dark dark:text-brand-light"
                                         >M 1-3 (40% Occ, 30% Disc, Tier 0)</span
                                     >
                                     <span
@@ -1875,7 +2104,9 @@
                             <!-- Phase 2 -->
                             <div>
                                 <div class="flex justify-between items-baseline mb-1">
-                                    <span class="font-semibold text-brand-dark dark:text-brand-light"
+                                    <span
+                                        data-i18n="modelB.p2_label"
+                                        class="font-semibold text-brand-dark dark:text-brand-light"
                                         >M 4-6 (50% Occ, 20% Disc, Tier 1)</span
                                     >
                                     <span
@@ -1895,7 +2126,9 @@
                             <!-- Phase 3 -->
                             <div>
                                 <div class="flex justify-between items-baseline mb-1">
-                                    <span class="font-semibold text-brand-dark dark:text-brand-light"
+                                    <span
+                                        data-i18n="modelB.p3_label"
+                                        class="font-semibold text-brand-dark dark:text-brand-light"
                                         >M 7-12 (60% Occ, Full Price, Tier 2)</span
                                     >
                                     <span
@@ -1954,7 +2187,9 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Projected Monthly Profit -->
                         <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg text-center">
-                            <span class="text-lg font-medium text-brand-base dark:text-brand-light"
+                            <span
+                                data-i18n="projections.projected_monthly_profit"
+                                class="text-lg font-medium text-brand-base dark:text-brand-light"
                                 >Projected Monthly Profit</span
                             >
                             <div
@@ -1963,11 +2198,15 @@
                             >
                                 +884,676
                             </div>
-                            <span class="text-base text-brand-base dark:text-brand-light">BDT / month</span>
+                            <span data-i18n="bdt.month" class="text-base text-brand-base dark:text-brand-light"
+                                >BDT / month</span
+                            >
                         </div>
                         <!-- Projected Annual Revenue -->
                         <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg text-center">
-                            <span class="text-lg font-medium text-gray-600 dark:text-gray-300"
+                            <span
+                                data-i18n="projections.projected_annual_revenue"
+                                class="text-lg font-medium text-gray-600 dark:text-gray-300"
                                 >Projected Annual Revenue</span
                             >
                             <div
@@ -1976,11 +2215,15 @@
                             >
                                 21,749,112
                             </div>
-                            <span class="text-base text-gray-500 dark:text-gray-400">BDT / year</span>
+                            <span data-i18n="bdt.year" class="text-base text-gray-500 dark:text-gray-400"
+                                >BDT / year</span
+                            >
                         </div>
                         <!-- Projected Annual Profit -->
                         <div class="bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg text-center">
-                            <span class="text-lg font-medium text-brand-base dark:text-brand-light"
+                            <span
+                                data-i18n="projections.projected_annual_profit"
+                                class="text-lg font-medium text-brand-base dark:text-brand-light"
                                 >Projected Annual Profit</span
                             >
                             <div
@@ -1997,10 +2240,16 @@
 
             <!-- CareBridge Program -->
             <section id="access-care" class="mb-20 pt-20">
-                <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">
+                <h3
+                    data-i18n="carebridge.title"
+                    class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center"
+                >
                     CareBridge™ Program
                 </h3>
-                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center mb-10">
+                <p
+                    data-i18n="carebridge.description"
+                    class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center mb-10"
+                >
                     A structured, sustainable system for ensuring care accessibility is a core pillar of our mission.
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -2009,10 +2258,13 @@
                         class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700"
                     >
                         <i data-lucide="calendar-plus" class="w-10 h-10 text-brand-highlight mb-4"></i>
-                        <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">
+                        <h4
+                            data-i18n="carebridge.pillar_1"
+                            class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+                        >
                             Daily Subsidized Slots
                         </h4>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <p data-i18n="carebridge.pillar_1_detail" class="text-gray-600 dark:text-gray-400">
                             <strong class="text-2xl font-bold text-brand-highlight">8 sessions/day</strong>
                             (~9% of total capacity) are reserved for the CareBridge™ program.
                         </p>
@@ -2022,8 +2274,13 @@
                         class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700"
                     >
                         <i data-lucide="percent" class="w-10 h-10 text-brand-secondary mb-4"></i>
-                        <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Discount Value</h4>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <h4
+                            data-i18n="carebridge.pillar_2"
+                            class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+                        >
+                            Discount Value
+                        </h4>
+                        <p data-i18n="carebridge.pillar_2_detail" class="text-gray-600 dark:text-gray-400">
                             A
                             <strong class="text-2xl font-bold text-brand-secondary">30% discount</strong>
                             is applied to Standard Sessions for all eligible beneficiaries.
@@ -2034,14 +2291,17 @@
                         class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 md:col-span-2 lg:col-span-1"
                     >
                         <i data-lucide="users" class="w-10 h-10 text-brand-wood mb-4"></i>
-                        <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">
+                        <h4
+                            data-i18n="carebridge.pillar_3"
+                            class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+                        >
                             Eligible Beneficiaries
                         </h4>
                         <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                            <li>Students & Teachers</li>
-                            <li>Single-parent households</li>
-                            <li>Chronic care patients (>12 sessions)</li>
-                            <li>Community health referrals</li>
+                            <li data-i18n="carebridge.pillar_3_1">Students & Teachers</li>
+                            <li data-i18n="carebridge.pillar_3_2">Single-parent households</li>
+                            <li data-i18n="carebridge.pillar_3_3">Chronic care patients (>12 sessions)</li>
+                            <li data-i18n="carebridge.pillar_3_4">Community health referrals</li>
                         </ul>
                     </div>
                     <!-- Program Pillar 4: Impact -->
@@ -2049,8 +2309,13 @@
                         class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700"
                     >
                         <i data-lucide="trending-down" class="w-10 h-10 text-brand-base dark:text-brand-light mb-4"></i>
-                        <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">Financial Impact</h4>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <h4
+                            data-i18n="carebridge.pillar_4"
+                            class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+                        >
+                            Financial Impact
+                        </h4>
+                        <p data-i18n="carebridge.pillar_4_detail" class="text-gray-600 dark:text-gray-400">
                             Represents ~1.3 million BDT/year in subsidized care. The business remains
                             <strong class="text-brand-base dark:text-brand-light">highly profitable</strong>
                             at all modeled occupancy levels.
@@ -2061,10 +2326,13 @@
                         class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 md:col-span-2"
                     >
                         <i data-lucide="shield-check" class="w-10 h-10 text-brand-highlight mb-4"></i>
-                        <h4 class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2">
+                        <h4
+                            data-i18n="carebridge.purpose_title"
+                            class="text-xl font-bold text-brand-dark dark:text-brand-light mb-2"
+                        >
                             Purpose and Brand Value
                         </h4>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <p data-i18n="carebridge.purpose_desc" class="text-gray-600 dark:text-gray-400">
                             Ensures equitable access to premium care, reinforces our social responsibility, and builds
                             deep, lasting community trust and brand loyalty.
                         </p>
@@ -2084,7 +2352,12 @@
                 >
                     <div class="flex items-center mb-6">
                         <i data-lucide="calculator" class="w-8 h-8 text-brand-base dark:text-brand-light mr-4"></i>
-                        <h4 class="text-2xl font-bold text-brand-dark dark:text-brand-light">Model Assumptions</h4>
+                        <h4
+                            data-i18n="model_assumptions.title"
+                            class="text-2xl font-bold text-brand-dark dark:text-brand-light"
+                        >
+                            Model Assumptions
+                        </h4>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm">
@@ -2093,13 +2366,15 @@
                             </h5>
                             <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                                 <li class="flex justify-between">
-                                    <span>Working days/month <span id="model-tier-label">(Tier 0-2)</span>:</span>
+                                    <span data-i18n="model_assumptions.working_days"
+                                        >Working days/month <span id="model-tier-label">(Tier 0-2)</span>:</span
+                                    >
                                     <strong id="model-working-days" class="text-brand-dark dark:text-brand-light"
                                         >22 days</strong
                                     >
                                 </li>
                                 <li class="flex justify-between">
-                                    <span>Bed capacity (this tier):</span>
+                                    <span data-i18n="model_assumptions.bed_capacity">Bed capacity (this tier):</span>
                                     <strong
                                         id="model-bed-capacity"
                                         class="text-brand-dark dark:text-brand-light flex items-center gap-2"
@@ -2118,7 +2393,9 @@
                                     </strong>
                                 </li>
                                 <li class="flex justify-between">
-                                    <span>Max daily revenue (100% cap):</span>
+                                    <span data-i18n="model_assumptions.max_daily_revenue"
+                                        >Max daily revenue (100% cap):</span
+                                    >
                                     <strong id="model-max-daily-revenue" class="text-brand-dark dark:text-brand-light"
                                         >137,305 BDT</strong
                                     >
@@ -2126,9 +2403,13 @@
                                 <li
                                     class="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-2 mt-2"
                                 >
-                                    <span
+                                    <span data-i18n="model_assumptions.base_monthly_revenue"
                                         >Base monthly revenue
-                                        <span id="model-revenue-days-label">(22 days)</span>:</span
+                                        <span
+                                            id="model-revenue-days-label"
+                                            data-i18n="model_assumptions.revenue_days_label"
+                                            >(22 days)</span
+                                        >:</span
                                     >
                                     <strong
                                         id="model-base-monthly-revenue"
@@ -2155,25 +2436,27 @@
                             </h5>
                             <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                                 <li class="flex justify-between">
-                                    <span>Foundation sessions:</span>
+                                    <span data-i18n="sessions.foundation_count">Foundation sessions:</span>
                                     <strong class="text-brand-dark dark:text-brand-light">20%</strong>
                                 </li>
                                 <li class="flex justify-between">
-                                    <span>Standard sessions:</span>
+                                    <span data-i18n="sessions.standard_count">Standard sessions:</span>
                                     <strong class="text-brand-dark dark:text-brand-light">50%</strong>
                                 </li>
                                 <li class="flex justify-between">
-                                    <span>Premium sessions:</span>
+                                    <span data-i18n="sessions.premium_count">Premium sessions:</span>
                                     <strong class="text-brand-dark dark:text-brand-light">25%</strong>
                                 </li>
                                 <li class="flex justify-between">
-                                    <span>Express sessions:</span>
+                                    <span data-i18n="sessions.express_count">Express sessions:</span>
                                     <strong class="text-brand-dark dark:text-brand-light">5%</strong>
                                 </li>
                                 <li
                                     class="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2 text-xs text-gray-600 dark:text-gray-400"
                                 >
-                                    Pricing varies by department (Neuro, MSK, Peds) and session type
+                                    <span data-i18n="pricing.varies.by.department"
+                                        >Pricing varies by department (Neuro, MSK, Peds) and session type</span
+                                    >
                                 </li>
                             </ul>
                         </div>
@@ -2189,13 +2472,17 @@
                                 class="w-5 h-5 text-brand-highlight flex-shrink-0 mt-0.5 mr-3"
                             ></i>
                             <h5 class="text-sm font-bold text-brand-dark dark:text-brand-light">
-                                Expanded Revenue Streams (Tier 3 & 4)
+                                <span data-i18n="tiers.expanded_revenue_streams"
+                                    >Expanded Revenue Streams (Tier 3 & 4)</span
+                                >
                             </h5>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                             <div class="bg-white dark:bg-gray-900 p-3 rounded-lg">
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="font-semibold text-brand-wood">Tier 3 (Partial Weekend)</span>
+                                    <span data-i18n="tiers.tier_3" class="font-semibold text-brand-wood"
+                                        >Tier 3 (Partial Weekend)</span
+                                    >
                                     <span
                                         class="text-xs bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full font-bold"
                                         >+27% Days</span
@@ -2211,7 +2498,9 @@
                             </div>
                             <div class="bg-white dark:bg-gray-900 p-3 rounded-lg">
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="font-semibold text-brand-secondary">Tier 4 (Full Ecosystem)</span>
+                                    <span data-i18n="tiers.tier_4" class="font-semibold text-brand-secondary"
+                                        >Tier 4 (Full Ecosystem)</span
+                                    >
                                     <span
                                         class="text-xs bg-brand-secondary/20 text-brand-secondary px-2 py-0.5 rounded-full font-bold"
                                         >+36% Days</span
@@ -2236,7 +2525,10 @@
 
             <!-- Strategic Advantages -->
             <section id="advantages" class="mb-20 pt-20">
-                <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">
+                <h3
+                    data-i18n="strategic.title"
+                    class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center"
+                >
                     Strategic Advantages
                 </h3>
                 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
@@ -2246,7 +2538,11 @@
                             class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"
                         ></i>
                         <p class="text-lg text-gray-700 dark:text-gray-300">
-                            <strong class="font-semibold text-brand-dark dark:text-white">Consistent Coverage:</strong>
+                            <strong
+                                data-i18n="strategic.consistent_coverage"
+                                class="font-semibold text-brand-dark dark:text-white"
+                                >Consistent Coverage:</strong
+                            >
                             Predictable multi-shift operations ensure reliable patient care.
                         </p>
                     </div>
@@ -2256,7 +2552,11 @@
                             class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"
                         ></i>
                         <p class="text-lg text-gray-700 dark:text-gray-300">
-                            <strong class="font-semibold text-brand-dark dark:text-white">Expanded Access:</strong>
+                            <strong
+                                data-i18n="strategic.expanded_access"
+                                class="font-semibold text-brand-dark dark:text-white"
+                                >Expanded Access:</strong
+                            >
                             Evening and future morning hours cater to professionals and students.
                         </p>
                     </div>
@@ -2266,7 +2566,11 @@
                             class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"
                         ></i>
                         <p class="text-lg text-gray-700 dark:text-gray-300">
-                            <strong class="font-semibold text-brand-dark dark:text-white">Premium Offerings:</strong>
+                            <strong
+                                data-i18n="strategic.premium_offerings"
+                                class="font-semibold text-brand-dark dark:text-white"
+                                >Premium Offerings:</strong
+                            >
                             Differentiated session types (Premium, Express) increase perceived value.
                         </p>
                     </div>
@@ -2288,7 +2592,11 @@
                             class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"
                         ></i>
                         <p class="text-lg text-gray-700 dark:text-gray-300">
-                            <strong class="font-semibold text-brand-dark dark:text-white">Sustainable Revenue:</strong>
+                            <strong
+                                data-i18n="strategic.sustainable_revenue"
+                                class="font-semibold text-brand-dark dark:text-white"
+                                >Sustainable Revenue:</strong
+                            >
                             Model is profitable even at low-to-mid occupancy rates.
                         </p>
                     </div>
@@ -2298,7 +2606,11 @@
                             class="w-6 h-6 text-brand-base dark:text-brand-light flex-shrink-0 mt-1"
                         ></i>
                         <p class="text-lg text-gray-700 dark:text-gray-300">
-                            <strong class="font-semibold text-brand-dark dark:text-white">Community Trust:</strong>
+                            <strong
+                                data-i18n="strategic.community_trust"
+                                class="font-semibold text-brand-dark dark:text-white"
+                                >Community Trust:</strong
+                            >
                             The CareBridge™ program builds a strong, positive public-facing brand.
                         </p>
                     </div>
@@ -2313,9 +2625,12 @@
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
                 <p class="text-brand-light dark:text-gray-400">
                     &copy; <span id="footer-year"></span>
-                    <span data-i18n="footer.copy">Motion Mechanics & Purrfect Universe</span>. All rights reserved.
+                    <span data-i18n="footer.copy">Motion Mechanics & Purrfect Universe</span>.
+                    <span data-i18n="footer.all_rights_reserved">All rights reserved.</span>
                 </p>
-                <p class="text-sm text-brand-light/70 dark:text-gray-500 mt-1">Strategic Proposal Microsite v2.8.2</p>
+                <p class="text-sm text-brand-light/70 dark:text-gray-500 mt-1" data-i18n="footer.version">
+                    Strategic Proposal Microsite v2.8.2
+                </p>
             </div>
         </footer>
 
@@ -2324,8 +2639,10 @@
         <a
             href="#scenario-manager"
             id="scenario-manager-link"
+            data-i18n-aria="scenario_manager.link_aria"
             aria-label="Go to Scenario Manager"
             class="bg-brand-base dark:bg-brand-light text-white dark:text-brand-dark p-3 rounded-full shadow-lg hover:bg-brand-base/80 dark:hover:bg-brand-light/80 transition-all duration-300"
+            data-i18n-title="scenario_manager.link_title"
             title="Go to Scenario Manager"
         >
             <i data-lucide="save" class="w-5 h-5"></i>
@@ -2333,6 +2650,8 @@
         <a
             href="#home"
             id="back-to-top"
+            data-i18n-aria="misc.back_to_top_aria"
+            aria-label="Back to top"
             class="bg-brand-highlight dark:bg-brand-highlight-light text-white dark:text-brand-dark p-3 rounded-full shadow-lg hover:bg-brand-highlight/80 dark:hover:bg-brand-highlight-light/80 transition-all duration-300"
         >
             <i data-lucide="arrow-up" class="w-6 h-6"></i>

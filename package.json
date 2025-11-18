@@ -4,6 +4,9 @@
     "description": "Motion Mechanics FlexTime™ Operations & Financial Model Interactive Microsite",
     "type": "module",
     "scripts": {
+        "i18n:validate": "node scripts/validate-locales.cjs",
+        "i18n:curate": "node scripts/curate-locales.cjs",
+        "i18n:curate:apply": "node scripts/curate-locales.cjs --auto-promote --apply",
         "i18n:extract": "node scripts/extract-strings.cjs",
         "version": "npm run format:fix && node scripts/update-hashes.js && git add index.html",
         "postversion": "git push && git push --tags",

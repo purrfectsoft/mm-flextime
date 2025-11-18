@@ -38,7 +38,11 @@
             if (!key) return '';
             const val = this.translations[key] || key;
             if (!vars) return val;
-            return val.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, k) => (vars[k] !== undefined ? vars[k] : `{{${k}}}`));
+            // Support both {{var}} and {var} interpolation styles for flexibility
+            return val.replace(/\{\{\s*(\w+)\s*\}\}|\{\s*(\w+)\s*\}/g, (_, k1, k2) => {
+                const k = k1 || k2;
+                return vars[k] !== undefined ? vars[k] : `{{${k}}}`;
+            });
         },
         apply(root = document) {
             // Replace text for elements with data-i18n, supports placeholders and html

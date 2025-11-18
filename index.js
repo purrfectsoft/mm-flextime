@@ -636,12 +636,31 @@ const TIER_NAMES = [
 // Service coverage for each tier
 // Tier 2 = none, Tier 3 = partial + basic home care, Tier 4 = full + dedicated home care
 const TIER_SERVICE_COVERAGE = [
-    { weekend: 'None', earlyMorning: 'No', homeCare: 'No' },
-    { weekend: 'None', earlyMorning: 'No', homeCare: 'No' },
-    { weekend: 'None', earlyMorning: 'No', homeCare: 'No' },
-    { weekend: 'Partial', earlyMorning: 'Yes (06:00-09:00)', homeCare: 'Basic' },
-    { weekend: 'Full (Sat/Sun)', earlyMorning: 'Yes (06:00-09:00)', homeCare: 'Dedicated Team' },
+    { weekend: 'coverage.none', earlyMorning: 'coverage.no', homeCare: 'coverage.no' },
+    { weekend: 'coverage.none', earlyMorning: 'coverage.no', homeCare: 'coverage.no' },
+    { weekend: 'coverage.none', earlyMorning: 'coverage.no', homeCare: 'coverage.no' },
+    { weekend: 'coverage.partial', earlyMorning: 'coverage.early_yes_time', homeCare: 'coverage.home_basic' },
+    { weekend: 'coverage.full', earlyMorning: 'coverage.early_yes_time', homeCare: 'coverage.home_dedicated' },
 ];
+
+// Helper mapping keys for translations used during rendering
+const TIER_NAME_KEYS = ['tiers.name.0', 'tiers.name.1', 'tiers.name.2', 'tiers.name.3', 'tiers.name.4'];
+
+const DEPT_LABEL_KEYS = {
+    Clinical: 'department.clinical',
+    Support: 'department.support',
+    Floater: 'department.floater',
+};
+
+const ROLE_LABEL_KEYS = {
+    Lead: 'role.lead',
+    Senior: 'role.senior',
+    Specialist: 'role.specialist',
+    Associate: 'role.associate',
+    Reception: 'role.reception',
+    'Med Assist': 'role.med_assist',
+    Gym: 'role.gym',
+};
 
 // Detailed Tier Services (PU/MM Flair)
 const TIER_SERVICES_HTML = [
@@ -1015,7 +1034,12 @@ const renderVisitMixChart = () => {
     visitMixChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Foundation (20%)', 'Standard (50%)', 'Premium (25%)', 'Express (5%)'],
+            labels: [
+                `${t('pricing.foundation')} (20%)`,
+                `${t('pricing.standard')} (50%)`,
+                `${t('pricing.premium')} (25%)`,
+                `${t('pricing.express')} (5%)`,
+            ],
             datasets: [
                 {
                     data: [20, 50, 25, 5],
@@ -1046,10 +1070,13 @@ const renderStaffingTierChart = () => {
     staffingTierChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Monthly Payroll', 'Expected Revenue'],
+            labels: [
+                t('staffing.monthly_payroll') || 'Monthly Payroll',
+                t('financial.expected_revenue') || 'Expected Revenue',
+            ],
             datasets: [
                 {
-                    label: 'Amount (BDT)',
+                    label: t('chart.amount_bdt') || 'Amount (BDT)',
                     data: [data.payroll, data.revenue],
                     backgroundColor: [
                         '#854d0e', // brand-wood
@@ -1090,8 +1117,9 @@ const updateDynamicPayrollTable = (tierIndex) => {
         // Dept Header Row
         const deptRow = document.createElement('tr');
         deptRow.className = 'dept-row';
+        const deptLabelKey = DEPT_LABEL_KEYS[dept.dept] || dept.dept;
         deptRow.innerHTML = `
-            <th class="px-6 py-3 text-left text-sm" colspan="6">${dept.dept}</th>
+            <th class="px-6 py-3 text-left text-sm" colspan="6">${t(deptLabelKey) || dept.dept}</th>
         `;
         dynamicPayrollTableBody.appendChild(deptRow);
 
@@ -1105,8 +1133,8 @@ const updateDynamicPayrollTable = (tierIndex) => {
             const roleRow = document.createElement('tr');
             roleRow.innerHTML = `
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"></td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${role.name}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">${role.type}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${t(ROLE_LABEL_KEYS[role.name]) || role.name}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">${role.type === 'FT' ? t('staffing.full_time') : t('staffing.part_time')}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right">${role.count}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right">${formatBDT(role.salary)}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right">${formatBDT(subtotal)}</td>
@@ -1118,7 +1146,7 @@ const updateDynamicPayrollTable = (tierIndex) => {
         const subtotalRow = document.createElement('tr');
         subtotalRow.className = 'subtotal-row';
         subtotalRow.innerHTML = `
-            <td class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300" colspan="3">Department Subtotal (FT: ${deptSubtotalFt}, PT: ${deptSubtotalPt})</td>
+            <td class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300" colspan="3">${t('labels.department_subtotal', { ft: deptSubtotalFt, pt: deptSubtotalPt })}</td>
             <td class="px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white">${deptSubtotalFt + deptSubtotalPt}</td>
             <td class="px-6 py-3 text-right text-sm font-semibold text-gray-700 dark:text-gray-300"></td>
             <td class="px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white">${formatBDT(deptSubtotalPayroll)}</td>
@@ -1134,7 +1162,7 @@ const updateDynamicPayrollTable = (tierIndex) => {
     const grandTotalRow = document.createElement('tr');
     grandTotalRow.className = 'grand-total-row';
     grandTotalRow.innerHTML = `
-        <td class="px-6 py-4 text-left" colspan="3">Grand Total (FT: ${grandTotalFt}, PT: ${grandTotalPt})</td>
+        <td class="px-6 py-4 text-left" colspan="3">${t('labels.grand_total', { ft: grandTotalFt, pt: grandTotalPt })}</td>
         <td class="px-6 py-4 text-right">${grandTotalFt + grandTotalPt}</td>
         <td class="px-6 py-4 text-right"></td>
         <td class="px-6 py-4 text-right">${formatBDT(grandTotalPayroll)}</td>
@@ -1193,12 +1221,12 @@ const updateLaunchProjections = () => {
     const pA_total_profit = pA_p1_profit + pA_p2_profit + pA_p3_profit;
     const pA_max_profit = pA_p3_profit * 2; // Extrapolate phase 3 profit for 12 months
 
-    modelATierLabel.textContent = `Tier ${tier.tier}`;
+    modelATierLabel.textContent = t('misc.tier', { tier: tier.tier });
     modelAP1Profit.textContent = formatBDTShort(pA_p1_profit);
     modelAP2Profit.textContent = formatBDTShort(pA_p2_profit);
     modelAP3Profit.textContent = formatBDTShort(pA_p3_profit);
     modelATotalProfit.textContent = formatBDTShort(pA_total_profit);
-    modelAAvgProfit.textContent = `(Avg. ${formatBDTShort(pA_total_profit / 12)} / month)`;
+    modelAAvgProfit.textContent = t('modelA.avg_profit', { avg: formatBDTShort(pA_total_profit / 12) });
 
     // Update bars (as % of max possible profit in this model, pA_max_profit)
     modelAP1Bar.style.width = `${Math.max(0, pA_p1_profit / 3 / (pA_max_profit / 12)) * 100}%`;
@@ -1263,15 +1291,19 @@ const updateModelAssumptions = (tierIndex) => {
     // --- WORKING DAYS: Stylized format (22 +6 or 22 +8, etc.) ---
     const tierLabelEl = document.getElementById('model-tier-label');
     if (tierLabelEl) {
-        tierLabelEl.textContent = `(Tier ${tierIndex})`;
+        tierLabelEl.textContent = `(${t('misc.tier', { tier: tierIndex })})`;
     }
 
     const workingDaysEl = document.getElementById('model-working-days');
     if (workingDaysEl) {
         if (additionalDays > 0) {
-            workingDaysEl.innerHTML = `${baseDays} <span class="text-brand-secondary font-semibold">+${additionalDays}</span> days`;
+            workingDaysEl.innerHTML = t('labels.days_parenthetical_html', {
+                base: baseDays,
+                extra: additionalDays,
+                days: t('labels.days'),
+            });
         } else {
-            workingDaysEl.textContent = `${operationalDays} days`;
+            workingDaysEl.textContent = `${operationalDays} ${t('labels.days')}`;
         }
     }
 
@@ -1308,12 +1340,12 @@ const updateModelAssumptions = (tierIndex) => {
             // Add new vBed count span with + sign colored same as count
             const vbedSpan = document.createElement('span');
             vbedSpan.className = 'text-brand-secondary font-semibold vbed-count';
-            vbedSpan.textContent = `+${vBedCount} vBed`;
+            vbedSpan.textContent = `+${vBedCount} ${t('labels.vbed')}`;
             bedCapacityEl.insertBefore(vbedSpan, tooltip);
             // Show tooltip only when there are vBeds
             if (tooltip) tooltip.classList.remove('hidden');
         } else {
-            textNode.textContent = `${baseBeds} beds`;
+            textNode.textContent = `${baseBeds} ${t('labels.beds')}`;
             const oldSpan = bedCapacityEl.querySelector('span.vbed-count');
             if (oldSpan) oldSpan.remove();
             // Hide tooltip when no vBeds
@@ -1339,9 +1371,9 @@ const updateModelAssumptions = (tierIndex) => {
         }
 
         if (totalBonus > 0) {
-            maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> BDT`;
+            maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> ${t('bdt')}`;
         } else {
-            maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} BDT`;
+            maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} ${t('bdt')}`;
         }
     }
 
@@ -1367,9 +1399,16 @@ const updateModelAssumptions = (tierIndex) => {
 
         // Update labels
         if (additionalDays > 0) {
-            baseMonthlyRevenueDaysLabelEl.innerHTML = `(${baseDays} + <span class="text-brand-secondary font-semibold">${additionalDays}</span> days)`;
+            baseMonthlyRevenueDaysLabelEl.innerHTML = t('labels.days_parenthetical_html', {
+                base: baseDays,
+                extra: additionalDays,
+                days: t('labels.days'),
+            });
         } else {
-            baseMonthlyRevenueDaysLabelEl.textContent = `(${operationalDays} days)`;
+            baseMonthlyRevenueDaysLabelEl.textContent = t('labels.days_parenthetical', {
+                count: operationalDays,
+                days: t('labels.days'),
+            });
         }
 
         // Update revenue value and tooltip visibility
@@ -1384,12 +1423,12 @@ const updateModelAssumptions = (tierIndex) => {
             // Add new bonus span
             const bonusSpan = document.createElement('span');
             bonusSpan.className = 'text-brand-secondary font-semibold revenue-bonus';
-            bonusSpan.textContent = `+${formatBDT(totalAdditionalRevenue)} BDT`;
+            bonusSpan.textContent = `+${formatBDT(totalAdditionalRevenue)} ${t('bdt')}`;
             baseMonthlyRevenueEl.insertBefore(bonusSpan, tooltip);
             // Show tooltip only when there's additional revenue
             if (tooltip) tooltip.classList.remove('hidden');
         } else {
-            textNode.textContent = `${formatBDT(tierMaxMonthlyRevenue)} BDT`;
+            textNode.textContent = `${formatBDT(tierMaxMonthlyRevenue)} ${t('bdt')}`;
             const oldSpan = baseMonthlyRevenueEl.querySelector('span.revenue-bonus');
             if (oldSpan) oldSpan.remove();
             // Hide tooltip when no additional revenue
@@ -1403,16 +1442,28 @@ const updateStaffingTier = (tierIndex) => {
     currentStaffingTier = TIER_DATA[tierIndex];
 
     // Update tier label with name
-    currentTierLabelEl.textContent = `Tier ${currentStaffingTier.tier} — ${TIER_NAMES[tierIndex]}`;
+    // Use i18n to support translations with interpolation
+    if (typeof t === 'function') {
+        const tierLabel = t(TIER_NAME_KEYS[tierIndex]) || TIER_NAMES[tierIndex];
+        currentTierLabelEl.textContent = t('staffing.current_tier_label', {
+            tier: currentStaffingTier.tier,
+            label: tierLabel,
+        });
+    } else {
+        currentTierLabelEl.textContent = t('staffing.current_tier_label', {
+            tier: currentStaffingTier.tier,
+            label: t(TIER_NAME_KEYS[tierIndex]) || TIER_NAMES[tierIndex],
+        });
+    }
 
     // Update capacity overview
-    tierCapacityLabelEl.textContent = `~${currentStaffingTier.capacity}%`;
+    tierCapacityLabelEl.textContent = t('labels.percent_approx', { percent: currentStaffingTier.capacity });
 
     // Update service coverage badges
     const coverage = TIER_SERVICE_COVERAGE[tierIndex];
-    coverageWeekendEl.textContent = coverage.weekend;
-    coverageEarlyEl.textContent = coverage.earlyMorning;
-    coverageHomeEl.textContent = coverage.homeCare;
+    coverageWeekendEl.textContent = t(coverage.weekend) || coverage.weekend;
+    coverageEarlyEl.textContent = t(coverage.earlyMorning) || coverage.earlyMorning;
+    coverageHomeEl.textContent = t(coverage.homeCare) || coverage.homeCare;
 
     // Update text readouts
     staffFtEl.textContent = currentStaffingTier.ft;
@@ -1421,15 +1472,18 @@ const updateStaffingTier = (tierIndex) => {
     staffPayrollEl.textContent = formatBDT(currentStaffingTier.payroll);
 
     // Update enhanced services
-    servicesTierLabelEl.textContent = `Tier ${currentStaffingTier.tier}`;
-    servicesUnlockedEl.innerHTML = TIER_SERVICES_HTML[tierIndex];
+    servicesTierLabelEl.textContent = t('misc.tier', { tier: currentStaffingTier.tier });
+    // Use HTML translation keys for service descriptions per-tier when available
+    const svcHtmlKey = `tiers.services_html.${tierIndex}`;
+    const svcHtml = (typeof t === 'function' && t(svcHtmlKey)) || TIER_SERVICES_HTML[tierIndex];
+    servicesUnlockedEl.innerHTML = svcHtml;
 
     // Update tier financials
-    assumedOccupancyEl.textContent = `~${currentStaffingTier.capacity}%`;
+    assumedOccupancyEl.textContent = t('labels.percent_approx', { percent: currentStaffingTier.capacity });
     const netMargin = currentStaffingTier.revenue - currentStaffingTier.payroll;
     const marginPct = (netMargin / currentStaffingTier.revenue) * 100;
     netMarginBdtEl.textContent = `≈ ${formatBDT(netMargin)}`;
-    netMarginPctEl.textContent = `~${marginPct.toFixed(1)}%`;
+    netMarginPctEl.textContent = t('labels.percent_approx', { percent: marginPct.toFixed(1) });
 
     // Update bar chart
     if (staffingTierChart) {
@@ -1453,7 +1507,7 @@ const updateStaffingTier = (tierIndex) => {
     updateOccupancyMetrics();
 
     // Update Year 2+ Projection Label
-    projTierLabel.textContent = `Tier ${currentStaffingTier.tier}`;
+    projTierLabel.textContent = t('misc.tier', { tier: currentStaffingTier.tier });
 
     // Update Model A in Launch Projections
     updateLaunchProjections();
@@ -1510,7 +1564,7 @@ const updateOccupancyMetrics = () => {
     const annualProfit = monthlyProfit * MONTHS_PER_YEAR;
 
     // Update text readouts for Occupancy Modeler
-    occupancyValueEl.textContent = `${currentOccupancy}%`;
+    occupancyValueEl.textContent = t('labels.percent', { percent: currentOccupancy });
     dailyRevenueEl.textContent = formatBDT(dailyRevenue);
     monthlyRevenueEl.textContent = formatBDT(monthlyRevenue);
     monthlyProfitEl.textContent = formatProfit(monthlyProfit);
@@ -1519,7 +1573,7 @@ const updateOccupancyMetrics = () => {
     annualProfitEl.textContent = formatProfit(annualProfit);
 
     // Update recommendation text
-    occupancyRecommendationEl.textContent = `Recommended: ~${capacity}%`;
+    occupancyRecommendationEl.textContent = t('occupancy.recommended.capacity', { capacity });
 
     // Show/hide warning if above soft limit
     if (occupancyWarningEl) {
@@ -1574,7 +1628,7 @@ const updateOccupancyMetrics = () => {
     });
 
     // Update Year 2+ Projections
-    projOccupancyLabel.textContent = `${currentOccupancy}% Capacity`;
+    projOccupancyLabel.textContent = t('proj.occupancy', { occupancy: currentOccupancy });
     projMonthlyProfit.textContent = formatProfit(monthlyProfit);
     projAnnualRevenue.textContent = formatBDT(annualRevenue);
     projAnnualProfit.textContent = formatProfit(annualProfit);
@@ -1791,9 +1845,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (totalBonus > 0) {
-                maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> BDT`;
+                maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> ${t('bdt')}`;
             } else {
-                maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} BDT`;
+                maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} ${t('bdt')}`;
             }
         }
     });
@@ -1998,13 +2052,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalEl = document.getElementById('visitmix-total');
         const errorEl = document.getElementById('visitmix-error');
 
-        if (foundationValueEl) foundationValueEl.textContent = `${f}%`;
-        if (standardValueEl) standardValueEl.textContent = `${s}%`;
-        if (premiumValueEl) premiumValueEl.textContent = `${p}%`;
-        if (expressValueEl) expressValueEl.textContent = `${e}%`;
+        if (foundationValueEl) foundationValueEl.textContent = t('labels.percent', { percent: f });
+        if (standardValueEl) standardValueEl.textContent = t('labels.percent', { percent: s });
+        if (premiumValueEl) premiumValueEl.textContent = t('labels.percent', { percent: p });
+        if (expressValueEl) expressValueEl.textContent = t('labels.percent', { percent: e });
 
         const finalTotal = f + s + p + e;
-        if (totalEl) totalEl.textContent = `${finalTotal}%`;
+        if (totalEl) totalEl.textContent = t('labels.percent', { percent: finalTotal });
 
         // Show/hide error message
         if (errorEl) {
@@ -2020,10 +2074,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (visitMixChart) {
             visitMixChart.data.datasets[0].data = arr;
             visitMixChart.data.labels = [
-                `Foundation (${f}%)`,
-                `Standard (${s}%)`,
-                `Premium (${p}%)`,
-                `Express (${e}%)`,
+                `${t('pricing.foundation')} (${t('labels.percent', { percent: f })})`,
+                `${t('pricing.standard')} (${t('labels.percent', { percent: s })})`,
+                `${t('pricing.premium')} (${t('labels.percent', { percent: p })})`,
+                `${t('pricing.express')} (${t('labels.percent', { percent: e })})`,
             ];
             visitMixChart.update();
         }
@@ -2156,8 +2210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const storedRate = localStorage.getItem('selectedPriceRate');
         if (storedRate !== null && !Number.isNaN(parseInt(storedRate, 10))) {
             updatePricingTable(parseInt(storedRate, 10) / 100);
-            if (priceToggleNoteEl)
-                priceToggleNoteEl.textContent = 'Saved: Selected pricing will persist across refreshes.';
+            if (priceToggleNoteEl) priceToggleNoteEl.textContent = t('toasts.saved_pricing_persist');
         } else {
             updatePricingTable(0); // Full Price
             if (priceToggleNoteEl) priceToggleNoteEl.textContent = t('pricing.default_full_price');
