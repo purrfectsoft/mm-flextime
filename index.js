@@ -292,8 +292,9 @@ const applyScenarioManagerCollapsed = (collapsed, skipFocus = false) => {
     lucide.createIcons();
     try {
         localStorage.setItem(SCENARIO_MANAGER_COLLAPSED_KEY, collapsed ? 'true' : 'false');
-    } catch (err) {
         // ignore storage write errors
+    } catch (err) {
+        // ignore
     }
 };
 
@@ -429,9 +430,13 @@ const SALARY_LADDER = {
 };
 
 // NEW: Detailed Tier Staffing Composition
+// NOTE: this is a declarative mapping for each department per tier. Each
+// object now includes a `tier` property so we can build tier-specific views
+// without relying on fragile index-slicing logic.
 const TIER_STAFF_COMPOSITION = [
     // Tier 0 (Total: 14)
     {
+        tier: 0,
         dept: 'Clinical',
         roles: [
             { name: 'Senior', type: 'FT', count: 1, salary: SALARY_LADDER.senior.ft },
@@ -442,6 +447,7 @@ const TIER_STAFF_COMPOSITION = [
         ],
     },
     {
+        tier: 0,
         dept: 'Support',
         roles: [
             { name: 'Reception', type: 'FT', count: 2, salary: SALARY_LADDER.associate.ft },
@@ -452,6 +458,7 @@ const TIER_STAFF_COMPOSITION = [
     },
     // Tier 1 (Total: 21)
     {
+        tier: 1,
         dept: 'Clinical',
         roles: [
             { name: 'Lead', type: 'FT', count: 1, salary: SALARY_LADDER.lead.ft },
@@ -464,6 +471,7 @@ const TIER_STAFF_COMPOSITION = [
         ],
     },
     {
+        tier: 1,
         dept: 'Support',
         roles: [
             { name: 'Reception', type: 'FT', count: 3, salary: SALARY_LADDER.associate.ft },
@@ -474,11 +482,13 @@ const TIER_STAFF_COMPOSITION = [
         ],
     },
     {
+        tier: 1,
         dept: 'Floater',
         roles: [{ name: 'Senior', type: 'FT', count: 1, salary: SALARY_LADDER.senior.ft }],
     },
     // Tier 2 (Total: 26)
     {
+        tier: 2,
         dept: 'Clinical',
         roles: [
             { name: 'Lead', type: 'FT', count: 1, salary: SALARY_LADDER.lead.ft },
@@ -491,6 +501,7 @@ const TIER_STAFF_COMPOSITION = [
         ],
     },
     {
+        tier: 2,
         dept: 'Support',
         roles: [
             { name: 'Reception', type: 'FT', count: 3, salary: SALARY_LADDER.associate.ft },
@@ -501,6 +512,7 @@ const TIER_STAFF_COMPOSITION = [
         ],
     },
     {
+        tier: 2,
         dept: 'Floater',
         roles: [
             { name: 'Senior', type: 'FT', count: 1, salary: SALARY_LADDER.senior.ft },
@@ -509,6 +521,7 @@ const TIER_STAFF_COMPOSITION = [
     },
     // Tier 3 (Total: 28)
     {
+        tier: 3,
         dept: 'Clinical',
         roles: [
             { name: 'Lead', type: 'FT', count: 1, salary: SALARY_LADDER.lead.ft },
@@ -520,6 +533,7 @@ const TIER_STAFF_COMPOSITION = [
         ],
     },
     {
+        tier: 3,
         dept: 'Support',
         roles: [
             { name: 'Reception', type: 'FT', count: 3, salary: SALARY_LADDER.associate.ft },
@@ -530,6 +544,7 @@ const TIER_STAFF_COMPOSITION = [
         ],
     },
     {
+        tier: 3,
         dept: 'Floater',
         roles: [
             { name: 'Senior', type: 'FT', count: 1, salary: SALARY_LADDER.senior.ft },
@@ -538,6 +553,7 @@ const TIER_STAFF_COMPOSITION = [
     },
     // Tier 4 (Total: 38)
     {
+        tier: 4,
         dept: 'Clinical',
         roles: [
             { name: 'Lead', type: 'FT', count: 2, salary: SALARY_LADDER.lead.ft },
@@ -550,6 +566,7 @@ const TIER_STAFF_COMPOSITION = [
         ],
     },
     {
+        tier: 4,
         dept: 'Support',
         roles: [
             { name: 'Reception', type: 'FT', count: 4, salary: SALARY_LADDER.associate.ft },
@@ -560,6 +577,7 @@ const TIER_STAFF_COMPOSITION = [
         ],
     },
     {
+        tier: 4,
         dept: 'Floater',
         roles: [
             { name: 'Senior', type: 'FT', count: 2, salary: SALARY_LADDER.senior.ft },
@@ -575,14 +593,8 @@ const calculateTierData = (tierIndex) => {
         payroll = 0;
     let tierComposition = [];
 
-    // This logic assumes TIER_STAFF_COMPOSITION is structured correctly
-    // e.g., Tier 0 roles are at indices 0,1. Tier 1 at 2,3,4 etc.
-    // A better way is to filter by a 'tier' property if we add it
-    if (tierIndex === 0) tierComposition = TIER_STAFF_COMPOSITION.slice(0, 2);
-    if (tierIndex === 1) tierComposition = TIER_STAFF_COMPOSITION.slice(2, 5);
-    if (tierIndex === 2) tierComposition = TIER_STAFF_COMPOSITION.slice(5, 8);
-    if (tierIndex === 3) tierComposition = TIER_STAFF_COMPOSITION.slice(8, 11);
-    if (tierIndex === 4) tierComposition = TIER_STAFF_COMPOSITION.slice(11, 14);
+    // Use declarative composition lookup rather than relying on fragile index slicing
+    tierComposition = getTierComposition(tierIndex);
 
     tierComposition.forEach((dept) => {
         dept.roles.forEach((role) => {
@@ -646,20 +658,32 @@ const TIER_SERVICE_COVERAGE = [
 // Helper mapping keys for translations used during rendering
 const TIER_NAME_KEYS = ['tiers.name.0', 'tiers.name.1', 'tiers.name.2', 'tiers.name.3', 'tiers.name.4'];
 
-const DEPT_LABEL_KEYS = {
-    Clinical: 'department.clinical',
-    Support: 'department.support',
-    Floater: 'department.floater',
-};
+// Convert readable names to a translation key: role or department
+const slugify = (s) =>
+    String(s)
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '_')
+        .replace(/[^a-z0-9_]/g, '');
 
-const ROLE_LABEL_KEYS = {
-    Lead: 'role.lead',
-    Senior: 'role.senior',
-    Specialist: 'role.specialist',
-    Associate: 'role.associate',
-    Reception: 'role.reception',
-    'Med Assist': 'role.med_assist',
-    Gym: 'role.gym',
+const toTranslationKey = (scope, name) => `${scope}.${slugify(name)}`;
+
+// Helper to return composition for a tier without relying on index-slice hacks
+function getTierComposition(tierIndex) {
+    return TIER_STAFF_COMPOSITION.filter((d) => d.tier === Number(tierIndex));
+}
+
+// Helper to create an element with a data-i18n key and initial translated content.
+const createTranslatedElement = (tag, key, fallbackText = '', attrs = {}) => {
+    const el = document.createElement(tag);
+    if (key) el.setAttribute('data-i18n', key);
+    try {
+        el.textContent = typeof t === 'function' ? t(key) || fallbackText : fallbackText;
+    } catch (e) {
+        el.textContent = fallbackText;
+    }
+    Object.entries(attrs || {}).forEach(([k, v]) => el.setAttribute(k, v));
+    return el;
 };
 
 // Detailed Tier Services (PU/MM Flair)
@@ -1031,6 +1055,13 @@ const renderVisitMixChart = () => {
 
     const options = getChartOptions(currentTheme).doughnut;
 
+    // Destroy previous chart if it exists to avoid Chart.js 'kCtx' reuse issues
+    if (visitMixChart && typeof visitMixChart.destroy === 'function')
+        try {
+            visitMixChart.destroy();
+        } catch (e) {
+            /* ignore */
+        }
     visitMixChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -1067,6 +1098,13 @@ const renderStaffingTierChart = () => {
     const options = getChartOptions(currentTheme).bar;
     const data = TIER_DATA[staffingSlider.value];
 
+    // Destroy previous chart if it exists to avoid Chart.js 'kCtx' reuse issues
+    if (staffingTierChart && typeof staffingTierChart.destroy === 'function')
+        try {
+            staffingTierChart.destroy();
+        } catch (e) {
+            /* ignore */
+        }
     staffingTierChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -1099,11 +1137,8 @@ const updateDynamicPayrollTable = (tierIndex) => {
     dynamicPayrollTableBody.innerHTML = ''; // Clear table
 
     let tierComposition = [];
-    if (tierIndex === 0) tierComposition = TIER_STAFF_COMPOSITION.slice(0, 2);
-    if (tierIndex === 1) tierComposition = TIER_STAFF_COMPOSITION.slice(2, 5);
-    if (tierIndex === 2) tierComposition = TIER_STAFF_COMPOSITION.slice(5, 8);
-    if (tierIndex === 3) tierComposition = TIER_STAFF_COMPOSITION.slice(8, 11);
-    if (tierIndex === 4) tierComposition = TIER_STAFF_COMPOSITION.slice(11, 14);
+    // Declarative retrieval using the `tier` property on composition entries
+    tierComposition = getTierComposition(tierIndex);
 
     let grandTotalFt = 0;
     let grandTotalPt = 0;
@@ -1117,10 +1152,11 @@ const updateDynamicPayrollTable = (tierIndex) => {
         // Dept Header Row
         const deptRow = document.createElement('tr');
         deptRow.className = 'dept-row';
-        const deptLabelKey = DEPT_LABEL_KEYS[dept.dept] || dept.dept;
-        deptRow.innerHTML = `
-            <th class="px-6 py-3 text-left text-sm" colspan="6">${t(deptLabelKey) || dept.dept}</th>
-        `;
+        const deptLabelKey = toTranslationKey('department', dept.dept);
+        const th = createTranslatedElement('th', deptLabelKey, dept.dept);
+        th.className = 'px-6 py-3 text-left text-sm';
+        th.setAttribute('colspan', '6');
+        deptRow.appendChild(th);
         dynamicPayrollTableBody.appendChild(deptRow);
 
         // Roles
@@ -1131,26 +1167,56 @@ const updateDynamicPayrollTable = (tierIndex) => {
             deptSubtotalPayroll += subtotal;
 
             const roleRow = document.createElement('tr');
-            roleRow.innerHTML = `
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"></td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${t(ROLE_LABEL_KEYS[role.name]) || role.name}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">${role.type === 'FT' ? t('staffing.full_time') : t('staffing.part_time')}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right">${role.count}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right">${formatBDT(role.salary)}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right">${formatBDT(subtotal)}</td>
-            `;
+            const blankTd = document.createElement('td');
+            blankTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400';
+            roleRow.appendChild(blankTd);
+            const roleTd = createTranslatedElement('td', toTranslationKey('role', role.name), role.name);
+            roleTd.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white';
+            roleRow.appendChild(roleTd);
+            const typeTd = document.createElement('td');
+            typeTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300';
+            typeTd.textContent = role.type === 'FT' ? t('staffing.full_time') : t('staffing.part_time');
+            roleRow.appendChild(typeTd);
+            const countTd = document.createElement('td');
+            countTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right';
+            countTd.textContent = role.count;
+            roleRow.appendChild(countTd);
+            const salaryTd = document.createElement('td');
+            salaryTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right';
+            salaryTd.textContent = formatBDT(role.salary);
+            roleRow.appendChild(salaryTd);
+            const subtotalTd = document.createElement('td');
+            subtotalTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right';
+            subtotalTd.textContent = formatBDT(subtotal);
+            roleRow.appendChild(subtotalTd);
             dynamicPayrollTableBody.appendChild(roleRow);
         });
 
         // Dept Subtotal Row
         const subtotalRow = document.createElement('tr');
         subtotalRow.className = 'subtotal-row';
-        subtotalRow.innerHTML = `
-            <td class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300" colspan="3">${t('labels.department_subtotal', { ft: deptSubtotalFt, pt: deptSubtotalPt })}</td>
-            <td class="px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white">${deptSubtotalFt + deptSubtotalPt}</td>
-            <td class="px-6 py-3 text-right text-sm font-semibold text-gray-700 dark:text-gray-300"></td>
-            <td class="px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white">${formatBDT(deptSubtotalPayroll)}</td>
-        `;
+
+        const deptSubtotalTd = document.createElement('td');
+        deptSubtotalTd.className = 'px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300';
+        deptSubtotalTd.setAttribute('colspan', '3');
+        deptSubtotalTd.setAttribute('data-i18n', 'labels.department_subtotal');
+        // Use interpolation to include ft/pt counts; store final text as fallback
+        deptSubtotalTd.textContent = t('labels.department_subtotal', { ft: deptSubtotalFt, pt: deptSubtotalPt });
+        subtotalRow.appendChild(deptSubtotalTd);
+
+        const deptSubtotalCountTd = document.createElement('td');
+        deptSubtotalCountTd.className = 'px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white';
+        deptSubtotalCountTd.textContent = String(deptSubtotalFt + deptSubtotalPt);
+        subtotalRow.appendChild(deptSubtotalCountTd);
+
+        const deptSubtotalSpacerTd = document.createElement('td');
+        deptSubtotalSpacerTd.className = 'px-6 py-3 text-right text-sm font-semibold text-gray-700 dark:text-gray-300';
+        subtotalRow.appendChild(deptSubtotalSpacerTd);
+
+        const deptSubtotalPayrollTd = document.createElement('td');
+        deptSubtotalPayrollTd.className = 'px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white';
+        deptSubtotalPayrollTd.textContent = formatBDT(deptSubtotalPayroll);
+        subtotalRow.appendChild(deptSubtotalPayrollTd);
         dynamicPayrollTableBody.appendChild(subtotalRow);
 
         grandTotalFt += deptSubtotalFt;
@@ -1161,12 +1227,27 @@ const updateDynamicPayrollTable = (tierIndex) => {
     // Grand Total Row
     const grandTotalRow = document.createElement('tr');
     grandTotalRow.className = 'grand-total-row';
-    grandTotalRow.innerHTML = `
-        <td class="px-6 py-4 text-left" colspan="3">${t('labels.grand_total', { ft: grandTotalFt, pt: grandTotalPt })}</td>
-        <td class="px-6 py-4 text-right">${grandTotalFt + grandTotalPt}</td>
-        <td class="px-6 py-4 text-right"></td>
-        <td class="px-6 py-4 text-right">${formatBDT(grandTotalPayroll)}</td>
-    `;
+
+    const grandTotalLabelTd = document.createElement('td');
+    grandTotalLabelTd.className = 'px-6 py-4 text-left';
+    grandTotalLabelTd.setAttribute('colspan', '3');
+    grandTotalLabelTd.setAttribute('data-i18n', 'labels.grand_total');
+    grandTotalLabelTd.textContent = t('labels.grand_total', { ft: grandTotalFt, pt: grandTotalPt });
+    grandTotalRow.appendChild(grandTotalLabelTd);
+
+    const grandTotalCountTd = document.createElement('td');
+    grandTotalCountTd.className = 'px-6 py-4 text-right';
+    grandTotalCountTd.textContent = String(grandTotalFt + grandTotalPt);
+    grandTotalRow.appendChild(grandTotalCountTd);
+
+    const grandTotalSpacerTd = document.createElement('td');
+    grandTotalSpacerTd.className = 'px-6 py-4 text-right';
+    grandTotalRow.appendChild(grandTotalSpacerTd);
+
+    const grandTotalPayrollTd = document.createElement('td');
+    grandTotalPayrollTd.className = 'px-6 py-4 text-right';
+    grandTotalPayrollTd.textContent = formatBDT(grandTotalPayroll);
+    grandTotalRow.appendChild(grandTotalPayrollTd);
     dynamicPayrollTableBody.appendChild(grandTotalRow);
 };
 
@@ -1340,7 +1421,8 @@ const updateModelAssumptions = (tierIndex) => {
             // Add new vBed count span with + sign colored same as count
             const vbedSpan = document.createElement('span');
             vbedSpan.className = 'text-brand-secondary font-semibold vbed-count';
-            vbedSpan.textContent = `+${vBedCount} ${t('labels.vbed')}`;
+            vbedSpan.setAttribute('data-i18n', 'labels.vbed_count');
+            vbedSpan.textContent = t('labels.vbed_count', { count: vBedCount, vbed: t('labels.vbed') });
             bedCapacityEl.insertBefore(vbedSpan, tooltip);
             // Show tooltip only when there are vBeds
             if (tooltip) tooltip.classList.remove('hidden');
@@ -1423,7 +1505,8 @@ const updateModelAssumptions = (tierIndex) => {
             // Add new bonus span
             const bonusSpan = document.createElement('span');
             bonusSpan.className = 'text-brand-secondary font-semibold revenue-bonus';
-            bonusSpan.textContent = `+${formatBDT(totalAdditionalRevenue)} ${t('bdt')}`;
+            bonusSpan.setAttribute('data-i18n', 'labels.bonus_bdt');
+            bonusSpan.textContent = t('labels.bonus_bdt', { amount: formatBDT(totalAdditionalRevenue), bdt: t('bdt') });
             baseMonthlyRevenueEl.insertBefore(bonusSpan, tooltip);
             // Show tooltip only when there's additional revenue
             if (tooltip) tooltip.classList.remove('hidden');
@@ -1873,9 +1956,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updateOccupancyLockNote();
         occupancyLockToggle.setAttribute('aria-pressed', isOccupancyLocked ? 'true' : 'false');
         occupancyLockToggle.setAttribute(
-            'title',
-            isOccupancyLocked ? t('occupancy.lock.title.locked') : t('occupancy.lock.title.unlocked')
+            'data-i18n-title',
+            isOccupancyLocked ? 'occupancy.lock.title.locked' : 'occupancy.lock.title.unlocked'
         );
+        if (window.i18n && typeof window.i18n.apply === 'function') window.i18n.apply(occupancyLockToggle);
     });
 
     // Init Price Toggles
@@ -2199,10 +2283,12 @@ document.addEventListener('DOMContentLoaded', () => {
     occupancyLockToggle.classList.toggle('dark:text-gray-500', !isOccupancyLocked);
     occupancyLockToggle.setAttribute('aria-pressed', isOccupancyLocked ? 'true' : 'false');
     occupancyLockToggle.setAttribute(
-        'title',
-        isOccupancyLocked ? 'Unlock occupancy (it remains saved)' : 'Lock occupancy (persisted across refreshes)'
+        'data-i18n-title',
+        isOccupancyLocked ? 'occupancy.lock.title.locked' : 'occupancy.lock.title.unlocked'
     );
-    updateStaffingTier(initialTier); // This will call updateOccupancyMetrics internally
+    if (window.i18n && typeof window.i18n.apply === 'function') window.i18n.apply(occupancyLockToggle);
+    // Use the centralized render path to set up initial dynamic content
+    renderApp(initialTier);
 
     // Set initial state for pricing table
     // Restore selected price rate if available
@@ -2269,10 +2355,11 @@ document.addEventListener('DOMContentLoaded', () => {
     updateOccupancyLockNote();
     updateLaunchProjections();
     // Ensure translations are applied to any dynamically updated nodes
-    // Re-apply translations and re-run dynamic UI updates once i18n is ready.
-    const _applyTranslationsAndRefreshUI = () => {
+    // We centralize UI rendering in `renderApp()` so we can re-run it when
+    // translations change or when the app needs a full refresh.
+    function renderApp(tierIndex = initialTier) {
         try {
-            // Apply any data-i18n attributes
+            // Apply any data-i18n attributes for static strings created by JS
             if (window.i18n && typeof window.i18n.apply === 'function') window.i18n.apply(document);
         } catch (e) {
             /* ignore */
@@ -2285,7 +2372,7 @@ document.addEventListener('DOMContentLoaded', () => {
             /* ignore */
         }
         try {
-            updateStaffingTier(initialTier);
+            updateStaffingTier(tierIndex);
         } catch (e) {
             /* ignore */
         }
@@ -2301,12 +2388,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         try {
             if (visitMixChart) renderVisitMixChart();
+        } catch (e) {
+            /* ignore */
+        }
+        try {
             if (staffingTierChart) renderStaffingTierChart();
         } catch (e) {
             /* ignore */
         }
         try {
-            updateModelAssumptions(initialTier);
+            updateModelAssumptions(tierIndex);
         } catch (e) {
             /* ignore */
         }
@@ -2322,15 +2413,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const discount =
                 storedRate !== null && !Number.isNaN(parseInt(storedRate, 10)) ? parseInt(storedRate, 10) / 100 : 0;
             updatePricingTable(discount);
-            if (priceToggleNoteEl) {
+            if (priceToggleNoteEl)
                 priceToggleNoteEl.textContent =
                     storedRate !== null ? t('toasts.saved_pricing_persist') : t('pricing.default_full_price');
-            }
         } catch (e) {
             /* ignore */
         }
         try {
-            // Ensure any helper text updated by these helpers reflect the current translations
             applyScenarioManagerCollapsed(
                 scenarioManagerBody && scenarioManagerBody.classList.contains('hidden'),
                 true
@@ -2344,7 +2433,22 @@ document.addEventListener('DOMContentLoaded', () => {
             /* ignore */
         }
         try {
-            updateDynamicPayrollTable(initialTier);
+            updateDynamicPayrollTable(tierIndex);
+        } catch (e) {
+            /* ignore */
+        }
+    }
+
+    // Re-apply translations and re-run dynamic UI updates once i18n is ready.
+    const _applyTranslationsAndRefreshUI = () => {
+        try {
+            // Apply data-i18n attributes first
+            if (window.i18n && typeof window.i18n.apply === 'function') window.i18n.apply(document);
+        } catch (e) {
+            /* ignore */
+        }
+        try {
+            renderApp(initialTier);
         } catch (e) {
             /* ignore */
         }

@@ -284,6 +284,7 @@
     "labels.days": "days",
     "labels.beds": "beds",
     "labels.vbed": "vBed",
+    "labels.vbed_count": "+{count} {vbed}",
     "labels.days_parenthetical": "({count} {days})",
     "labels.days_parenthetical_html": "({base} + <span class=\"text-brand-secondary font-semibold\">+{extra}</span> {days})",
     "labels.bonus_bdt": "+{amount} {bdt}",
