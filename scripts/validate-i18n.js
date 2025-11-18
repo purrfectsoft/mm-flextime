@@ -44,7 +44,9 @@ function main() {
                 const ok = /(_html$|\.services_html\.|_html\.|_html$)/i.test(key) || key.toLowerCase().includes('html');
                 if (!ok) {
                     errors++;
-                    console.error(`${path.basename(file)}: key '${key}' contains HTML but key name does not follow _html/.services_html convention`);
+                    console.error(
+                        `${path.basename(file)}: key '${key}' contains HTML but key name does not follow _html/.services_html convention`
+                    );
                 }
             }
         });

@@ -1188,7 +1188,9 @@ const updateDynamicPayrollTable = (tierIndex) => {
     if (!dynamicPayrollTableBody) return;
     // Clear table safely
     if (typeof dynamicPayrollTableBody.replaceChildren === 'function') dynamicPayrollTableBody.replaceChildren();
-    else while (dynamicPayrollTableBody.firstChild) dynamicPayrollTableBody.removeChild(dynamicPayrollTableBody.firstChild);
+    else
+        while (dynamicPayrollTableBody.firstChild)
+            dynamicPayrollTableBody.removeChild(dynamicPayrollTableBody.firstChild);
 
     let tierComposition = [];
     // Declarative retrieval using the `tier` property on composition entries
@@ -2019,11 +2021,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     t('bdt')
                 );
                 try {
-                        const frag = parseHtmlFragment(maxDailyHtml);
-                        maxDailyRevenueEl.replaceChildren(frag);
-                    } catch (e) {
-                        maxDailyRevenueEl.textContent = maxDailyHtml.replace(/<[^>]+>/g, '');
-                    }
+                    const frag = parseHtmlFragment(maxDailyHtml);
+                    maxDailyRevenueEl.replaceChildren(frag);
+                } catch (e) {
+                    maxDailyRevenueEl.textContent = maxDailyHtml.replace(/<[^>]+>/g, '');
+                }
             } else {
                 maxDailyRevenueEl.textContent = tx('labels.amount_bdt', formatBDT(MAX_DAILY_REVENUE), t('bdt'));
             }
