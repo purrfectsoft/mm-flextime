@@ -94,7 +94,20 @@
                 const key = el.getAttribute('data-i18n');
                 const text = this.t(key);
                 if (el.hasAttribute('data-i18n-html')) {
-                    el.innerHTML = text;
+                    try {
+                        if (window.createTransientElement) {
+                            const frag = window.createTransientElement(text);
+                            el.replaceChildren(frag);
+                        } else {
+                            // Fallback: parse via template to avoid direct innerHTML where possible
+                            const tpl = document.createElement('template');
+                            tpl.innerHTML = text;
+                            el.replaceChildren(tpl.content);
+                        }
+                    } catch (e) {
+                        // Last resort: set innerHTML (should be rare)
+                        el.innerHTML = text;
+                    }
                 } else if (el.tagName === 'IMG' && el.hasAttribute('alt')) {
                     el.setAttribute('alt', text);
                 } else {
@@ -143,4 +156,44 @@
             window.t = window.t || i18n.t.bind(i18n);
         }
     });
+
+    // Utility: create a transient DocumentFragment from an HTML string with
+    // optional positional translation keys. Usage:
+    //   const frag = createTransientElement('<p>%s</p>', 'labels.some_key');
+    //   node.replaceChildren(frag);
+    function createTransientElement(htmlStr, ...i18nArgs) {
+        // Resolve i18nArgs: if an arg is a string, attempt to resolve it via t(),
+        // otherwise use it as a raw value. This allows callers to pass either
+        // translation keys or already-resolved strings.
+        const resolved = i18nArgs.map((a) => {
+            if (typeof a === 'string') {
+                try {
+                    // Prefer treating dotted strings as translation keys;
+                    // fall back to raw string if translation missing.
+                    const candidate = i18n.t(a);
+                    return candidate || a;
+                } catch (e) {
+                    return a;
+                }
+            }
+            return a;
+        });
+
+        // Use tx to perform positional substitutions when possible. tx will
+        // return the htmlStr unchanged if it isn't a template.
+        let rendered;
+        try {
+            rendered = i18n.tx(htmlStr, ...resolved);
+        } catch (e) {
+            // Fallback: attempt simple concatenation
+            rendered = htmlStr;
+        }
+
+        const tpl = document.createElement('template');
+        tpl.innerHTML = rendered;
+        return tpl.content;
+    }
+
+    // Expose utility globally for use throughout the app
+    window.createTransientElement = window.createTransientElement || createTransientElement;
 })();

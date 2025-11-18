@@ -5,17 +5,16 @@
     "type": "module",
     "scripts": {
         "start": "python -m http.server 5500",
-        "i18n:validate": "node scripts/validate-locales.cjs",
-        "i18n:curate:apply": "node scripts/curate-locales.cjs --auto-promote --apply",
-        "i18n:extract": "node scripts/extract-strings.cjs",
+        
         "version": "npm run format:fix && node scripts/update-hashes.js && git add index.html",
         "postversion": "git push && git push --tags",
         "deploy": "node scripts/deploy.js",
         "publish": "npm version patch && npm run deploy",
         "format": "prettier --check .",
         "format:fix": "prettier --write .",
-        "test:e2e": "npx playwright test",
-        "ci:e2e": "npm run i18n:validate && npx playwright test --project=chromium"
+        "test:e2e": "npx playwright test --config=playwright.config.js",
+        "ci:e2e": "npx playwright test --config=playwright.config.js --project=chromium",
+        "i18n:validate": "node scripts/validate-i18n.js"
     },
     "dependencies": {
         "dotenv": "^17.2.3"

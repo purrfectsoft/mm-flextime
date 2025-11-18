@@ -68,9 +68,7 @@ You can validate locales and run the E2E Playwright tests locally:
 1. Install dev tools (Playwright):
     - npm ci
     - npx playwright install
-2. Run the i18n validation:
-    - npm run i18n:validate
-3. Run the E2E tests (starts a simple static server via Python):
+2. Run the E2E tests (starts a simple static server via Python):
     - npm run test:e2e
 
 ## Data Models

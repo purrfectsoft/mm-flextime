@@ -76,8 +76,18 @@ const setSavedScenarios = (arr) => {
 const populateScenarioSelect = () => {
     if (!scenarioSelect) return;
     const scenarios = getSavedScenarios();
-    // Reset select
-    scenarioSelect.innerHTML = `<option value="">${t('scenario_manager.load_placeholder')}</option>`;
+    // Reset select using centralized transient element parsing
+    try {
+        const frag = parseHtmlFragment('<option value="">%s</option>', 'scenario_manager.load_placeholder');
+        scenarioSelect.replaceChildren(frag);
+    } catch (e) {
+        // Defensive fallback: clear and add a plain option node
+        scenarioSelect.replaceChildren();
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = t('scenario_manager.load_placeholder');
+        scenarioSelect.appendChild(opt);
+    }
     scenarios.forEach((s) => {
         const opt = document.createElement('option');
         opt.value = s.name;
@@ -686,6 +696,48 @@ const createTranslatedElement = (tag, key, fallbackText = '', attrs = {}) => {
     return el;
 };
 
+// Centralized HTML -> DocumentFragment parser.
+// Uses the runtime `createTransientElement` when available to resolve i18n
+// args and parse HTML. If not available, it resolves i18n args locally
+// (using `t`/`tx`) and parses into a <template> once here. This keeps
+// direct `innerHTML` usage concentrated in one place and simplifies
+// replacement of ad-hoc tpl.innerHTML patterns across the codebase.
+const parseHtmlFragment = (htmlOrKey, ...i18nArgs) => {
+    if (window.createTransientElement) return window.createTransientElement(htmlOrKey, ...i18nArgs);
+
+    // Resolve i18n args: if an arg looks like a translation key (string with dots/words),
+    // try to resolve via `t()`; otherwise use as-is.
+    const resolvedArgs = (i18nArgs || []).map((a) => {
+        if (typeof a === 'string' && /^[\w-.]+$/.test(a) && typeof t === 'function') return t(a);
+        return a;
+    });
+
+    // Render the final HTML string. Prefer `tx` for printf-style interpolation
+    // if available, otherwise fallback to basic replacement of %s tokens.
+    let rendered = htmlOrKey;
+    try {
+        if (resolvedArgs.length && typeof tx === 'function') rendered = tx(htmlOrKey, ...resolvedArgs);
+        else if (resolvedArgs.length && typeof t === 'function') {
+            // If htmlOrKey itself is a translation key that returns a template string
+            const maybe = t(htmlOrKey);
+            if (typeof maybe === 'string') rendered = maybe.replace(/%s/g, () => String(resolvedArgs.shift()));
+            else rendered = String(htmlOrKey);
+        } else if (typeof t === 'function') rendered = t(htmlOrKey) || String(htmlOrKey);
+        else rendered = String(htmlOrKey);
+    } catch (e) {
+        // Best-effort naive interpolation
+        try {
+            rendered = String(htmlOrKey).replace(/%s/g, () => String(resolvedArgs.shift() || ''));
+        } catch (e2) {
+            rendered = String(htmlOrKey);
+        }
+    }
+
+    const tpl = document.createElement('template');
+    tpl.innerHTML = rendered;
+    return tpl.content;
+};
+
 // Detailed Tier Services (PU/MM Flair)
 const TIER_SERVICES_HTML = [
     // Tier 0
@@ -1134,7 +1186,9 @@ const renderStaffingTierChart = () => {
 // NEW: Update Dynamic Payroll Table
 const updateDynamicPayrollTable = (tierIndex) => {
     if (!dynamicPayrollTableBody) return;
-    dynamicPayrollTableBody.innerHTML = ''; // Clear table
+    // Clear table safely
+    if (typeof dynamicPayrollTableBody.replaceChildren === 'function') dynamicPayrollTableBody.replaceChildren();
+    else while (dynamicPayrollTableBody.firstChild) dynamicPayrollTableBody.removeChild(dynamicPayrollTableBody.firstChild);
 
     let tierComposition = [];
     // Declarative retrieval using the `tier` property on composition entries
@@ -1378,11 +1432,18 @@ const updateModelAssumptions = (tierIndex) => {
     const workingDaysEl = document.getElementById('model-working-days');
     if (workingDaysEl) {
         if (additionalDays > 0) {
-            workingDaysEl.innerHTML = t('labels.days_parenthetical_html', {
+            const wdHtml = t('labels.days_parenthetical_html', {
                 base: baseDays,
                 extra: additionalDays,
                 days: t('labels.days'),
             });
+            try {
+                const frag = parseHtmlFragment(wdHtml);
+                workingDaysEl.replaceChildren(frag);
+            } catch (e) {
+                // Fallback to safe text if parsing fails
+                workingDaysEl.textContent = wdHtml.replace(/<[^>]+>/g, '');
+            }
         } else {
             workingDaysEl.textContent = `${operationalDays} ${t('labels.days')}`;
         }
@@ -1454,12 +1515,18 @@ const updateModelAssumptions = (tierIndex) => {
 
         if (totalBonus > 0) {
             // Use printf-style translation with HTML (we expect HTML in translation)
-            maxDailyRevenueEl.innerHTML = tx(
+            const maxDailyHtml = tx(
                 'model_assumptions.max_daily_revenue_html',
                 formatBDT(MAX_DAILY_REVENUE),
                 formatBDT(totalBonus),
                 t('bdt')
             );
+            try {
+                const frag = parseHtmlFragment(maxDailyHtml);
+                maxDailyRevenueEl.replaceChildren(frag);
+            } catch (e) {
+                maxDailyRevenueEl.textContent = maxDailyHtml.replace(/<[^>]+>/g, '');
+            }
         } else {
             maxDailyRevenueEl.textContent = tx('labels.amount_bdt', formatBDT(MAX_DAILY_REVENUE), t('bdt'));
         }
@@ -1487,11 +1554,17 @@ const updateModelAssumptions = (tierIndex) => {
 
         // Update labels
         if (additionalDays > 0) {
-            baseMonthlyRevenueDaysLabelEl.innerHTML = t('labels.days_parenthetical_html', {
+            const baseDaysHtml = t('labels.days_parenthetical_html', {
                 base: baseDays,
                 extra: additionalDays,
                 days: t('labels.days'),
             });
+            try {
+                const frag = parseHtmlFragment(baseDaysHtml);
+                baseMonthlyRevenueDaysLabelEl.replaceChildren(frag);
+            } catch (e) {
+                baseMonthlyRevenueDaysLabelEl.textContent = baseDaysHtml.replace(/<[^>]+>/g, '');
+            }
         } else {
             baseMonthlyRevenueDaysLabelEl.textContent = t('labels.days_parenthetical', {
                 count: operationalDays,
@@ -1565,7 +1638,12 @@ const updateStaffingTier = (tierIndex) => {
     // Use HTML translation keys for service descriptions per-tier when available
     const svcHtmlKey = `tiers.services_html.${tierIndex}`;
     const svcHtml = (typeof t === 'function' && t(svcHtmlKey)) || TIER_SERVICES_HTML[tierIndex];
-    servicesUnlockedEl.innerHTML = svcHtml;
+    try {
+        const frag = parseHtmlFragment(svcHtml);
+        servicesUnlockedEl.replaceChildren(frag);
+    } catch (e) {
+        servicesUnlockedEl.textContent = svcHtml.replace(/<[^>]+>/g, '');
+    }
 
     // Update tier financials
     assumedOccupancyEl.textContent = t('labels.percent_approx', { percent: currentStaffingTier.capacity });
@@ -1934,12 +2012,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (totalBonus > 0) {
-                maxDailyRevenueEl.innerHTML = tx(
+                const maxDailyHtml = tx(
                     'model_assumptions.max_daily_revenue_html',
                     formatBDT(MAX_DAILY_REVENUE),
                     formatBDT(totalBonus),
                     t('bdt')
                 );
+                try {
+                        const frag = parseHtmlFragment(maxDailyHtml);
+                        maxDailyRevenueEl.replaceChildren(frag);
+                    } catch (e) {
+                        maxDailyRevenueEl.textContent = maxDailyHtml.replace(/<[^>]+>/g, '');
+                    }
             } else {
                 maxDailyRevenueEl.textContent = tx('labels.amount_bdt', formatBDT(MAX_DAILY_REVENUE), t('bdt'));
             }

@@ -1,9 +1,9 @@
 // Playwright config to run a lightweight static server via Python's http.server
 // and run tests against http://127.0.0.1:5500
 
-const { devices } = require('@playwright/test');
+import { devices } from '@playwright/test';
 
-module.exports = {
+export default {
     testDir: 'tests/e2e',
     timeout: 60 * 1000,
     expect: {
