@@ -31,6 +31,7 @@
                 }
                 // Expose t globally for convenience
                 window.t = this.t.bind(this);
+                window.tx = this.tx.bind(this);
                 window.i18n = this;
                 return true;
             })();
@@ -68,6 +69,24 @@
                 const k = k1 || k2;
                 return vars[k] !== undefined ? vars[k] : `{{${k}}}`;
             });
+        },
+        // printf-style positional translation helper: tx(keyOrString, ...args)
+        // Supports ordered placeholders like %1$s, %2$d and unnumbered %s/%d which are applied sequentially.
+        tx(keyOrString, ...args) {
+            if (!keyOrString) return '';
+            const tpl = this.translations[keyOrString] || keyOrString;
+            let idx = 0;
+            // Replace numbered placeholders first
+            let str = tpl.replace(/%([1-9]\d*)\$[sdf]/g, (m, p1) => {
+                const pos = Number(p1) - 1;
+                return args[pos] !== undefined ? String(args[pos]) : m;
+            });
+            // Replace unnumbered %s/%d/%f sequentially
+            str = str.replace(/%[sdf]/g, () => {
+                const a = args[idx++];
+                return a !== undefined ? String(a) : '';
+            });
+            return str;
         },
         apply(root = document) {
             // Replace text for elements with data-i18n, supports placeholders and html
@@ -110,6 +129,10 @@
     // reliably detect `window.i18n.ready` and attach callbacks.
     window.i18n = window.i18n || i18n;
     window.t = window.t || i18n.t.bind(i18n);
+    // Expose printf-style positional helper early so scripts that run
+    // during load can safely call `tx()` even if translations haven't
+    // been fetched yet (fallback to key or format string behavior).
+    window.tx = window.tx || i18n.tx.bind(i18n);
     window.addEventListener('DOMContentLoaded', () => {
         // Auto-init with default English if no ready promise exists. `init` sets
         // `i18n.ready` Promise synchronously so other scripts can attach `.then()` handlers.

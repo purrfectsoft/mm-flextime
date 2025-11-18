@@ -1066,10 +1066,10 @@ const renderVisitMixChart = () => {
         type: 'doughnut',
         data: {
             labels: [
-                `${t('pricing.foundation')} (20%)`,
-                `${t('pricing.standard')} (50%)`,
-                `${t('pricing.premium')} (25%)`,
-                `${t('pricing.express')} (5%)`,
+                tx('pricing.session_with_percent', t('pricing.foundation'), '20%'),
+                tx('pricing.session_with_percent', t('pricing.standard'), '50%'),
+                tx('pricing.session_with_percent', t('pricing.premium'), '25%'),
+                tx('pricing.session_with_percent', t('pricing.express'), '5%'),
             ],
             datasets: [
                 {
@@ -1453,9 +1453,15 @@ const updateModelAssumptions = (tierIndex) => {
         }
 
         if (totalBonus > 0) {
-            maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> ${t('bdt')}`;
+            // Use printf-style translation with HTML (we expect HTML in translation)
+            maxDailyRevenueEl.innerHTML = tx(
+                'model_assumptions.max_daily_revenue_html',
+                formatBDT(MAX_DAILY_REVENUE),
+                formatBDT(totalBonus),
+                t('bdt')
+            );
         } else {
-            maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} ${t('bdt')}`;
+            maxDailyRevenueEl.textContent = tx('labels.amount_bdt', formatBDT(MAX_DAILY_REVENUE), t('bdt'));
         }
     }
 
@@ -1511,7 +1517,7 @@ const updateModelAssumptions = (tierIndex) => {
             // Show tooltip only when there's additional revenue
             if (tooltip) tooltip.classList.remove('hidden');
         } else {
-            textNode.textContent = `${formatBDT(tierMaxMonthlyRevenue)} ${t('bdt')}`;
+            textNode.textContent = tx('labels.amount_bdt', formatBDT(tierMaxMonthlyRevenue), t('bdt'));
             const oldSpan = baseMonthlyRevenueEl.querySelector('span.revenue-bonus');
             if (oldSpan) oldSpan.remove();
             // Hide tooltip when no additional revenue
@@ -1565,7 +1571,7 @@ const updateStaffingTier = (tierIndex) => {
     assumedOccupancyEl.textContent = t('labels.percent_approx', { percent: currentStaffingTier.capacity });
     const netMargin = currentStaffingTier.revenue - currentStaffingTier.payroll;
     const marginPct = (netMargin / currentStaffingTier.revenue) * 100;
-    netMarginBdtEl.textContent = `≈ ${formatBDT(netMargin)}`;
+    netMarginBdtEl.textContent = tx('labels.net_margin_bdt', formatBDT(netMargin));
     netMarginPctEl.textContent = t('labels.percent_approx', { percent: marginPct.toFixed(1) });
 
     // Update bar chart
@@ -1928,9 +1934,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (totalBonus > 0) {
-                maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> ${t('bdt')}`;
+                maxDailyRevenueEl.innerHTML = tx(
+                    'model_assumptions.max_daily_revenue_html',
+                    formatBDT(MAX_DAILY_REVENUE),
+                    formatBDT(totalBonus),
+                    t('bdt')
+                );
             } else {
-                maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} ${t('bdt')}`;
+                maxDailyRevenueEl.textContent = tx('labels.amount_bdt', formatBDT(MAX_DAILY_REVENUE), t('bdt'));
             }
         }
     });
@@ -2158,10 +2169,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (visitMixChart) {
             visitMixChart.data.datasets[0].data = arr;
             visitMixChart.data.labels = [
-                `${t('pricing.foundation')} (${t('labels.percent', { percent: f })})`,
-                `${t('pricing.standard')} (${t('labels.percent', { percent: s })})`,
-                `${t('pricing.premium')} (${t('labels.percent', { percent: p })})`,
-                `${t('pricing.express')} (${t('labels.percent', { percent: e })})`,
+                tx('pricing.session_with_percent', t('pricing.foundation'), t('labels.percent', { percent: f })),
+                tx('pricing.session_with_percent', t('pricing.standard'), t('labels.percent', { percent: s })),
+                tx('pricing.session_with_percent', t('pricing.premium'), t('labels.percent', { percent: p })),
+                tx('pricing.session_with_percent', t('pricing.express'), t('labels.percent', { percent: e })),
             ];
             visitMixChart.update();
         }
