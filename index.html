@@ -142,6 +142,30 @@
                             >Core Data</a
                         >
 
+                        <!-- Language Switcher (Desktop) -->
+                        <div
+                            class="ml-4 flex items-center gap-1 border border-gray-300 dark:border-gray-600 rounded-lg p-1"
+                        >
+                            <button
+                                id="lang-en-btn"
+                                type="button"
+                                class="lang-btn px-3 py-1.5 rounded-md text-sm font-semibold transition-colors"
+                                aria-pressed="true"
+                                data-lang="en"
+                            >
+                                🇬🇧 EN
+                            </button>
+                            <button
+                                id="lang-bn-btn"
+                                type="button"
+                                class="lang-btn px-3 py-1.5 rounded-md text-sm font-semibold transition-colors"
+                                aria-pressed="false"
+                                data-lang="bn"
+                            >
+                                🇧🇩 BN
+                            </button>
+                        </div>
+
                         <!-- Dark Mode Toggle (Desktop) -->
                         <button
                             id="theme-toggle"
@@ -245,6 +269,30 @@
                         class="mobile-nav-link block px-3 py-2 rounded-md text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         >Core Data</a
                     >
+
+                    <!-- Language Switcher (Mobile) -->
+                    <div
+                        class="mt-4 flex items-center justify-center gap-2 border border-gray-300 dark:border-gray-600 rounded-lg p-1"
+                    >
+                        <button
+                            id="lang-en-btn-mobile"
+                            type="button"
+                            class="lang-btn flex-1 px-3 py-2 rounded-md text-sm font-semibold transition-colors"
+                            aria-pressed="true"
+                            data-lang="en"
+                        >
+                            🇬🇧 EN
+                        </button>
+                        <button
+                            id="lang-bn-btn-mobile"
+                            type="button"
+                            class="lang-btn flex-1 px-3 py-2 rounded-md text-sm font-semibold transition-colors"
+                            aria-pressed="false"
+                            data-lang="bn"
+                        >
+                            🇧🇩 BN
+                        </button>
+                    </div>
 
                     <!-- Dark Mode Toggle (Mobile) -->
                     <button
@@ -486,7 +534,10 @@
                                 >No Late Penalty</span
                             >
                         </div>
-                        <p data-i18n="model.shift.flexstart.time" class="text-lg font-medium text-gray-700 dark:text-gray-300">
+                        <p
+                            data-i18n="model.shift.flexstart.time"
+                            class="text-lg font-medium text-gray-700 dark:text-gray-300"
+                        >
                             09:00 – 10:00
                         </p>
                         <p data-i18n="model.shift.flexstart.desc" class="text-gray-600 dark:text-gray-400 mt-2">
@@ -522,7 +573,10 @@
                         <div class="flex justify-between items-center mb-2">
                             <div class="flex items-center space-x-3">
                                 <i data-lucide="refresh-cw" class="w-8 h-8 text-brand-wood"></i>
-                                <h4 data-i18n="model.shift.midday_reset.title" class="text-2xl font-bold text-brand-wood">
+                                <h4
+                                    data-i18n="model.shift.midday_reset.title"
+                                    class="text-2xl font-bold text-brand-wood"
+                                >
                                     Midday Reset
                                 </h4>
                             </div>
@@ -532,7 +586,10 @@
                                 >TURNOVER</span
                             >
                         </div>
-                        <p data-i18n="model.shift.midday_reset.time" class="text-lg font-medium text-gray-700 dark:text-gray-300">
+                        <p
+                            data-i18n="model.shift.midday_reset.time"
+                            class="text-lg font-medium text-gray-700 dark:text-gray-300"
+                        >
                             13:00 – 14:00
                         </p>
                         <p data-i18n="model.shift.midday_reset.desc" class="text-gray-600 dark:text-gray-400 mt-2">
@@ -582,7 +639,10 @@
                             >
                         </div>
                         <p class="text-lg font-medium text-gray-700 dark:text-gray-300">17:00 – 19:00</p>
-                        <p data-i18n="model.shift.commute_gap.desc" class="text-gray-600 dark:text-gray-400 mt-2 text-sm">
+                        <p
+                            data-i18n="model.shift.commute_gap.desc"
+                            class="text-gray-600 dark:text-gray-400 mt-2 text-sm"
+                        >
                             Buffer for staff travel and deconfliction to reduce congestion and improve safety.
                         </p>
                     </div>
@@ -620,7 +680,9 @@
                                 <h4 class="text-2xl font-bold text-brand-highlight">
                                     <span data-i18n="model.shift.prefix">FlexShift</span>
                                     <span class="flex-shift-z-container flex-shift-o-container">
-                                        <span class="flex-shift-z flex-shift-o" data-i18n="model.shift.o.letter">O</span>
+                                        <span class="flex-shift-z flex-shift-o" data-i18n="model.shift.o.letter"
+                                            >O</span
+                                        >
                                         <span
                                             class="flex-shift-z-suffix flex-shift-o-suffix"
                                             data-i18n="model.shift.o.suffix"
@@ -1157,9 +1219,7 @@
                                         data-lucide="info"
                                         class="w-4 h-4 text-gray-400 dark:text-gray-500 inline-block ml-1 cursor-help"
                                     ></i>
-                                    <span
-                                        data-i18n="staffing.financials.tooltip"
-                                        class="tooltiptext"
+                                    <span data-i18n="staffing.financials.tooltip" class="tooltiptext"
                                         >Expected Revenue is modeled using full-price sessions at 22 working days/month
                                         and the assumed occupancy for this tier.</span
                                     >
@@ -1396,7 +1456,9 @@
                             <div id="daily-revenue" class="lg:text-3xl text-xl font-bold text-brand-secondary-light">
                                 82,383
                             </div>
-                            <span data-i18n="label.bdt" class="lg:text-sm text-xs text-gray-500 dark:text-gray-400">BDT</span>
+                            <span data-i18n="label.bdt" class="lg:text-sm text-xs text-gray-500 dark:text-gray-400"
+                                >BDT</span
+                            >
                         </div>
                         <!-- Monthly Revenue -->
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
@@ -1408,7 +1470,9 @@
                             <div id="monthly-revenue" class="lg:text-3xl text-xl font-bold text-brand-secondary">
                                 1,812,426
                             </div>
-                            <span data-i18n="label.bdt" class="lg:text-sm text-xs text-gray-500 dark:text-gray-400">BDT</span>
+                            <span data-i18n="label.bdt" class="lg:text-sm text-xs text-gray-500 dark:text-gray-400"
+                                >BDT</span
+                            >
                         </div>
                         <!-- Monthly Profit -->
                         <div class="bg-brand-extralight dark:bg-brand-dark/50 p-4 rounded-lg text-center">
@@ -1598,7 +1662,9 @@
                             </div>
                             <!-- Total Indicator -->
                             <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg text-center">
-                                <span data-i18n="pricing.visitmix.total" class="text-xs font-medium text-gray-600 dark:text-gray-300"
+                                <span
+                                    data-i18n="pricing.visitmix.total"
+                                    class="text-xs font-medium text-gray-600 dark:text-gray-300"
                                     >Total:</span
                                 >
                                 <span id="visitmix-total" class="text-lg font-bold text-gray-800 dark:text-white ml-2"
@@ -1673,7 +1739,9 @@
                                         class="inline-block w-2 h-2 rounded-full bg-brand-wood dark:bg-brand-wood mt-1 flex-shrink-0"
                                     ></span>
                                     <div>
-                                        <strong data-i18n="pricing.legend.foundation.label" class="text-gray-800 dark:text-gray-100"
+                                        <strong
+                                            data-i18n="pricing.legend.foundation.label"
+                                            class="text-gray-800 dark:text-gray-100"
                                             >Foundation:</strong
                                         >
                                         <span data-i18n="pricing.legend.foundation.desc"
@@ -1686,7 +1754,9 @@
                                         class="inline-block w-2 h-2 rounded-full bg-brand-base dark:bg-brand-base mt-1 flex-shrink-0"
                                     ></span>
                                     <div>
-                                        <strong data-i18n="pricing.legend.standard.label" class="text-gray-800 dark:text-gray-100"
+                                        <strong
+                                            data-i18n="pricing.legend.standard.label"
+                                            class="text-gray-800 dark:text-gray-100"
                                             >Standard:</strong
                                         >
                                         <span data-i18n="pricing.legend.standard.desc"
@@ -1699,11 +1769,12 @@
                                         class="inline-block w-2 h-2 rounded-full bg-brand-light dark:bg-brand-light mt-1 flex-shrink-0"
                                     ></span>
                                     <div>
-                                        <strong data-i18n="pricing.legend.premium.label" class="text-gray-800 dark:text-gray-100"
+                                        <strong
+                                            data-i18n="pricing.legend.premium.label"
+                                            class="text-gray-800 dark:text-gray-100"
                                             >Premium:</strong
                                         >
-                                        <span
-                                            data-i18n="pricing.legend.premium.desc"
+                                        <span data-i18n="pricing.legend.premium.desc"
                                             >Extended sessions with specialist attention, advanced tech integration and
                                             personalized care</span
                                         >
@@ -2052,7 +2123,10 @@
                             <div class="flex justify-between items-start mb-3">
                                 <div class="flex-1">
                                     <div class="flex lg:items-center items-start justify-between gap-2 mb-1">
-                                        <h4 data-i18n="launch.model_b.title" class="text-2xl font-bold text-brand-secondary">
+                                        <h4
+                                            data-i18n="launch.model_b.title"
+                                            class="text-2xl font-bold text-brand-secondary"
+                                        >
                                             Model B: Ramp-Up Scenario
                                         </h4>
                                         <span class="tooltip">
@@ -2378,7 +2452,9 @@
                                     >
                                 </li>
                                 <li class="flex justify-between">
-                                    <span data-i18n="data.assumptions.core.bed_capacity">Bed capacity (this tier):</span>
+                                    <span data-i18n="data.assumptions.core.bed_capacity"
+                                        >Bed capacity (this tier):</span
+                                    >
                                     <strong
                                         id="model-bed-capacity"
                                         class="text-brand-dark dark:text-brand-light flex items-center gap-2"
@@ -2484,7 +2560,9 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                             <div class="bg-white dark:bg-gray-900 p-3 rounded-lg">
                                 <div class="flex items-center justify-between mb-2">
-                                    <span data-i18n="data.revenue_streams.tier3.title" class="font-semibold text-brand-wood"
+                                    <span
+                                        data-i18n="data.revenue_streams.tier3.title"
+                                        class="font-semibold text-brand-wood"
                                         >Tier 3 (Partial Weekend)</span
                                     >
                                     <span
@@ -2502,7 +2580,9 @@
                             </div>
                             <div class="bg-white dark:bg-gray-900 p-3 rounded-lg">
                                 <div class="flex items-center justify-between mb-2">
-                                    <span data-i18n="data.revenue_streams.tier4.title" class="font-semibold text-brand-secondary"
+                                    <span
+                                        data-i18n="data.revenue_streams.tier4.title"
+                                        class="font-semibold text-brand-secondary"
                                         >Tier 4 (Full Ecosystem)</span
                                     >
                                     <span

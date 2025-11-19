@@ -669,3 +669,46 @@ html.dark .visitmix-express::-moz-range-thumb {
         opacity 0.25s ease,
         transform 0.25s ease;
 }
+
+/* Language Switcher Styles */
+.lang-btn {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+    transform: scale(1.05);
+}
+
+.lang-btn:active {
+    transform: scale(0.98);
+}
+
+/* Active language button styles (applied via JS) */
+.lang-btn[aria-pressed='true'] {
+    background-color: #167a42; /* bg-brand-base */
+    color: #ffffff; /* text-white */
+}
+
+html.dark .lang-btn[aria-pressed='true'] {
+    background-color: #3cb06f; /* dark:bg-brand-light */
+    color: #0d4826; /* dark:text-brand-dark */
+}
+
+/* Inactive language button styles (applied via JS) */
+.lang-btn[aria-pressed='false'] {
+    background-color: transparent;
+    color: #374151; /* text-gray-700 */
+}
+
+html.dark .lang-btn[aria-pressed='false'] {
+    color: #d1d5db; /* dark:text-gray-300 */
+}
+
+.lang-btn[aria-pressed='false']:hover {
+    background-color: #f3f4f6; /* hover:bg-gray-100 */
+}
+
+html.dark .lang-btn[aria-pressed='false']:hover {
+    background-color: #374151; /* dark:hover:bg-gray-700 */
+}

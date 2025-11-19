@@ -1,11 +1,32 @@
 (function () {
     // Minimal i18n micro library
+    const STORAGE_LANG_KEY = 'i18nLang';
+
     const i18n = {
         lang: 'en',
         translations: {},
+        // Helper to get stored language or default to 'en'
+        getStoredLanguage() {
+            try {
+                return localStorage.getItem(STORAGE_LANG_KEY) || 'en';
+            } catch (err) {
+                return 'en';
+            }
+        },
+        // Helper to save language to localStorage
+        saveLanguage(lang) {
+            try {
+                localStorage.setItem(STORAGE_LANG_KEY, lang);
+            } catch (err) {
+                console.warn('Could not save language to localStorage', err);
+            }
+        },
         // `init` returns a promise and sets `ready` to a Promise that resolves when translations are loaded.
         async init({ defaultLang = 'en', path = '/locales' } = {}) {
-            this.lang = defaultLang;
+            // Check for stored language preference
+            const storedLang = this.getStoredLanguage();
+            this.lang = storedLang || defaultLang;
+
             this.ready = (async () => {
                 try {
                     const resp = await fetch(`${path}/${this.lang}.json`);
@@ -20,6 +41,8 @@
                 // Apply to document once loaded (if possible)
                 try {
                     this.apply();
+                    // Update html lang attribute
+                    document.documentElement.setAttribute('lang', this.lang);
                     // Emit a global event so callers can react when i18n finishes loading
                     try {
                         window.dispatchEvent(new CustomEvent('i18n-ready', { detail: { lang: this.lang } }));
@@ -39,6 +62,9 @@
         },
         async setLang(lang, { path = '/locales' } = {}) {
             this.lang = lang;
+            // Save language preference to localStorage
+            this.saveLanguage(lang);
+
             this.ready = (async () => {
                 try {
                     const resp = await fetch(`${path}/${this.lang}.json`);
@@ -48,8 +74,11 @@
                         this.translations = await resp.json();
                     }
                     this.apply();
+                    // Update html lang attribute
+                    document.documentElement.setAttribute('lang', this.lang);
                     try {
                         window.dispatchEvent(new CustomEvent('i18n-ready', { detail: { lang: this.lang } }));
+                        window.dispatchEvent(new CustomEvent('i18n-lang-changed', { detail: { lang: this.lang } }));
                     } catch (e) {
                         /* ignore */
                     }
@@ -59,6 +88,10 @@
                 return true;
             })();
             return this.ready;
+        },
+        // Convenience method for setting language - main API for switcher
+        setLanguage(lang) {
+            return this.setLang(lang, { path: 'locales' });
         },
         t(key, vars) {
             if (!key) return '';

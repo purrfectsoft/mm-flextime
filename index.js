@@ -661,12 +661,26 @@ const TIER_SERVICE_COVERAGE = [
     { weekend: 'staffing.coverage.none', earlyMorning: 'staffing.coverage.no', homeCare: 'staffing.coverage.no' },
     { weekend: 'staffing.coverage.none', earlyMorning: 'staffing.coverage.no', homeCare: 'staffing.coverage.no' },
     { weekend: 'staffing.coverage.none', earlyMorning: 'staffing.coverage.no', homeCare: 'staffing.coverage.no' },
-    { weekend: 'staffing.coverage.partial', earlyMorning: 'staffing.coverage.early_yes_time', homeCare: 'staffing.coverage.home_basic' },
-    { weekend: 'staffing.coverage.full', earlyMorning: 'staffing.coverage.early_yes_time', homeCare: 'staffing.coverage.home_dedicated' },
+    {
+        weekend: 'staffing.coverage.partial',
+        earlyMorning: 'staffing.coverage.early_yes_time',
+        homeCare: 'staffing.coverage.home_basic',
+    },
+    {
+        weekend: 'staffing.coverage.full',
+        earlyMorning: 'staffing.coverage.early_yes_time',
+        homeCare: 'staffing.coverage.home_dedicated',
+    },
 ];
 
 // Helper mapping keys for translations used during rendering
-const TIER_NAME_KEYS = ['staffing.tier.0.name', 'staffing.tier.1.name', 'staffing.tier.2.name', 'staffing.tier.3.name', 'staffing.tier.4.name'];
+const TIER_NAME_KEYS = [
+    'staffing.tier.0.name',
+    'staffing.tier.1.name',
+    'staffing.tier.2.name',
+    'staffing.tier.3.name',
+    'staffing.tier.4.name',
+];
 
 // Convert readable names to a translation key: role or department
 const slugify = (s) =>
@@ -851,6 +865,13 @@ const mobileMenu = document.getElementById('mobile-menu');
 const backToTopBtn = document.getElementById('back-to-top');
 const mainNavLinks = document.querySelectorAll('.main-nav a');
 const navSections = document.querySelectorAll('section[id]');
+
+// Language Switcher Elements
+const langEnBtn = document.getElementById('lang-en-btn');
+const langBnBtn = document.getElementById('lang-bn-btn');
+const langEnBtnMobile = document.getElementById('lang-en-btn-mobile');
+const langBnBtnMobile = document.getElementById('lang-bn-btn-mobile');
+const langButtons = document.querySelectorAll('.lang-btn');
 
 // Staffing Tier Elements
 const staffingSlider = document.getElementById('staffing-tier-slider');
@@ -1587,7 +1608,10 @@ const updateModelAssumptions = (tierIndex) => {
             const bonusSpan = document.createElement('span');
             bonusSpan.className = 'text-brand-secondary font-semibold revenue-bonus';
             bonusSpan.setAttribute('data-i18n', 'label.bonus_bdt');
-            bonusSpan.textContent = t('label.bonus_bdt', { amount: formatBDT(totalAdditionalRevenue), bdt: t('label.bdt') });
+            bonusSpan.textContent = t('label.bonus_bdt', {
+                amount: formatBDT(totalAdditionalRevenue),
+                bdt: t('label.bdt'),
+            });
             baseMonthlyRevenueEl.insertBefore(bonusSpan, tooltip);
             // Show tooltip only when there's additional revenue
             if (tooltip) tooltip.classList.remove('hidden');
@@ -1957,6 +1981,78 @@ document.addEventListener('DOMContentLoaded', () => {
     // Init Theme Toggle Buttons
     themeToggleBtn.addEventListener('click', toggleTheme);
     themeToggleBtnMobile.addEventListener('click', toggleTheme);
+
+    // --- LANGUAGE SWITCHER LOGIC ---
+    // Function to update language button states
+    const updateLanguageButtons = (lang) => {
+        langButtons.forEach((btn) => {
+            const btnLang = btn.getAttribute('data-lang');
+            const isActive = btnLang === lang;
+            btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+
+            // Update button styles
+            if (isActive) {
+                btn.classList.add('bg-brand-base', 'text-white', 'dark:bg-brand-light', 'dark:text-brand-dark');
+                btn.classList.remove(
+                    'bg-transparent',
+                    'text-gray-700',
+                    'dark:text-gray-300',
+                    'hover:bg-gray-100',
+                    'dark:hover:bg-gray-700'
+                );
+            } else {
+                btn.classList.remove('bg-brand-base', 'text-white', 'dark:bg-brand-light', 'dark:text-brand-dark');
+                btn.classList.add(
+                    'bg-transparent',
+                    'text-gray-700',
+                    'dark:text-gray-300',
+                    'hover:bg-gray-100',
+                    'dark:hover:bg-gray-700'
+                );
+            }
+        });
+    };
+
+    // Function to switch language
+    const switchLanguage = async (lang) => {
+        if (window.i18n && typeof window.i18n.setLanguage === 'function') {
+            try {
+                await window.i18n.setLanguage(lang);
+                updateLanguageButtons(lang);
+                // Close mobile menu if open
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            } catch (err) {
+                console.error('Failed to switch language:', err);
+            }
+        }
+    };
+
+    // Initialize language buttons with current language
+    if (window.i18n && window.i18n.ready) {
+        window.i18n.ready.then(() => {
+            const currentLang = window.i18n.lang || 'en';
+            updateLanguageButtons(currentLang);
+        });
+    }
+
+    // Add click handlers to all language buttons
+    langButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang');
+            if (lang) {
+                switchLanguage(lang);
+            }
+        });
+    });
+
+    // Listen for language change events to update UI
+    window.addEventListener('i18n-lang-changed', (e) => {
+        if (e.detail && e.detail.lang) {
+            updateLanguageButtons(e.detail.lang);
+        }
+    });
 
     // Init Mobile Menu
     mobileMenuBtn.addEventListener('click', () => {
