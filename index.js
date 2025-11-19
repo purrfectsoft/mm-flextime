@@ -1549,21 +1549,10 @@ const updateModelAssumptions = (tierIndex) => {
         }
 
         if (totalBonus > 0) {
-            // Use printf-style translation with HTML (we expect HTML in translation)
-            const maxDailyHtml = tx(
-                'model_assumptions.max_daily_revenue_html',
-                formatBDT(MAX_DAILY_REVENUE),
-                formatBDT(totalBonus),
-                t('label.bdt')
-            );
-            try {
-                const frag = parseHtmlFragment(maxDailyHtml);
-                maxDailyRevenueEl.replaceChildren(frag);
-            } catch (e) {
-                maxDailyRevenueEl.textContent = maxDailyHtml.replace(/<[^>]+>/g, '');
-            }
+            // Direct formatting for dynamic content - don't use translation for numbers
+            maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> ${t('label.bdt')}`;
         } else {
-            maxDailyRevenueEl.textContent = tx('label.amount_bdt', formatBDT(MAX_DAILY_REVENUE), t('label.bdt'));
+            maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} ${t('label.bdt')}`;
         }
     }
 
@@ -2146,20 +2135,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (totalBonus > 0) {
-                const maxDailyHtml = tx(
-                    'model_assumptions.max_daily_revenue_html',
-                    formatBDT(MAX_DAILY_REVENUE),
-                    formatBDT(totalBonus),
-                    t('label.bdt')
-                );
-                try {
-                    const frag = parseHtmlFragment(maxDailyHtml);
-                    maxDailyRevenueEl.replaceChildren(frag);
-                } catch (e) {
-                    maxDailyRevenueEl.textContent = maxDailyHtml.replace(/<[^>]+>/g, '');
-                }
+                // Direct formatting for dynamic content - don't use translation for numbers
+                maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> ${t('label.bdt')}`;
             } else {
-                maxDailyRevenueEl.textContent = tx('label.amount_bdt', formatBDT(MAX_DAILY_REVENUE), t('label.bdt'));
+                maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} ${t('label.bdt')}`;
             }
         }
     });
