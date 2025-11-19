@@ -1229,7 +1229,7 @@ const updateDynamicPayrollTable = (tierIndex) => {
         // Dept Header Row
         const deptRow = document.createElement('tr');
         deptRow.className = 'dept-row';
-        const deptLabelKey = toTranslationKey('payroll.table.department', dept.dept);
+        const deptLabelKey = toTranslationKey('payroll.department', dept.dept);
         const th = createTranslatedElement('th', deptLabelKey, dept.dept);
         th.className = 'px-6 py-3 text-left text-sm';
         th.setAttribute('colspan', '6');
@@ -1247,7 +1247,7 @@ const updateDynamicPayrollTable = (tierIndex) => {
             const blankTd = document.createElement('td');
             blankTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400';
             roleRow.appendChild(blankTd);
-            const roleTd = createTranslatedElement('td', toTranslationKey('payroll.table.role', role.name), role.name);
+            const roleTd = createTranslatedElement('td', toTranslationKey('payroll.role', role.name), role.name);
             roleTd.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white';
             roleRow.appendChild(roleTd);
             const typeTd = document.createElement('td');
