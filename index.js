@@ -1662,7 +1662,7 @@ const updateStaffingTier = (tierIndex) => {
     // Update enhanced services
     servicesTierLabelEl.textContent = t('misc.tier', { tier: currentStaffingTier.tier });
     // Use HTML translation keys for service descriptions per-tier when available
-    const svcHtmlKey = `tiers.services_html.${tierIndex}`;
+    const svcHtmlKey = `staffing.services.tier.${tierIndex}.html`;
     const svcHtml = (typeof t === 'function' && t(svcHtmlKey)) || TIER_SERVICES_HTML[tierIndex];
     try {
         const frag = parseHtmlFragment(svcHtml);
