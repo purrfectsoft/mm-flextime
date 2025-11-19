@@ -1630,7 +1630,9 @@ const updateStaffingTier = (tierIndex) => {
     }
 
     // Update capacity overview
-    tierCapacityLabelEl.textContent = t('label.percent_approx', { percent: formatNumber(currentStaffingTier.capacity) });
+    tierCapacityLabelEl.textContent = t('label.percent_approx', {
+        percent: formatNumber(currentStaffingTier.capacity),
+    });
 
     // Update service coverage badges
     const coverage = TIER_SERVICE_COVERAGE[tierIndex];
@@ -1670,7 +1672,9 @@ const updateStaffingTier = (tierIndex) => {
     const netMargin = currentStaffingTier.revenue - currentStaffingTier.payroll;
     const marginPct = (netMargin / currentStaffingTier.revenue) * 100;
     netMarginBdtEl.textContent = `≈ ${formatCurrency(netMargin)}`;
-    netMarginPctEl.textContent = t('label.percent_approx', { percent: formatNumber(marginPct, { maximumFractionDigits: 1 }) });
+    netMarginPctEl.textContent = t('label.percent_approx', {
+        percent: formatNumber(marginPct, { maximumFractionDigits: 1 }),
+    });
 
     // Update bar chart
     if (staffingTierChart) {
