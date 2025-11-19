@@ -1,7 +1,7 @@
 (function () {
     // Minimal i18n micro library
     const STORAGE_LANG_KEY = 'i18nLang';
-    const APP_VERSION = 'v2.8.2';
+    const APP_VERSION = 'v3.0.0';
 
     const i18n = {
         lang: 'en',
