@@ -6,6 +6,16 @@
     const i18n = {
         lang: 'en',
         translations: {},
+        // Helper to get language from query parameter
+        getQueryParamLanguage() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const lang = params.get('lang');
+                return lang === 'en' || lang === 'bn' ? lang : null;
+            } catch (err) {
+                return null;
+            }
+        },
         // Helper to get stored language or default to 'en'
         getStoredLanguage() {
             try {
@@ -22,11 +32,28 @@
                 console.warn('Could not save language to localStorage', err);
             }
         },
+        // Helper to update URL with language query parameter
+        updateURL(lang) {
+            try {
+                const url = new URL(window.location);
+                url.searchParams.set('lang', lang);
+                window.history.replaceState({ lang }, '', url);
+            } catch (err) {
+                console.warn('Could not update URL with language parameter', err);
+            }
+        },
         // `init` returns a promise and sets `ready` to a Promise that resolves when translations are loaded.
+        // Precedence: query parameter > stored language > default language
         async init({ defaultLang = 'en', path = '/locales' } = {}) {
-            // Check for stored language preference
-            const storedLang = this.getStoredLanguage();
-            this.lang = storedLang || defaultLang;
+            // Check for query parameter first (highest precedence)
+            const queryLang = this.getQueryParamLanguage();
+            if (queryLang) {
+                this.lang = queryLang;
+            } else {
+                // Fall back to stored language
+                const storedLang = this.getStoredLanguage();
+                this.lang = storedLang || defaultLang;
+            }
 
             this.ready = (async () => {
                 try {
@@ -65,6 +92,8 @@
             this.lang = lang;
             // Save language preference to localStorage
             this.saveLanguage(lang);
+            // Update URL with language query parameter
+            this.updateURL(lang);
 
             this.ready = (async () => {
                 try {

@@ -16,7 +16,8 @@ This microsite provides a comprehensive, data-driven exploration of the FlexTime
 ## Features
 
 - 📊 **Interactive Modelers**: Staffing tier selector and capacity utilization slider with real-time financial updates
-- 🌓 **Dark Mode**: Full dark/light theme support with persistent preference storage
+- � **Bilingual Support**: English (EN) and Bengali (BN) with query parameter language selection (`?lang=en` or `?lang=bn`). Language changes update the URL for easy sharing and bookmarking.
+- �🌓 **Dark Mode**: Full dark/light theme support with persistent preference storage
 - 📱 **Responsive Design**: Mobile-first design using Tailwind CSS
 - 📈 **Data Visualization**: Chart.js powered visualizations for visit mix and tier financials
 - 🎨 **Branded Design**: Motion Mechanics professional green + Purrfect Universe radical orange highlights
@@ -45,6 +46,17 @@ mm-flextime-microsite/
 ```
 
 ## Getting Started
+
+### Language Selection
+
+The microsite supports English and Bengali with two complementary selection methods:
+
+1. **UI Buttons**: Click the language buttons (🇬🇧 EN or 🇧🇩 BN) in the header to switch languages
+2. **URL Query Parameter** (New): Share language-specific links using the `lang` query parameter
+    - English: `http://localhost:5500/?lang=en`
+    - Bengali: `http://localhost:5500/?lang=bn`
+    - **Precedence**: Query parameter > localStorage preference > default (English)
+    - **Dynamic Updates**: Clicking language buttons automatically updates the URL, making it easy to copy and share the current state
 
 ### Running Locally
 

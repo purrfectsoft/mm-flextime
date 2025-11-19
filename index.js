@@ -1390,7 +1390,7 @@ const updateLaunchProjections = () => {
     } catch (e) {
         modelATierDescription.innerHTML = modelADescHTML;
     }
-    
+
     modelATierLabel.textContent = t('misc.tier', { tier: tier.tier });
     modelAP1Profit.textContent = formatBDTShort(pA_p1_profit);
     modelAP2Profit.textContent = formatBDTShort(pA_p2_profit);
@@ -1714,9 +1714,12 @@ const updateStaffingTier = (tierIndex) => {
     // Update Year 2+ Projection Label and description
     projTierLabel.textContent = t('misc.tier', { tier: currentStaffingTier.tier });
     projOccupancyLabel.textContent = t('future.occupancy_label', { occupancy: currentOccupancy });
-    
+
     // Update the full description paragraph with interpolated translation
-    const futureDescHTML = t('future.description.html', { tier: currentStaffingTier.tier, occupancy: currentOccupancy });
+    const futureDescHTML = t('future.description.html', {
+        tier: currentStaffingTier.tier,
+        occupancy: currentOccupancy,
+    });
     try {
         const tpl = document.createElement('template');
         tpl.innerHTML = futureDescHTML;
