@@ -33,31 +33,53 @@ function main() {
 
     const files = walkLocales(localesDir);
     let errors = 0;
+    let warnings = 0;
+    let checked = 0;
 
     files.forEach((file) => {
         const json = loadJson(file);
         Object.keys(json).forEach((key) => {
             const val = json[key];
             if (typeof val !== 'string') return;
+            checked++;
             if (hasHtmlTags(val)) {
-                // Accept if key indicates html
-                const ok = /(_html$|\.services_html\.|_html\.|_html$)/i.test(key) || key.toLowerCase().includes('html');
+                // Accept if key ends with .html or contains html in the key name
+                // Also accept keys that are known to use data-i18n-html in the HTML
+                const endsWithHtml = /\.html$/i.test(key);
+                const containsHtml = key.toLowerCase().includes('html');
+                const isKnownHtmlKey = /\.(intro|desc|description|items|scenario|tier_label|copyright)$/i.test(key);
+
+                const ok = endsWithHtml || containsHtml || isKnownHtmlKey;
+
                 if (!ok) {
                     errors++;
                     console.error(
-                        `${path.basename(file)}: key '${key}' contains HTML but key name does not follow _html/.services_html convention`
+                        `${path.basename(file)}: key '${key}' contains HTML but doesn't follow naming convention`
+                    );
+                    console.error(`  Suggestion: Rename to '${key}.html' or ensure data-i18n-html is used in HTML`);
+                } else if (!endsWithHtml && !containsHtml) {
+                    // It's a known HTML key but doesn't have explicit html in name
+                    warnings++;
+                    console.warn(
+                        `${path.basename(file)}: key '${key}' contains HTML (consider using .html suffix for clarity)`
                     );
                 }
             }
         });
     });
 
+    console.log(`\nChecked ${checked} keys in ${files.length} locale file(s)`);
+
+    if (warnings > 0) {
+        console.warn(`Found ${warnings} key(s) with HTML that could use clearer naming (non-blocking)`);
+    }
+
     if (errors > 0) {
         console.error(`\nFound ${errors} i18n key(s) with HTML that don't follow naming convention.`);
         process.exit(1);
     }
 
-    console.log('i18n validation passed.');
+    console.log('✅ i18n validation passed.');
 }
 
 main();

@@ -2029,14 +2029,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Initialize language buttons with current language
-    if (window.i18n && window.i18n.ready) {
-        window.i18n.ready.then(() => {
-            const currentLang = window.i18n.lang || 'en';
-            updateLanguageButtons(currentLang);
-        });
-    }
-
     // Add click handlers to all language buttons
     langButtons.forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -2053,6 +2045,24 @@ document.addEventListener('DOMContentLoaded', () => {
             updateLanguageButtons(e.detail.lang);
         }
     });
+
+    // Initialize language buttons when i18n is ready
+    // This ensures buttons reflect the correct language (including from localStorage)
+    window.addEventListener('i18n-ready', (e) => {
+        if (e.detail && e.detail.lang) {
+            updateLanguageButtons(e.detail.lang);
+        } else if (window.i18n && window.i18n.lang) {
+            updateLanguageButtons(window.i18n.lang);
+        }
+    });
+
+    // Also initialize immediately if i18n is already ready
+    if (window.i18n && window.i18n.ready) {
+        window.i18n.ready.then(() => {
+            const currentLang = window.i18n.lang || 'en';
+            updateLanguageButtons(currentLang);
+        });
+    }
 
     // Init Mobile Menu
     mobileMenuBtn.addEventListener('click', () => {
