@@ -1,6 +1,7 @@
 (function () {
     // Minimal i18n micro library
     const STORAGE_LANG_KEY = 'i18nLang';
+    const APP_VERSION = 'v2.8.2';
 
     const i18n = {
         lang: 'en',
@@ -96,11 +97,13 @@
         t(key, vars) {
             if (!key) return '';
             const val = this.translations[key] || key;
-            if (!vars) return val;
+            // Merge app constants (like version) with provided vars
+            const allVars = { version: APP_VERSION, ...vars };
+            if (!val.includes('{')) return val;
             // Support both {{var}} and {var} interpolation styles for flexibility
             return val.replace(/\{\{\s*(\w+)\s*\}\}|\{\s*(\w+)\s*\}/g, (_, k1, k2) => {
                 const k = k1 || k2;
-                return vars[k] !== undefined ? vars[k] : `{{${k}}}`;
+                return allVars[k] !== undefined ? allVars[k] : `{{${k}}}`;
             });
         },
         // printf-style positional translation helper: tx(keyOrString, ...args)

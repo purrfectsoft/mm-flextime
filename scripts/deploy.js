@@ -94,13 +94,17 @@ function getHashesFromHtml() {
     const content = fs.readFileSync(htmlPath, 'utf8');
 
     const htmlMatch = content.match(/data-html-hash="([^"]*)"/);
+    const localesMatch = content.match(/data-locales-hash="([^"]*)"/);
     const cssMatch = content.match(/index\.css\?v=[\w.-]+/);
     const jsMatch = content.match(/index\.js\?v=[\w.-]+/);
+    const i18nMatch = content.match(/scripts\/i18n\.js\?v=[\w.-]+/);
 
     return {
         html: htmlMatch ? htmlMatch[1] : null,
         css: cssMatch ? cssMatch[0].split('-')[1] : null,
         js: jsMatch ? jsMatch[0].split('-')[1] : null,
+        i18n: i18nMatch ? i18nMatch[0].split('-')[1] : null,
+        locales: localesMatch ? localesMatch[1] : null,
     };
 }
 
@@ -126,13 +130,17 @@ function verifyRemoteDeployment(version, localHashes) {
 
                         // Extract hashes from HTML
                         const htmlMatch = data.match(/data-html-hash="([^"]*)"/);
+                        const localesMatch = data.match(/data-locales-hash="([^"]*)"/);
                         const cssMatch = data.match(/index\.css\?v=[\w.-]+/);
                         const jsMatch = data.match(/index\.js\?v=[\w.-]+/);
+                        const i18nMatch = data.match(/scripts\/i18n\.js\?v=[\w.-]+/);
 
                         const remoteHashes = {
                             html: htmlMatch ? htmlMatch[1] : null,
                             css: cssMatch ? cssMatch[0].split('-')[1] : null,
                             js: jsMatch ? jsMatch[0].split('-')[1] : null,
+                            i18n: i18nMatch ? i18nMatch[0].split('-')[1] : null,
+                            locales: localesMatch ? localesMatch[1] : null,
                         };
 
                         // Verify match
@@ -140,8 +148,10 @@ function verifyRemoteDeployment(version, localHashes) {
                         const htmlMatch_ = remoteHashes.html === localHashes.html;
                         const cssMatch_ = remoteHashes.css === localHashes.css;
                         const jsMatch_ = remoteHashes.js === localHashes.js;
+                        const i18nMatch_ = remoteHashes.i18n === localHashes.i18n;
+                        const localesMatch_ = remoteHashes.locales === localHashes.locales;
 
-                        if (versionMatch_ && htmlMatch_ && cssMatch_ && jsMatch_) {
+                        if (versionMatch_ && htmlMatch_ && cssMatch_ && jsMatch_ && i18nMatch_ && localesMatch_) {
                             resolve({ version: remoteVersion, hashes: remoteHashes });
                         } else {
                             reject(
@@ -150,7 +160,9 @@ function verifyRemoteDeployment(version, localHashes) {
                                         `  Version: ${remoteVersion} (expected ${version})\n` +
                                         `  HTML: ${remoteHashes.html} (expected ${localHashes.html})\n` +
                                         `  CSS: ${remoteHashes.css} (expected ${localHashes.css})\n` +
-                                        `  JS: ${remoteHashes.js} (expected ${localHashes.js})`
+                                        `  JS: ${remoteHashes.js} (expected ${localHashes.js})\n` +
+                                        `  i18n.js: ${remoteHashes.i18n} (expected ${localHashes.i18n})\n` +
+                                        `  Locales: ${remoteHashes.locales} (expected ${localHashes.locales})`
                                 )
                             );
                         }
@@ -181,11 +193,12 @@ function displayStatus(version, hashes, url) {
     console.log('║                  ✅ DEPLOYMENT SUCCESSFUL                      ║');
     console.log('╚═══════════════════════════════════════════════════════════════╝');
     console.log('');
-    console.log(`  📦   Version:    ${version}`);
-    console.log(`  📄 HTML Hash:    ${hashes.html}`);
-    console.log(`  🎨  CSS Hash:    ${hashes.css}`);
-    console.log(`  ⚙️   JS Hash:    ${hashes.js}`);
-    console.log(`  🌐       URL:    ${urlWithHash}`);
+    console.log(`  📦      Version:    ${version}`);
+    console.log(`  📄    HTML Hash:    ${hashes.html}`);
+    console.log(`  🎨     CSS Hash:    ${hashes.css}`);
+    console.log(`  ⚙️      JS Hash:    ${hashes.js}`);
+    console.log(`  🌐  i18n Hashes:    ${hashes.i18n} ${hashes.locales}`);
+    console.log(`  🔗          URL:    ${urlWithHash}`);
     console.log('');
     console.log('═'.repeat(67));
     console.log('');
@@ -277,6 +290,8 @@ async function deploy() {
         console.log(`  ℹ️  Local HTML hash: ${localHashes.html}`);
         console.log(`  ℹ️  Local CSS hash: ${localHashes.css}`);
         console.log(`  ℹ️  Local JS hash: ${localHashes.js}`);
+        console.log(`  ℹ️  Local i18n.js hash: ${localHashes.i18n}`);
+        console.log(`  ℹ️  Local Locales hash: ${localHashes.locales}`);
 
         // Step 8: Verify remote deployment
         console.log(`📋 Step 8: Checking remote deployment (${WEB_URL})...`);

@@ -305,7 +305,7 @@
     "footer.copyright": "&copy; <span id=\"footer-year\"></span> <span data-i18n=\"footer.copy\">Motion Mechanics & Purrfect Universe</span>. <span data-i18n=\"footer.all_rights_reserved\">All rights reserved.</span>",
     "footer.copy": "Motion Mechanics & Purrfect Universe",
     "footer.all_rights_reserved": "All rights reserved.",
-    "footer.version": "Strategic Proposal Microsite v2.8.2",
+    "footer.version": "Strategic Proposal Microsite {version}",
     "button.save": "Save",
     "button.delete": "Delete",
     "button.export_all": "Export All Scenarios (JSON)",

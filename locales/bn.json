@@ -305,7 +305,7 @@
     "footer.copyright": "&copy; <span id=\"footer-year\"></span> <span data-i18n=\"footer.copy\">Motion Mechanics & Purrfect Universe</span>. <span data-i18n=\"footer.all_rights_reserved\">সব অধিকার সংরক্ষিত।</span>",
     "footer.copy": "Motion Mechanics & Purrfect Universe",
     "footer.all_rights_reserved": "সব অধিকার সংরক্ষিত।",
-    "footer.version": "স্ট্র্যাটেজিক প্রপোজাল মাইক্রোসাইট v2.8.2",
+    "footer.version": "স্ট্র্যাটেজিক প্রপোজাল মাইক্রোসাইট {version}",
     "button.save": "সেভ",
     "button.delete": "ডিলিট",
     "button.export_all": "সব সিনারিও এক্সপোর্ট (JSON)",

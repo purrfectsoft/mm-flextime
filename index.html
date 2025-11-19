@@ -15,14 +15,15 @@
         <script src="https://cdn.jsdelivr.net/npm/lucide@0.378.0/dist/umd/lucide.min.js"></script>
 
         <!-- Custom Styles -->
-        <link rel="stylesheet" href="index.css?v=2.8.2-9ccc1cfd" />
+        <link rel="stylesheet" href="index.css?v=2.8.2-ddfe2e20" />
         <!-- Minimal i18n -->
-        <script src="scripts/i18n.js" defer></script>
+        <script src="scripts/i18n.js?v=2.8.2-5cde607c" defer></script>
     </head>
 
     <body
         class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300"
-        data-html-hash="25c00ffe"
+        data-html-hash="45104cb9"
+        data-locales-hash="4736237b"
     >
         <!-- Header / Navbar -->
         <header
@@ -661,7 +662,7 @@
                             </h4>
                         </div>
                         <p class="text-lg font-medium text-gray-700 dark:text-gray-300">19:00 – 22:00</p>
-                        <p class="text-gray-600 dark:text-gray-400 mt-2">
+                        <p data-i18n="model.shift.c.desc" data-i18n-html class="text-gray-600 dark:text-gray-400 mt-2">
                             Evening block for office-goers and acute pain. Includes the
                             <strong class="text-brand-secondary">Nightfall FlexLab™</strong>.
                         </p>
@@ -698,7 +699,7 @@
                             >
                         </div>
                         <p class="text-lg font-medium text-gray-700 dark:text-gray-300">22:00 – 06:00</p>
-                        <p data-i18n="model.shift.o.desc" class="text-gray-600 dark:text-gray-400 mt-2">
+                        <p data-i18n="model.shift.o.desc" data-i18n-html class="text-gray-600 dark:text-gray-400 mt-2">
                             Night shift operations for future or interplanetary operations —
                             <span class="text-brand-highlight dark:text-brand-highlight-light font-semibold"
                                 >Purrfect Software Limited</span
@@ -985,7 +986,11 @@
                                 >
                                     How to use this model:
                                 </h4>
-                                <p data-i18n="staffing.howto.items" class="text-sm text-gray-700 dark:text-gray-300">
+                                <p
+                                    data-i18n="staffing.howto.items"
+                                    data-i18n-html
+                                    class="text-sm text-gray-700 dark:text-gray-300"
+                                >
                                     <strong>1)</strong> Select a staffing tier below to set your team size and payroll
                                     baseline. <strong>2)</strong> Scroll to the Capacity Modeler to adjust occupancy and
                                     see revenue projections. <strong>3)</strong> Explore Launch Models and CareBridge™
@@ -1285,7 +1290,11 @@
                 >
                     Dynamic Payroll Framework
                 </h3>
-                <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+                <p
+                    data-i18n="payroll.description"
+                    data-i18n-html
+                    class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto"
+                >
                     This table is linked to the
                     <strong class="text-brand-highlight">Staffing Tier Modeler</strong>. Change the tier to see a
                     detailed payroll breakdown.
@@ -1368,7 +1377,11 @@
                 <div
                     class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
                 >
-                    <p class="text-center text-gray-600 dark:text-gray-400 mb-6 max-w-3xl mx-auto">
+                    <p
+                        data-i18n="capacity.description"
+                        data-i18n-html
+                        class="text-center text-gray-600 dark:text-gray-400 mb-6 max-w-3xl mx-auto"
+                    >
                         Select a
                         <strong class="text-brand-dark dark:text-brand-light">Staffing Tier</strong>
                         above to set your payroll cost. Then, use the slider below to model how
@@ -2016,10 +2029,18 @@
                                     >
                                 </span>
                             </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                            <p
+                                data-i18n="launch.model_a.scenario"
+                                data-i18n-html
+                                class="text-sm text-gray-600 dark:text-gray-400 mb-1"
+                            >
                                 <strong>Scenario:</strong> Constant 60% occupancy with discount phases
                             </p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                            <p
+                                data-i18n="launch.model_a.tier_label"
+                                data-i18n-html
+                                class="text-sm text-gray-500 dark:text-gray-400 mb-6"
+                            >
                                 Uses payroll from
                                 <strong id="model-a-tier-label" class="text-brand-highlight">Tier 2</strong>
                                 (dynamically linked to slider)
@@ -2141,10 +2162,18 @@
                                             >
                                         </span>
                                     </div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                                    <p
+                                        data-i18n="launch.model_b.scenario"
+                                        data-i18n-html
+                                        class="text-sm text-gray-600 dark:text-gray-400 mb-1"
+                                    >
                                         <strong>Scenario:</strong> Gradual ramp-up (40%→50%→60%) with discount phases
                                     </p>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                                    <p
+                                        data-i18n="launch.model_b.tier_label"
+                                        data-i18n-html
+                                        class="text-sm text-gray-500 dark:text-gray-400 mb-6"
+                                    >
                                         Staffing grows Tier 0 → Tier 1 → Tier 2 (fixed, not linked to slider)
                                     </p>
                                 </div>
@@ -2250,7 +2279,11 @@
                 <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">
                     Year 2+ Dynamic Projections
                 </h3>
-                <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+                <p
+                    data-i18n="future.description"
+                    data-i18n-html
+                    class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto"
+                >
                     These projections are fully dynamic. They are based on the
                     <strong id="proj-tier-label" class="text-brand-base dark:text-brand-light font-semibold"
                         >Tier 2</strong
@@ -2342,7 +2375,7 @@
                         >
                             Daily Subsidized Slots
                         </h4>
-                        <p data-i18n="carebridge.pillar1.desc" class="text-gray-600 dark:text-gray-400">
+                        <p data-i18n="carebridge.pillar1.desc" data-i18n-html class="text-gray-600 dark:text-gray-400">
                             <strong class="text-2xl font-bold text-brand-highlight">8 sessions/day</strong>
                             (~9% of total capacity) are reserved for the CareBridge™ program.
                         </p>
@@ -2358,7 +2391,7 @@
                         >
                             Discount Value
                         </h4>
-                        <p data-i18n="carebridge.pillar2.desc" class="text-gray-600 dark:text-gray-400">
+                        <p data-i18n="carebridge.pillar2.desc" data-i18n-html class="text-gray-600 dark:text-gray-400">
                             A
                             <strong class="text-2xl font-bold text-brand-secondary">30% discount</strong>
                             is applied to Standard Sessions for all eligible beneficiaries.
@@ -2393,7 +2426,7 @@
                         >
                             Financial Impact
                         </h4>
-                        <p data-i18n="carebridge.pillar4.desc" class="text-gray-600 dark:text-gray-400">
+                        <p data-i18n="carebridge.pillar4.desc" data-i18n-html class="text-gray-600 dark:text-gray-400">
                             Represents ~1.3 million BDT/year in subsidized care. The business remains
                             <strong class="text-brand-base dark:text-brand-light">highly profitable</strong>
                             at all modeled occupancy levels.
@@ -2570,7 +2603,11 @@
                                         >+27% Days</span
                                     >
                                 </div>
-                                <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                                <p
+                                    data-i18n="data.revenue_streams.tier3.desc"
+                                    data-i18n-html
+                                    class="text-xs text-gray-600 dark:text-gray-400 mb-2"
+                                >
                                     Partial weekend coverage (Saturdays) extends operational days from
                                     <strong>22 → 28 days/month</strong>
                                 </p>
@@ -2590,7 +2627,11 @@
                                         >+36% Days</span
                                     >
                                 </div>
-                                <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                                <p
+                                    data-i18n="data.revenue_streams.tier4.desc"
+                                    data-i18n-html
+                                    class="text-xs text-gray-600 dark:text-gray-400 mb-2"
+                                >
                                     Full weekend coverage + home care/online floaters enable
                                     <strong>~30 effective days/month</strong> of service delivery
                                 </p>
@@ -2742,6 +2783,6 @@
         </a>
 
         <!-- Custom Application Logic: defer so i18n deferred in head can initialize first -->
-        <script src="index.js?v=2.8.2-9e8958ea" defer></script>
+        <script src="index.js?v=2.8.2-eead9ba5" defer></script>
     </body>
 </html>
