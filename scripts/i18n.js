@@ -279,7 +279,7 @@
      * Format a number according to the current locale.
      * For Bengali (bn), uses Bengali numerals and Indian numbering system.
      * For English (en), uses English numerals and Indian numbering system.
-     * 
+     *
      * @param {number} num - The number to format
      * @param {Object} options - Optional Intl.NumberFormat options
      * @returns {string} Formatted number string
@@ -288,7 +288,7 @@
         const locale = i18n.lang === 'bn' ? 'bn-BD' : 'en-IN';
         const defaultOptions = {
             maximumFractionDigits: 0,
-            ...options
+            ...options,
         };
         return new Intl.NumberFormat(locale, defaultOptions).format(num);
     }
@@ -296,7 +296,7 @@
     /**
      * Format a currency amount in BDT.
      * Uses the current locale for number formatting.
-     * 
+     *
      * @param {number} amount - The amount to format
      * @param {boolean} includeSymbol - Whether to include "BDT" suffix
      * @returns {string} Formatted currency string
@@ -308,7 +308,7 @@
 
     /**
      * Format a currency amount in short form (Lakh/Crore).
-     * 
+     *
      * @param {number} amount - The amount to format
      * @returns {string} Formatted short currency string
      */
@@ -317,36 +317,36 @@
         if (roundedNum < 0) {
             return `–${formatCurrencyShort(-roundedNum)}`;
         }
-        
+
         const locale = i18n.lang === 'bn' ? 'bn-BD' : 'en-IN';
-        
+
         if (roundedNum >= 10000000) {
             // Crore
             const value = (roundedNum / 10000000).toFixed(2);
             const formatted = new Intl.NumberFormat(locale, {
                 minimumFractionDigits: 2,
-                maximumFractionDigits: 2
+                maximumFractionDigits: 2,
             }).format(value);
             return i18n.lang === 'bn' ? `${formatted} কোটি` : `${formatted} cr`;
         }
-        
+
         if (roundedNum >= 100000) {
             // Lakh
             const value = (roundedNum / 100000).toFixed(2);
             const formatted = new Intl.NumberFormat(locale, {
                 minimumFractionDigits: 2,
-                maximumFractionDigits: 2
+                maximumFractionDigits: 2,
             }).format(value);
             return i18n.lang === 'bn' ? `${formatted} লাখ` : `${formatted} lakh`;
         }
-        
+
         return formatCurrency(roundedNum);
     }
 
     /**
      * Format a time range (e.g., "06:00 – 09:00").
      * Uses 24-hour format with proper locale-aware numerals.
-     * 
+     *
      * @param {string} startTime - Start time in HH:MM format
      * @param {string} endTime - End time in HH:MM format
      * @returns {string} Formatted time range
@@ -360,14 +360,14 @@
             };
             return `${convertToBengali(startTime)} – ${convertToBengali(endTime)}`;
         }
-        
+
         // For English, return as-is
         return `${startTime} – ${endTime}`;
     }
 
     /**
      * Format a percentage value.
-     * 
+     *
      * @param {number} value - The percentage value (0-100)
      * @param {boolean} includeSymbol - Whether to include "%" suffix
      * @returns {string} Formatted percentage string
@@ -375,7 +375,7 @@
     function formatPercent(value, includeSymbol = true) {
         const locale = i18n.lang === 'bn' ? 'bn-BD' : 'en-IN';
         const formatted = new Intl.NumberFormat(locale, {
-            maximumFractionDigits: 1
+            maximumFractionDigits: 1,
         }).format(value);
         return includeSymbol ? `${formatted}%` : formatted;
     }

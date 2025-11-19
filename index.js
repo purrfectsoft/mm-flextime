@@ -1020,7 +1020,7 @@ const getChartOptions = (theme) => {
                 tooltip: {
                     callbacks: {
                         label: function (context) {
-                            return `${context.dataset.label}: ${formatBDT(context.raw)} BDT`;
+                            return `${context.dataset.label}: ${formatCurrency(context.raw)} BDT`;
                         },
                     },
                 },
@@ -1035,7 +1035,7 @@ const getChartOptions = (theme) => {
                     ticks: {
                         color: labelColor,
                         callback: function (value) {
-                            return `${value / 1000}k`;
+                            return `${formatNumber(value / 1000)}k`;
                         },
                     },
                 },
@@ -1125,10 +1125,10 @@ const renderVisitMixChart = () => {
         type: 'doughnut',
         data: {
             labels: [
-                tx('label.session_with_percent', t('pricing.visitmix.foundation'), '20%'),
-                tx('label.session_with_percent', t('pricing.visitmix.standard'), '50%'),
-                tx('label.session_with_percent', t('pricing.visitmix.premium'), '25%'),
-                tx('label.session_with_percent', t('pricing.visitmix.express'), '5%'),
+                tx('label.session_with_percent', t('pricing.visitmix.foundation'), formatPercent(20, true)),
+                tx('label.session_with_percent', t('pricing.visitmix.standard'), formatPercent(50, true)),
+                tx('label.session_with_percent', t('pricing.visitmix.premium'), formatPercent(25, true)),
+                tx('label.session_with_percent', t('pricing.visitmix.express'), formatPercent(5, true)),
             ],
             datasets: [
                 {
@@ -1242,15 +1242,15 @@ const updateDynamicPayrollTable = (tierIndex) => {
             roleRow.appendChild(typeTd);
             const countTd = document.createElement('td');
             countTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right';
-            countTd.textContent = role.count;
+            countTd.textContent = formatNumber(role.count);
             roleRow.appendChild(countTd);
             const salaryTd = document.createElement('td');
             salaryTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right';
-            salaryTd.textContent = formatBDT(role.salary);
+            salaryTd.textContent = formatCurrency(role.salary);
             roleRow.appendChild(salaryTd);
             const subtotalTd = document.createElement('td');
             subtotalTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right';
-            subtotalTd.textContent = formatBDT(subtotal);
+            subtotalTd.textContent = formatCurrency(subtotal);
             roleRow.appendChild(subtotalTd);
             dynamicPayrollTableBody.appendChild(roleRow);
         });
@@ -1269,7 +1269,7 @@ const updateDynamicPayrollTable = (tierIndex) => {
 
         const deptSubtotalCountTd = document.createElement('td');
         deptSubtotalCountTd.className = 'px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white';
-        deptSubtotalCountTd.textContent = String(deptSubtotalFt + deptSubtotalPt);
+        deptSubtotalCountTd.textContent = formatNumber(deptSubtotalFt + deptSubtotalPt);
         subtotalRow.appendChild(deptSubtotalCountTd);
 
         const deptSubtotalSpacerTd = document.createElement('td');
@@ -1300,7 +1300,7 @@ const updateDynamicPayrollTable = (tierIndex) => {
 
     const grandTotalCountTd = document.createElement('td');
     grandTotalCountTd.className = 'px-6 py-4 text-right';
-    grandTotalCountTd.textContent = String(grandTotalFt + grandTotalPt);
+    grandTotalCountTd.textContent = formatNumber(grandTotalFt + grandTotalPt);
     grandTotalRow.appendChild(grandTotalCountTd);
 
     const grandTotalSpacerTd = document.createElement('td');
@@ -1585,7 +1585,7 @@ const updateModelAssumptions = (tierIndex) => {
         const tooltip = baseMonthlyRevenueEl.querySelector('.tooltip');
 
         if (totalAdditionalRevenue > 0) {
-            textNode.textContent = `${formatBDT(baseRevenue)} `;
+            textNode.textContent = `${formatCurrency(baseRevenue)} `;
             // Remove old bonus span if exists
             const oldSpan = baseMonthlyRevenueEl.querySelector('span.revenue-bonus');
             if (oldSpan) oldSpan.remove();
@@ -1594,7 +1594,7 @@ const updateModelAssumptions = (tierIndex) => {
             bonusSpan.className = 'text-brand-secondary font-semibold revenue-bonus';
             bonusSpan.setAttribute('data-i18n', 'label.bonus_bdt');
             bonusSpan.textContent = t('label.bonus_bdt', {
-                amount: formatBDT(totalAdditionalRevenue),
+                amount: formatCurrency(totalAdditionalRevenue),
                 bdt: t('label.bdt'),
             });
             baseMonthlyRevenueEl.insertBefore(bonusSpan, tooltip);
@@ -1630,12 +1630,12 @@ const updateStaffingTier = (tierIndex) => {
     }
 
     // Update capacity overview
-    tierCapacityLabelEl.textContent = t('label.percent_approx', { percent: currentStaffingTier.capacity });
+    tierCapacityLabelEl.textContent = t('label.percent_approx', { percent: formatNumber(currentStaffingTier.capacity) });
 
     // Update service coverage badges
     const coverage = TIER_SERVICE_COVERAGE[tierIndex];
     coverageWeekendEl.textContent = t(coverage.weekend) || coverage.weekend;
-    
+
     // For early morning coverage in Tier 3+, show "Yes" with formatted time
     if (tierIndex >= 3) {
         const yesText = t('staffing.coverage.no').replace(/No|না/i, tierIndex >= 3 ? 'Yes' : 'No');
@@ -1644,13 +1644,13 @@ const updateStaffingTier = (tierIndex) => {
     } else {
         coverageEarlyEl.textContent = t(coverage.earlyMorning) || coverage.earlyMorning;
     }
-    
+
     coverageHomeEl.textContent = t(coverage.homeCare) || coverage.homeCare;
 
     // Update text readouts
-    staffFtEl.textContent = currentStaffingTier.ft;
-    staffPtEl.textContent = currentStaffingTier.pt;
-    staffTotalEl.textContent = currentStaffingTier.total;
+    staffFtEl.textContent = formatNumber(currentStaffingTier.ft);
+    staffPtEl.textContent = formatNumber(currentStaffingTier.pt);
+    staffTotalEl.textContent = formatNumber(currentStaffingTier.total);
     staffPayrollEl.textContent = formatCurrency(currentStaffingTier.payroll);
 
     // Update enhanced services
@@ -1666,11 +1666,11 @@ const updateStaffingTier = (tierIndex) => {
     }
 
     // Update tier financials
-    assumedOccupancyEl.textContent = t('label.percent_approx', { percent: currentStaffingTier.capacity });
+    assumedOccupancyEl.textContent = t('label.percent_approx', { percent: formatNumber(currentStaffingTier.capacity) });
     const netMargin = currentStaffingTier.revenue - currentStaffingTier.payroll;
     const marginPct = (netMargin / currentStaffingTier.revenue) * 100;
     netMarginBdtEl.textContent = `≈ ${formatCurrency(netMargin)}`;
-    netMarginPctEl.textContent = t('label.percent_approx', { percent: marginPct.toFixed(1) });
+    netMarginPctEl.textContent = t('label.percent_approx', { percent: formatNumber(marginPct, { maximumFractionDigits: 1 }) });
 
     // Update bar chart
     if (staffingTierChart) {
@@ -1694,13 +1694,13 @@ const updateStaffingTier = (tierIndex) => {
     updateOccupancyMetrics();
 
     // Update Year 2+ Projection Label and description
-    projTierLabel.textContent = t('misc.tier', { tier: currentStaffingTier.tier });
-    projOccupancyLabel.textContent = t('future.occupancy_label', { occupancy: currentOccupancy });
+    projTierLabel.textContent = t('misc.tier', { tier: formatNumber(currentStaffingTier.tier) });
+    projOccupancyLabel.textContent = t('future.occupancy_label', { occupancy: formatNumber(currentOccupancy) });
 
     // Update the full description paragraph with interpolated translation
     const futureDescHTML = t('future.description.html', {
-        tier: currentStaffingTier.tier,
-        occupancy: currentOccupancy,
+        tier: formatNumber(currentStaffingTier.tier),
+        occupancy: formatNumber(currentOccupancy),
     });
     try {
         const tpl = document.createElement('template');
@@ -1765,7 +1765,7 @@ const updateOccupancyMetrics = () => {
     const annualProfit = monthlyProfit * MONTHS_PER_YEAR;
 
     // Update text readouts for Occupancy Modeler
-    occupancyValueEl.textContent = t('label.percent', { percent: currentOccupancy });
+    occupancyValueEl.textContent = t('label.percent', { percent: formatNumber(currentOccupancy) });
     dailyRevenueEl.textContent = formatCurrency(dailyRevenue);
     monthlyRevenueEl.textContent = formatCurrency(monthlyRevenue);
     monthlyProfitEl.textContent = formatProfit(monthlyProfit);
@@ -1829,7 +1829,7 @@ const updateOccupancyMetrics = () => {
     });
 
     // Update Year 2+ Projections
-    projOccupancyLabel.textContent = t('future.occupancy_label', { occupancy: currentOccupancy });
+    projOccupancyLabel.textContent = t('future.occupancy_label', { occupancy: formatNumber(currentOccupancy) });
     projMonthlyProfit.textContent = formatProfit(monthlyProfit);
     projAnnualRevenue.textContent = formatCurrency(annualRevenue);
     projAnnualProfit.textContent = formatProfit(annualProfit);
@@ -2131,7 +2131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Direct formatting for dynamic content - don't use translation for numbers
                 maxDailyRevenueEl.innerHTML = `${formatCurrency(MAX_DAILY_REVENUE, true)} <span class="text-brand-secondary font-semibold">+${formatCurrency(totalBonus, true)}</span>`;
             } else {
-                maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} ${t('label.bdt')}`;
+                maxDailyRevenueEl.textContent = `${formatCurrency(MAX_DAILY_REVENUE)} ${t('label.bdt')}`;
             }
         }
     });
