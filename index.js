@@ -1126,10 +1126,26 @@ const renderVisitMixChart = () => {
         type: 'doughnut',
         data: {
             labels: [
-                tx('label.session_with_percent', t('pricing.visitmix.foundation'), t('label.percent', { percent: formatNumber(20) })),
-                tx('label.session_with_percent', t('pricing.visitmix.standard'), t('label.percent', { percent: formatNumber(50) })),
-                tx('label.session_with_percent', t('pricing.visitmix.premium'), t('label.percent', { percent: formatNumber(25) })),
-                tx('label.session_with_percent', t('pricing.visitmix.express'), t('label.percent', { percent: formatNumber(5) })),
+                tx(
+                    'label.session_with_percent',
+                    t('pricing.visitmix.foundation'),
+                    t('label.percent', { percent: formatNumber(20) })
+                ),
+                tx(
+                    'label.session_with_percent',
+                    t('pricing.visitmix.standard'),
+                    t('label.percent', { percent: formatNumber(50) })
+                ),
+                tx(
+                    'label.session_with_percent',
+                    t('pricing.visitmix.premium'),
+                    t('label.percent', { percent: formatNumber(25) })
+                ),
+                tx(
+                    'label.session_with_percent',
+                    t('pricing.visitmix.express'),
+                    t('label.percent', { percent: formatNumber(5) })
+                ),
             ],
             datasets: [
                 {
@@ -2365,10 +2381,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (visitMixChart) {
             visitMixChart.data.datasets[0].data = arr;
             visitMixChart.data.labels = [
-                tx('label.session_with_percent', t('pricing.visitmix.foundation'), t('label.percent', { percent: formatNumber(f) })),
-                tx('label.session_with_percent', t('pricing.visitmix.standard'), t('label.percent', { percent: formatNumber(s) })),
-                tx('label.session_with_percent', t('pricing.visitmix.premium'), t('label.percent', { percent: formatNumber(p) })),
-                tx('label.session_with_percent', t('pricing.visitmix.express'), t('label.percent', { percent: formatNumber(e) })),
+                tx(
+                    'label.session_with_percent',
+                    t('pricing.visitmix.foundation'),
+                    t('label.percent', { percent: formatNumber(f) })
+                ),
+                tx(
+                    'label.session_with_percent',
+                    t('pricing.visitmix.standard'),
+                    t('label.percent', { percent: formatNumber(s) })
+                ),
+                tx(
+                    'label.session_with_percent',
+                    t('pricing.visitmix.premium'),
+                    t('label.percent', { percent: formatNumber(p) })
+                ),
+                tx(
+                    'label.session_with_percent',
+                    t('pricing.visitmix.express'),
+                    t('label.percent', { percent: formatNumber(e) })
+                ),
             ];
             visitMixChart.update();
         }
@@ -2632,7 +2664,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const sessionStandardEl = document.getElementById('model-session-standard');
             const sessionPremiumEl = document.getElementById('model-session-premium');
             const sessionExpressEl = document.getElementById('model-session-express');
-            if (sessionFoundationEl) sessionFoundationEl.textContent = t('label.percent', { percent: formatNumber(20) });
+            if (sessionFoundationEl)
+                sessionFoundationEl.textContent = t('label.percent', { percent: formatNumber(20) });
             if (sessionStandardEl) sessionStandardEl.textContent = t('label.percent', { percent: formatNumber(50) });
             if (sessionPremiumEl) sessionPremiumEl.textContent = t('label.percent', { percent: formatNumber(25) });
             if (sessionExpressEl) sessionExpressEl.textContent = t('label.percent', { percent: formatNumber(5) });

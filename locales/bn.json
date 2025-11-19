@@ -324,7 +324,7 @@
     "toast.saved_pricing_persist": "সেভ হয়েছে: নির্বাচিত প্রাইসিং রিফ্রেশের পরও থাকবে",
     "label.days": "দিন",
     "label.beds": "বেড",
-    "label.vbed": "vBed",
+    "label.vbed": "ভার্চুয়াল বেড",
     "label.vbed_count": "+{count} {vbed}",
     "label.days_parenthetical": "({count} {days})",
     "label.days_parenthetical_html": "({base} + <span class=\"text-brand-secondary font-semibold\">+{extra}</span> {days})",
