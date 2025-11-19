@@ -182,6 +182,15 @@
                 }
             });
 
+            // Apply time range formatting to elements with data-time-range
+            root.querySelectorAll('[data-time-range]').forEach((el) => {
+                const timeRange = el.getAttribute('data-time-range');
+                const [start, end] = timeRange.split('|');
+                if (start && end && window.formatTimeRange) {
+                    el.textContent = window.formatTimeRange(start, end);
+                }
+            });
+
             // placeholders
             root.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
                 const key = el.getAttribute('data-i18n-placeholder');
@@ -261,4 +270,120 @@
 
     // Expose utility globally for use throughout the app
     window.createTransientElement = window.createTransientElement || createTransientElement;
+
+    // ============================================================================
+    // LOCALE-AWARE NUMBER & TIME FORMATTING (Using Browser Intl APIs)
+    // ============================================================================
+
+    /**
+     * Format a number according to the current locale.
+     * For Bengali (bn), uses Bengali numerals and Indian numbering system.
+     * For English (en), uses English numerals and Indian numbering system.
+     * 
+     * @param {number} num - The number to format
+     * @param {Object} options - Optional Intl.NumberFormat options
+     * @returns {string} Formatted number string
+     */
+    function formatNumber(num, options = {}) {
+        const locale = i18n.lang === 'bn' ? 'bn-BD' : 'en-IN';
+        const defaultOptions = {
+            maximumFractionDigits: 0,
+            ...options
+        };
+        return new Intl.NumberFormat(locale, defaultOptions).format(num);
+    }
+
+    /**
+     * Format a currency amount in BDT.
+     * Uses the current locale for number formatting.
+     * 
+     * @param {number} amount - The amount to format
+     * @param {boolean} includeSymbol - Whether to include "BDT" suffix
+     * @returns {string} Formatted currency string
+     */
+    function formatCurrency(amount, includeSymbol = false) {
+        const formatted = formatNumber(Math.round(amount));
+        return includeSymbol ? `${formatted} BDT` : formatted;
+    }
+
+    /**
+     * Format a currency amount in short form (Lakh/Crore).
+     * 
+     * @param {number} amount - The amount to format
+     * @returns {string} Formatted short currency string
+     */
+    function formatCurrencyShort(amount) {
+        const roundedNum = Math.round(amount);
+        if (roundedNum < 0) {
+            return `–${formatCurrencyShort(-roundedNum)}`;
+        }
+        
+        const locale = i18n.lang === 'bn' ? 'bn-BD' : 'en-IN';
+        
+        if (roundedNum >= 10000000) {
+            // Crore
+            const value = (roundedNum / 10000000).toFixed(2);
+            const formatted = new Intl.NumberFormat(locale, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(value);
+            return i18n.lang === 'bn' ? `${formatted} কোটি` : `${formatted} cr`;
+        }
+        
+        if (roundedNum >= 100000) {
+            // Lakh
+            const value = (roundedNum / 100000).toFixed(2);
+            const formatted = new Intl.NumberFormat(locale, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(value);
+            return i18n.lang === 'bn' ? `${formatted} লাখ` : `${formatted} lakh`;
+        }
+        
+        return formatCurrency(roundedNum);
+    }
+
+    /**
+     * Format a time range (e.g., "06:00 – 09:00").
+     * Uses 24-hour format with proper locale-aware numerals.
+     * 
+     * @param {string} startTime - Start time in HH:MM format
+     * @param {string} endTime - End time in HH:MM format
+     * @returns {string} Formatted time range
+     */
+    function formatTimeRange(startTime, endTime) {
+        // For Bengali, convert digits to Bengali numerals
+        if (i18n.lang === 'bn') {
+            const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+            const convertToBengali = (str) => {
+                return str.replace(/\d/g, (digit) => bengaliDigits[parseInt(digit)]);
+            };
+            return `${convertToBengali(startTime)} – ${convertToBengali(endTime)}`;
+        }
+        
+        // For English, return as-is
+        return `${startTime} – ${endTime}`;
+    }
+
+    /**
+     * Format a percentage value.
+     * 
+     * @param {number} value - The percentage value (0-100)
+     * @param {boolean} includeSymbol - Whether to include "%" suffix
+     * @returns {string} Formatted percentage string
+     */
+    function formatPercent(value, includeSymbol = true) {
+        const locale = i18n.lang === 'bn' ? 'bn-BD' : 'en-IN';
+        const formatted = new Intl.NumberFormat(locale, {
+            maximumFractionDigits: 1
+        }).format(value);
+        return includeSymbol ? `${formatted}%` : formatted;
+    }
+
+    // Expose formatting functions globally
+    window.formatNumber = window.formatNumber || formatNumber;
+    window.formatCurrency = window.formatCurrency || formatCurrency;
+    window.formatCurrencyShort = window.formatCurrencyShort || formatCurrencyShort;
+    window.formatTimeRange = window.formatTimeRange || formatTimeRange;
+    window.formatPercent = window.formatPercent || formatPercent;
 })();

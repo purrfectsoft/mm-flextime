@@ -663,12 +663,12 @@ const TIER_SERVICE_COVERAGE = [
     { weekend: 'staffing.coverage.none', earlyMorning: 'staffing.coverage.no', homeCare: 'staffing.coverage.no' },
     {
         weekend: 'staffing.coverage.partial',
-        earlyMorning: 'staffing.coverage.early_yes_time',
+        earlyMorning: 'staffing.coverage.early_morning_no', // Will show "Yes" with time dynamically
         homeCare: 'staffing.coverage.home_basic',
     },
     {
         weekend: 'staffing.coverage.full',
-        earlyMorning: 'staffing.coverage.early_yes_time',
+        earlyMorning: 'staffing.coverage.early_morning_no', // Will show "Yes" with time dynamically
         homeCare: 'staffing.coverage.home_dedicated',
     },
 ];
@@ -967,28 +967,12 @@ const modelBTotalProfit = document.getElementById('model-b-total-profit');
 
 // --- UTILITY FUNCTIONS ---
 
-// Format as BDT string, rounding to nearest whole number
-const formatBDT = (num) => {
-    const roundedNum = Math.round(num);
-    return new Intl.NumberFormat('en-IN').format(roundedNum);
-};
-
-// Format as Lakh/Crore
-const formatBDTShort = (num) => {
-    const roundedNum = Math.round(num);
-    if (roundedNum < 0) {
-        return `–${formatBDTShort(-roundedNum)}`;
-    }
-    if (roundedNum >= 10000000) {
-        // Crore
-        return `${(roundedNum / 10000000).toFixed(2)} cr`;
-    }
-    if (roundedNum >= 100000) {
-        // Lakh
-        return `${(roundedNum / 100000).toFixed(2)} lakh`;
-    }
-    return formatBDT(roundedNum);
-};
+// Number formatting functions are now provided by scripts/i18n.js:
+// - formatCurrency(num, includeSymbol = false) - formats currency values
+// - formatCurrencyShort(num) - formats in Lakh/Crore
+// - formatNumber(num, options = {}) - general number formatting
+// - formatTimeRange(start, end) - formats time ranges with locale-aware numerals
+// - formatPercent(value, includeSymbol = true) - formats percentages
 
 // Round to nearest 10
 const roundToNearest10 = (num) => {
@@ -1189,7 +1173,7 @@ const renderStaffingTierChart = () => {
             ],
             datasets: [
                 {
-                    label: t('label.chart.amount_bdt') || 'Amount (BDT)',
+                    label: i18n.lang === 'bn' ? 'পরিমাণ (BDT)' : 'Amount (BDT)',
                     data: [data.payroll, data.revenue],
                     backgroundColor: [
                         '#854d0e', // brand-wood
@@ -1294,7 +1278,7 @@ const updateDynamicPayrollTable = (tierIndex) => {
 
         const deptSubtotalPayrollTd = document.createElement('td');
         deptSubtotalPayrollTd.className = 'px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white';
-        deptSubtotalPayrollTd.textContent = formatBDT(deptSubtotalPayroll);
+        deptSubtotalPayrollTd.textContent = formatCurrency(deptSubtotalPayroll);
         subtotalRow.appendChild(deptSubtotalPayrollTd);
         dynamicPayrollTableBody.appendChild(subtotalRow);
 
@@ -1325,7 +1309,7 @@ const updateDynamicPayrollTable = (tierIndex) => {
 
     const grandTotalPayrollTd = document.createElement('td');
     grandTotalPayrollTd.className = 'px-6 py-4 text-right';
-    grandTotalPayrollTd.textContent = formatBDT(grandTotalPayroll);
+    grandTotalPayrollTd.textContent = formatCurrency(grandTotalPayroll);
     grandTotalRow.appendChild(grandTotalPayrollTd);
     dynamicPayrollTableBody.appendChild(grandTotalRow);
 };
@@ -1355,7 +1339,7 @@ const updatePricingTable = (discountRate = 0) => {
             const el = document.getElementById(`price-${dept}-${session}`);
             if (el) {
                 const discountedPrice = basePrice * (1 - discountRate);
-                el.textContent = formatBDT(roundToNearest10(discountedPrice));
+                el.textContent = formatCurrency(roundToNearest10(discountedPrice));
             }
         }
     }
@@ -1392,11 +1376,11 @@ const updateLaunchProjections = () => {
     }
 
     modelATierLabel.textContent = t('misc.tier', { tier: tier.tier });
-    modelAP1Profit.textContent = formatBDTShort(pA_p1_profit);
-    modelAP2Profit.textContent = formatBDTShort(pA_p2_profit);
-    modelAP3Profit.textContent = formatBDTShort(pA_p3_profit);
-    modelATotalProfit.textContent = formatBDTShort(pA_total_profit);
-    modelAAvgProfit.textContent = t('launch.model_a.avg_label', { avg: formatBDTShort(pA_total_profit / 12) });
+    modelAP1Profit.textContent = formatCurrencyShort(pA_p1_profit);
+    modelAP2Profit.textContent = formatCurrencyShort(pA_p2_profit);
+    modelAP3Profit.textContent = formatCurrencyShort(pA_p3_profit);
+    modelATotalProfit.textContent = formatCurrencyShort(pA_total_profit);
+    modelAAvgProfit.textContent = t('launch.model_a.avg_label', { avg: formatCurrencyShort(pA_total_profit / 12) });
 
     // Update bars (as % of max possible profit in this model, pA_max_profit)
     modelAP1Bar.style.width = `${Math.max(0, pA_p1_profit / 3 / (pA_max_profit / 12)) * 100}%`;
@@ -1431,10 +1415,10 @@ const updateLaunchProjections = () => {
     const pB_total_profit = pB_p1_profit + pB_p2_profit + pB_p3_profit;
     const pB_max_profit = pB_p3_profit * 2; // Extrapolate phase 3 profit
 
-    modelBP1Profit.textContent = formatBDTShort(pB_p1_profit);
-    modelBP2Profit.textContent = formatBDTShort(pB_p2_profit);
-    modelBP3Profit.textContent = formatBDTShort(pB_p3_profit);
-    modelBTotalProfit.textContent = formatBDTShort(pB_total_profit);
+    modelBP1Profit.textContent = formatCurrencyShort(pB_p1_profit);
+    modelBP2Profit.textContent = formatCurrencyShort(pB_p2_profit);
+    modelBP3Profit.textContent = formatCurrencyShort(pB_p3_profit);
+    modelBTotalProfit.textContent = formatCurrencyShort(pB_total_profit);
 
     // Update bars (as % of max possible profit in this model, pB_max_profit)
     modelBP1Bar.style.width = `${Math.max(0, pB_p1_profit / 3 / (pB_max_profit / 12)) * 100}%`;
@@ -1550,9 +1534,9 @@ const updateModelAssumptions = (tierIndex) => {
 
         if (totalBonus > 0) {
             // Direct formatting for dynamic content - don't use translation for numbers
-            maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> ${t('label.bdt')}`;
+            maxDailyRevenueEl.innerHTML = `${formatCurrency(MAX_DAILY_REVENUE, true)} <span class="text-brand-secondary font-semibold">+${formatCurrency(totalBonus, true)}</span>`;
         } else {
-            maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} ${t('label.bdt')}`;
+            maxDailyRevenueEl.textContent = formatCurrency(MAX_DAILY_REVENUE, true);
         }
     }
 
@@ -1617,7 +1601,7 @@ const updateModelAssumptions = (tierIndex) => {
             // Show tooltip only when there's additional revenue
             if (tooltip) tooltip.classList.remove('hidden');
         } else {
-            textNode.textContent = tx('label.amount_bdt', formatBDT(tierMaxMonthlyRevenue), t('label.bdt'));
+            textNode.textContent = formatCurrency(tierMaxMonthlyRevenue, true);
             const oldSpan = baseMonthlyRevenueEl.querySelector('span.revenue-bonus');
             if (oldSpan) oldSpan.remove();
             // Hide tooltip when no additional revenue
@@ -1651,14 +1635,23 @@ const updateStaffingTier = (tierIndex) => {
     // Update service coverage badges
     const coverage = TIER_SERVICE_COVERAGE[tierIndex];
     coverageWeekendEl.textContent = t(coverage.weekend) || coverage.weekend;
-    coverageEarlyEl.textContent = t(coverage.earlyMorning) || coverage.earlyMorning;
+    
+    // For early morning coverage in Tier 3+, show "Yes" with formatted time
+    if (tierIndex >= 3) {
+        const yesText = t('staffing.coverage.no').replace(/No|না/i, tierIndex >= 3 ? 'Yes' : 'No');
+        const timeRange = formatTimeRange ? formatTimeRange('06:00', '09:00') : '06:00 – 09:00';
+        coverageEarlyEl.textContent = `${yesText.replace('No', 'Yes').replace('না', 'হ্যাঁ')} (${timeRange})`;
+    } else {
+        coverageEarlyEl.textContent = t(coverage.earlyMorning) || coverage.earlyMorning;
+    }
+    
     coverageHomeEl.textContent = t(coverage.homeCare) || coverage.homeCare;
 
     // Update text readouts
     staffFtEl.textContent = currentStaffingTier.ft;
     staffPtEl.textContent = currentStaffingTier.pt;
     staffTotalEl.textContent = currentStaffingTier.total;
-    staffPayrollEl.textContent = formatBDT(currentStaffingTier.payroll);
+    staffPayrollEl.textContent = formatCurrency(currentStaffingTier.payroll);
 
     // Update enhanced services
     servicesTierLabelEl.textContent = t('misc.tier', { tier: currentStaffingTier.tier });
@@ -1676,7 +1669,7 @@ const updateStaffingTier = (tierIndex) => {
     assumedOccupancyEl.textContent = t('label.percent_approx', { percent: currentStaffingTier.capacity });
     const netMargin = currentStaffingTier.revenue - currentStaffingTier.payroll;
     const marginPct = (netMargin / currentStaffingTier.revenue) * 100;
-    netMarginBdtEl.textContent = tx('label.net_margin_bdt', formatBDT(netMargin));
+    netMarginBdtEl.textContent = `≈ ${formatCurrency(netMargin)}`;
     netMarginPctEl.textContent = t('label.percent_approx', { percent: marginPct.toFixed(1) });
 
     // Update bar chart
@@ -1773,11 +1766,11 @@ const updateOccupancyMetrics = () => {
 
     // Update text readouts for Occupancy Modeler
     occupancyValueEl.textContent = t('label.percent', { percent: currentOccupancy });
-    dailyRevenueEl.textContent = formatBDT(dailyRevenue);
-    monthlyRevenueEl.textContent = formatBDT(monthlyRevenue);
+    dailyRevenueEl.textContent = formatCurrency(dailyRevenue);
+    monthlyRevenueEl.textContent = formatCurrency(monthlyRevenue);
     monthlyProfitEl.textContent = formatProfit(monthlyProfit);
     monthlyProfitPercentEl.textContent = formatPercent(monthlyProfitPercent);
-    annualRevenueEl.textContent = formatBDT(annualRevenue);
+    annualRevenueEl.textContent = formatCurrency(annualRevenue);
     annualProfitEl.textContent = formatProfit(annualProfit);
 
     // Update recommendation text
@@ -1838,7 +1831,7 @@ const updateOccupancyMetrics = () => {
     // Update Year 2+ Projections
     projOccupancyLabel.textContent = t('future.occupancy_label', { occupancy: currentOccupancy });
     projMonthlyProfit.textContent = formatProfit(monthlyProfit);
-    projAnnualRevenue.textContent = formatBDT(annualRevenue);
+    projAnnualRevenue.textContent = formatCurrency(annualRevenue);
     projAnnualProfit.textContent = formatProfit(annualProfit);
 };
 
@@ -2136,7 +2129,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (totalBonus > 0) {
                 // Direct formatting for dynamic content - don't use translation for numbers
-                maxDailyRevenueEl.innerHTML = `${formatBDT(MAX_DAILY_REVENUE)} <span class="text-brand-secondary font-semibold">+${formatBDT(totalBonus)}</span> ${t('label.bdt')}`;
+                maxDailyRevenueEl.innerHTML = `${formatCurrency(MAX_DAILY_REVENUE, true)} <span class="text-brand-secondary font-semibold">+${formatCurrency(totalBonus, true)}</span>`;
             } else {
                 maxDailyRevenueEl.textContent = `${formatBDT(MAX_DAILY_REVENUE)} ${t('label.bdt')}`;
             }
