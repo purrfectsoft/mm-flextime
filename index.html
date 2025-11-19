@@ -1673,7 +1673,9 @@
                                 <!-- Express Slider (Brand Secondary/Orange) -->
                                 <div>
                                     <div class="flex justify-between items-center mb-2">
-                                        <label class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                                        <label
+                                            data-i18n="pricing.visitmix.express"
+                                            class="text-sm font-semibold text-gray-700 dark:text-gray-300"
                                             >Express</label
                                         >
                                         <span
@@ -1700,7 +1702,7 @@
                                     >Total:</span
                                 >
                                 <span id="visitmix-total" class="text-lg font-bold text-gray-800 dark:text-white ml-2"
-                                    >100%</span
+                                    ></span
                                 >
                                 <div
                                     id="visitmix-error"
@@ -2289,7 +2291,7 @@
                                 >
                                     59.02 lakh
                                 </div>
-                                <span class="text-sm font-medium text-brand-secondary dark:text-brand-secondary-light"
+                                <span data-i18n="launch.model_b.subtitle" class="text-sm font-medium text-brand-secondary dark:text-brand-secondary-light"
                                     >(After initial ramp-up)</span
                                 >
                             </div>
@@ -2592,19 +2594,19 @@
                             <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                                 <li class="flex justify-between">
                                     <span data-i18n="data.assumptions.session.foundation">Foundation sessions:</span>
-                                    <strong class="text-brand-dark dark:text-brand-light">20%</strong>
+                                    <strong id="model-session-foundation" class="text-brand-dark dark:text-brand-light"></strong>
                                 </li>
                                 <li class="flex justify-between">
                                     <span data-i18n="data.assumptions.session.standard">Standard sessions:</span>
-                                    <strong class="text-brand-dark dark:text-brand-light">50%</strong>
+                                    <strong id="model-session-standard" class="text-brand-dark dark:text-brand-light"></strong>
                                 </li>
                                 <li class="flex justify-between">
                                     <span data-i18n="data.assumptions.session.premium">Premium sessions:</span>
-                                    <strong class="text-brand-dark dark:text-brand-light">25%</strong>
+                                    <strong id="model-session-premium" class="text-brand-dark dark:text-brand-light"></strong>
                                 </li>
                                 <li class="flex justify-between">
                                     <span data-i18n="data.assumptions.session.express">Express sessions:</span>
-                                    <strong class="text-brand-dark dark:text-brand-light">5%</strong>
+                                    <strong id="model-session-express" class="text-brand-dark dark:text-brand-light"></strong>
                                 </li>
                                 <li
                                     class="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2 text-xs text-gray-600 dark:text-gray-400"
@@ -2641,6 +2643,7 @@
                                         >Tier 3 (Partial Weekend)</span
                                     >
                                     <span
+                                        data-i18n="data.revenue_streams.tier3.badge"
                                         class="text-xs bg-brand-wood/20 text-brand-wood px-2 py-0.5 rounded-full font-bold"
                                         >+27% Days</span
                                     >
@@ -2653,7 +2656,10 @@
                                     Partial weekend coverage (Saturdays) extends operational days from
                                     <strong>22 → 28 days/month</strong>
                                 </p>
-                                <p class="text-xs text-brand-highlight font-semibold">
+                                <p
+                                    data-i18n="data.revenue_streams.tier3.revenue"
+                                    class="text-xs text-brand-highlight font-semibold"
+                                >
                                     Potential monthly revenue: ~3.84M BDT (at same occupancy)
                                 </p>
                             </div>
@@ -2665,6 +2671,7 @@
                                         >Tier 4 (Full Ecosystem)</span
                                     >
                                     <span
+                                        data-i18n="data.revenue_streams.tier4.badge"
                                         class="text-xs bg-brand-secondary/20 text-brand-secondary px-2 py-0.5 rounded-full font-bold"
                                         >+36% Days</span
                                     >
@@ -2677,12 +2684,12 @@
                                     Full weekend coverage + home care/online floaters enable
                                     <strong>~30 effective days/month</strong> of service delivery
                                 </p>
-                                <p class="text-xs text-brand-secondary font-semibold">
+                                <p class="text-xs text-brand-secondary font-semibold" data-i18n="data.revenue_streams.tier4.revenue">
                                     Potential monthly revenue: ~4.11M BDT (at same occupancy)
                                 </p>
                             </div>
                         </div>
-                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-3 italic">
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-3 italic" data-i18n="data.revenue_streams.note">
                             Note: Higher tier revenue calculations in the Capacity Modeler incorporate these expanded
                             operational day models and service multipliers.
                         </p>

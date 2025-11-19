@@ -983,13 +983,14 @@ const roundToNearest10 = (num) => {
 const formatProfit = (num) => {
     const roundedNum = Math.round(num);
     const prefix = roundedNum >= 0 ? '+' : '';
-    return prefix + new Intl.NumberFormat('en-IN').format(roundedNum);
+    return prefix + formatNumber(roundedNum);
 };
 
 // Format percentage
 const formatPercent = (num) => {
     const prefix = num >= 0 ? '+' : '';
-    return prefix + num.toFixed(1) + '%';
+    const formatted = formatNumber(parseFloat(num.toFixed(1)));
+    return prefix + formatted + '%';
 };
 
 // Get Chart.js options
@@ -1125,10 +1126,10 @@ const renderVisitMixChart = () => {
         type: 'doughnut',
         data: {
             labels: [
-                tx('label.session_with_percent', t('pricing.visitmix.foundation'), formatPercent(20, true)),
-                tx('label.session_with_percent', t('pricing.visitmix.standard'), formatPercent(50, true)),
-                tx('label.session_with_percent', t('pricing.visitmix.premium'), formatPercent(25, true)),
-                tx('label.session_with_percent', t('pricing.visitmix.express'), formatPercent(5, true)),
+                tx('label.session_with_percent', t('pricing.visitmix.foundation'), t('label.percent', { percent: formatNumber(20) })),
+                tx('label.session_with_percent', t('pricing.visitmix.standard'), t('label.percent', { percent: formatNumber(50) })),
+                tx('label.session_with_percent', t('pricing.visitmix.premium'), t('label.percent', { percent: formatNumber(25) })),
+                tx('label.session_with_percent', t('pricing.visitmix.express'), t('label.percent', { percent: formatNumber(5) })),
             ],
             datasets: [
                 {
@@ -1452,8 +1453,8 @@ const updateModelAssumptions = (tierIndex) => {
     if (workingDaysEl) {
         if (additionalDays > 0) {
             const wdHtml = t('label.days_parenthetical_html', {
-                base: baseDays,
-                extra: additionalDays,
+                base: formatNumber(baseDays),
+                extra: formatNumber(additionalDays),
                 days: t('label.days'),
             });
             try {
@@ -1464,7 +1465,7 @@ const updateModelAssumptions = (tierIndex) => {
                 workingDaysEl.textContent = wdHtml.replace(/<[^>]+>/g, '');
             }
         } else {
-            workingDaysEl.textContent = `${operationalDays} ${t('label.days')}`;
+            workingDaysEl.textContent = `${formatNumber(operationalDays)} ${t('label.days')}`;
         }
     }
 
@@ -1494,7 +1495,7 @@ const updateModelAssumptions = (tierIndex) => {
         const tooltip = bedCapacityEl.querySelector('.tooltip');
 
         if (vBedCount > 0) {
-            textNode.textContent = `${baseBeds} `;
+            textNode.textContent = `${formatNumber(baseBeds)} `;
             // Remove old span if exists
             const oldSpan = bedCapacityEl.querySelector('span.vbed-count');
             if (oldSpan) oldSpan.remove();
@@ -1502,12 +1503,12 @@ const updateModelAssumptions = (tierIndex) => {
             const vbedSpan = document.createElement('span');
             vbedSpan.className = 'text-brand-secondary font-semibold vbed-count';
             vbedSpan.setAttribute('data-i18n', 'label.vbed_count');
-            vbedSpan.textContent = t('label.vbed_count', { count: vBedCount, vbed: t('label.vbed') });
+            vbedSpan.textContent = t('label.vbed_count', { count: formatNumber(vBedCount), vbed: t('label.vbed') });
             bedCapacityEl.insertBefore(vbedSpan, tooltip);
             // Show tooltip only when there are vBeds
             if (tooltip) tooltip.classList.remove('hidden');
         } else {
-            textNode.textContent = `${baseBeds} ${t('label.beds')}`;
+            textNode.textContent = `${formatNumber(baseBeds)} ${t('label.beds')}`;
             const oldSpan = bedCapacityEl.querySelector('span.vbed-count');
             if (oldSpan) oldSpan.remove();
             // Hide tooltip when no vBeds
@@ -1640,9 +1641,10 @@ const updateStaffingTier = (tierIndex) => {
 
     // For early morning coverage in Tier 3+, show "Yes" with formatted time
     if (tierIndex >= 3) {
-        const yesText = t('staffing.coverage.no').replace(/No|না/i, tierIndex >= 3 ? 'Yes' : 'No');
-        const timeRange = formatTimeRange ? formatTimeRange('06:00', '09:00') : '06:00 – 09:00';
-        coverageEarlyEl.textContent = `${yesText.replace('No', 'Yes').replace('না', 'হ্যাঁ')} (${timeRange})`;
+        // Get translated "Yes" text - use a simple key for yes/no
+        const yesText = t('staffing.coverage.yes', 'Yes');
+        const timeRange = formatTimeRange('06:00', '09:00');
+        coverageEarlyEl.textContent = `${yesText} (${timeRange})`;
     } else {
         coverageEarlyEl.textContent = t(coverage.earlyMorning) || coverage.earlyMorning;
     }
@@ -2341,13 +2343,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalEl = document.getElementById('visitmix-total');
         const errorEl = document.getElementById('visitmix-error');
 
-        if (foundationValueEl) foundationValueEl.textContent = t('label.percent', { percent: f });
-        if (standardValueEl) standardValueEl.textContent = t('label.percent', { percent: s });
-        if (premiumValueEl) premiumValueEl.textContent = t('label.percent', { percent: p });
-        if (expressValueEl) expressValueEl.textContent = t('label.percent', { percent: e });
+        if (foundationValueEl) foundationValueEl.textContent = t('label.percent', { percent: formatNumber(f) });
+        if (standardValueEl) standardValueEl.textContent = t('label.percent', { percent: formatNumber(s) });
+        if (premiumValueEl) premiumValueEl.textContent = t('label.percent', { percent: formatNumber(p) });
+        if (expressValueEl) expressValueEl.textContent = t('label.percent', { percent: formatNumber(e) });
 
         const finalTotal = f + s + p + e;
-        if (totalEl) totalEl.textContent = t('label.percent', { percent: finalTotal });
+        if (totalEl) totalEl.textContent = t('label.percent', { percent: formatNumber(finalTotal) });
 
         // Show/hide error message
         if (errorEl) {
@@ -2363,10 +2365,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (visitMixChart) {
             visitMixChart.data.datasets[0].data = arr;
             visitMixChart.data.labels = [
-                tx('label.session_with_percent', t('pricing.visitmix.foundation'), t('label.percent', { percent: f })),
-                tx('label.session_with_percent', t('pricing.visitmix.standard'), t('label.percent', { percent: s })),
-                tx('label.session_with_percent', t('pricing.visitmix.premium'), t('label.percent', { percent: p })),
-                tx('label.session_with_percent', t('pricing.visitmix.express'), t('label.percent', { percent: e })),
+                tx('label.session_with_percent', t('pricing.visitmix.foundation'), t('label.percent', { percent: formatNumber(f) })),
+                tx('label.session_with_percent', t('pricing.visitmix.standard'), t('label.percent', { percent: formatNumber(s) })),
+                tx('label.session_with_percent', t('pricing.visitmix.premium'), t('label.percent', { percent: formatNumber(p) })),
+                tx('label.session_with_percent', t('pricing.visitmix.express'), t('label.percent', { percent: formatNumber(e) })),
             ];
             visitMixChart.update();
         }
@@ -2621,6 +2623,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (priceToggleNoteEl)
                 priceToggleNoteEl.textContent =
                     storedRate !== null ? t('toast.saved_pricing_persist') : t('pricing.pricing_modeler.note_default');
+        } catch (e) {
+            /* ignore */
+        }
+        try {
+            // Update session mix percentages in model assumptions section
+            const sessionFoundationEl = document.getElementById('model-session-foundation');
+            const sessionStandardEl = document.getElementById('model-session-standard');
+            const sessionPremiumEl = document.getElementById('model-session-premium');
+            const sessionExpressEl = document.getElementById('model-session-express');
+            if (sessionFoundationEl) sessionFoundationEl.textContent = t('label.percent', { percent: formatNumber(20) });
+            if (sessionStandardEl) sessionStandardEl.textContent = t('label.percent', { percent: formatNumber(50) });
+            if (sessionPremiumEl) sessionPremiumEl.textContent = t('label.percent', { percent: formatNumber(25) });
+            if (sessionExpressEl) sessionExpressEl.textContent = t('label.percent', { percent: formatNumber(5) });
+
+            // Initialize visit mix total display
+            const totalEl = document.getElementById('visitmix-total');
+            if (totalEl) totalEl.textContent = t('label.percent', { percent: formatNumber(100) });
         } catch (e) {
             /* ignore */
         }
