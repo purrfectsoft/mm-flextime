@@ -467,7 +467,7 @@
                                 >
                                     Data-Driven Financials
                                 </h4>
-                                <p class="text-gray-600 dark:text-gray-400">
+                                <p data-i18n="overview.pillar.financials.desc" class="text-gray-600 dark:text-gray-400">
                                     Interactive models for staffing tiers, occupancy rates, and launch projections
                                     provide a clear, dynamic financial backbone for decision-making.
                                 </p>
@@ -886,6 +886,7 @@
                                         class="border-t md:border-t-0 md:border-l border-gray-300 dark:border-gray-600 pt-4 md:pt-0 md:pl-4"
                                     >
                                         <label
+                                            data-i18n="scenario_manager.import_export.label"
                                             class="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-2"
                                         >
                                             <i data-lucide="share-2" class="w-4 h-4 inline mr-2"></i>
@@ -933,6 +934,7 @@
                                         class="border-t md:border-l border-gray-300 dark:border-gray-600 pt-4 md:pt-0 md:pl-4 flex gap-2 justify-end items-end"
                                     >
                                         <label
+                                            data-i18n="scenario_manager.reset.label"
                                             class="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-2"
                                         >
                                             <i data-lucide="refresh-cw" class="w-4 h-4 inline mr-2"></i>
@@ -981,7 +983,7 @@
                     >
                         Interactive Staffing Tier Modeler
                     </h3>
-                    <p class="text-center text-gray-600 dark:text-gray-400 mb-2 max-w-2xl mx-auto">
+                    <p data-i18n="staffing.description" class="text-center text-gray-600 dark:text-gray-400 mb-2 max-w-2xl mx-auto">
                         Use this slider to see how payroll, revenue, and service capacity scale with each staffing tier.
                     </p>
                     <!-- How to Use Helper -->
@@ -1121,7 +1123,7 @@
                                         data-lucide="gauge"
                                         class="w-6 h-6 text-brand-base dark:text-brand-light mr-3"
                                     ></i>
-                                    <h5 class="text-xl font-semibold text-brand-dark dark:text-brand-light">
+                                    <h5 data-i18n="staffing.capacity.title" class="text-xl font-semibold text-brand-dark dark:text-brand-light">
                                         Capacity Overview
                                     </h5>
                                 </div>
@@ -1251,7 +1253,7 @@
                             class="flex flex-col justify-center space-y-4 bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg"
                         >
                             <div class="text-center">
-                                <span class="text-sm text-brand-base dark:text-brand-light font-medium"
+                                <span data-i18n="staffing.financials.assumed_occupancy" class="text-sm text-brand-base dark:text-brand-light font-medium"
                                     >Assumed Occupancy</span
                                 >
                                 <div
@@ -1264,7 +1266,7 @@
                             <div
                                 class="text-center border-t border-b border-brand-base/20 dark:border-brand-light/20 py-4"
                             >
-                                <span class="text-sm text-brand-base dark:text-brand-light font-medium"
+                                <span data-i18n="staffing.financials.net_margin_label" class="text-sm text-brand-base dark:text-brand-light font-medium"
                                     >Expected Net Operating Margin</span
                                 >
                                 <div
@@ -1278,7 +1280,7 @@
                                 >
                             </div>
                             <div class="text-center">
-                                <span class="text-sm text-brand-base dark:text-brand-light font-medium"
+                                <span data-i18n="staffing.financials.net_margin_pct" class="text-sm text-brand-base dark:text-brand-light font-medium"
                                     >Operating Margin %</span
                                 >
                                 <div
@@ -1753,6 +1755,7 @@
 
                         <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-600 flex-grow">
                             <p
+                                data-i18n="pricing.legend.title"
                                 class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wide"
                             >
                                 Session Types
@@ -2051,10 +2054,7 @@
                             >
                                 <strong>Scenario:</strong> Constant 60% occupancy with discount phases
                             </p>
-                            <p
-                                id="model-a-tier-description"
-                                class="text-sm text-gray-500 dark:text-gray-400 mb-6"
-                            >
+                            <p id="model-a-tier-description" class="text-sm text-gray-500 dark:text-gray-400 mb-6">
                                 Uses payroll from
                                 <strong id="model-a-tier-label" class="text-brand-highlight">Tier 2</strong>
                                 (dynamically linked to slider)
@@ -2132,7 +2132,7 @@
 
                         <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                             <div class="text-center bg-brand-extralight dark:bg-brand-dark/50 p-6 rounded-lg">
-                                <span class="text-lg font-medium text-brand-base dark:text-brand-light"
+                                <span data-i18n="launch.model_a.total_label" class="text-lg font-medium text-brand-base dark:text-brand-light"
                                     >Total First-Year Profit</span
                                 >
                                 <div
@@ -2270,7 +2270,7 @@
 
                         <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                             <div class="text-center bg-brand-secondary/10 dark:bg-brand-secondary/20 p-6 rounded-lg">
-                                <span class="text-lg font-medium text-brand-secondary dark:text-brand-secondary-light"
+                                <span data-i18n="launch.model_b.total_label" class="text-lg font-medium text-brand-secondary dark:text-brand-secondary-light"
                                     >Total First-Year Profit</span
                                 >
                                 <div
@@ -2293,10 +2293,7 @@
                 <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-4 text-center">
                     Year 2+ Dynamic Projections
                 </h3>
-                <p
-                    id="future-description"
-                    class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto"
-                >
+                <p id="future-description" class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
                     These projections are fully dynamic. They are based on the
                     <strong id="proj-tier-label" class="text-brand-base dark:text-brand-light font-semibold"
                         >Tier 2</strong
@@ -2478,7 +2475,7 @@
 
             <!-- Other Data Section -->
             <section id="data-tables" class="mb-20 pt-20">
-                <h3 class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">
+                <h3 data-i18n="data.title" class="text-3xl font-bold text-brand-dark dark:text-brand-light mb-8 text-center">
                     Core Data & Assumptions
                 </h3>
 
@@ -2497,7 +2494,7 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm">
-                            <h5 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">
+                            <h5 data-i18n="data.assumptions.core.title" class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">
                                 Core Operating Parameters
                             </h5>
                             <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
@@ -2569,7 +2566,7 @@
                             </ul>
                         </div>
                         <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm">
-                            <h5 class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">
+                            <h5 data-i18n="data.assumptions.session.title" class="text-sm font-semibold text-brand-base dark:text-brand-light mb-3">
                                 Session Mix Distribution
                             </h5>
                             <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
@@ -2693,7 +2690,9 @@
                                 class="font-semibold text-brand-dark dark:text-white"
                                 >Consistent Coverage:</strong
                             >
-                            <span data-i18n="advantages.consistent_coverage.desc">Predictable multi-shift operations ensure reliable patient care.</span>
+                            <span data-i18n="advantages.consistent_coverage.desc"
+                                >Predictable multi-shift operations ensure reliable patient care.</span
+                            >
                         </p>
                     </div>
                     <div class="flex items-start space-x-3">
@@ -2707,7 +2706,9 @@
                                 class="font-semibold text-brand-dark dark:text-white"
                                 >Expanded Access:</strong
                             >
-                            <span data-i18n="advantages.expanded_access.desc">Evening and future morning hours cater to professionals and students.</span>
+                            <span data-i18n="advantages.expanded_access.desc"
+                                >Evening and future morning hours cater to professionals and students.</span
+                            >
                         </p>
                     </div>
                     <div class="flex items-start space-x-3">
@@ -2721,7 +2722,9 @@
                                 class="font-semibold text-brand-dark dark:text-white"
                                 >Premium Offerings:</strong
                             >
-                            <span data-i18n="advantages.premium_offerings.desc">Differentiated session types (Premium, Express) increase perceived value.</span>
+                            <span data-i18n="advantages.premium_offerings.desc"
+                                >Differentiated session types (Premium, Express) increase perceived value.</span
+                            >
                         </p>
                     </div>
                     <div class="flex items-start space-x-3">
@@ -2735,7 +2738,9 @@
                                 class="font-semibold text-brand-dark dark:text-white"
                                 >Scalable Architecture:</strong
                             >
-                            <span data-i18n="advantages.scalable_architecture.desc">Tiered staffing with floaters allows for flexible, demand-based growth.</span>
+                            <span data-i18n="advantages.scalable_architecture.desc"
+                                >Tiered staffing with floaters allows for flexible, demand-based growth.</span
+                            >
                         </p>
                     </div>
                     <div class="flex items-start space-x-3">
@@ -2749,7 +2754,9 @@
                                 class="font-semibold text-brand-dark dark:text-white"
                                 >Sustainable Revenue:</strong
                             >
-                            <span data-i18n="advantages.sustainable_revenue.desc">Model is profitable even at low-to-mid occupancy rates.</span>
+                            <span data-i18n="advantages.sustainable_revenue.desc"
+                                >Model is profitable even at low-to-mid occupancy rates.</span
+                            >
                         </p>
                     </div>
                     <div class="flex items-start space-x-3">
@@ -2763,7 +2770,9 @@
                                 class="font-semibold text-brand-dark dark:text-white"
                                 >Community Trust:</strong
                             >
-                            <span data-i18n="advantages.community_trust.desc">The CareBridge™ program builds a strong, positive public-facing brand.</span>
+                            <span data-i18n="advantages.community_trust.desc"
+                                >The CareBridge™ program builds a strong, positive public-facing brand.</span
+                            >
                         </p>
                     </div>
                 </div>
