@@ -909,6 +909,7 @@ const annualRevenueEl = document.getElementById('annual-revenue');
 const annualProfitEl = document.getElementById('annual-profit');
 
 // Year 2+ Projection Elements
+const futureDescription = document.getElementById('future-description');
 const projTierLabel = document.getElementById('proj-tier-label');
 const projOccupancyLabel = document.getElementById('proj-occupancy-label');
 const projMonthlyProfit = document.getElementById('proj-monthly-profit');
@@ -944,6 +945,7 @@ const payrollTableWrapper = document.querySelector('#dynamic-payroll-table-body'
 const toastContainer = document.getElementById('toast-container');
 
 // Dynamic Launch Model A Elements
+const modelATierDescription = document.getElementById('model-a-tier-description');
 const modelATierLabel = document.getElementById('model-a-tier-label');
 const modelAP1Profit = document.getElementById('model-a-p1-profit');
 const modelAP2Profit = document.getElementById('model-a-p2-profit');
@@ -1379,6 +1381,16 @@ const updateLaunchProjections = () => {
     const pA_total_profit = pA_p1_profit + pA_p2_profit + pA_p3_profit;
     const pA_max_profit = pA_p3_profit * 2; // Extrapolate phase 3 profit for 12 months
 
+    // Update the entire description paragraph with interpolated translation
+    const modelADescHTML = t('launch.model_a.tier_label.html', { tier: tier.tier });
+    try {
+        const tpl = document.createElement('template');
+        tpl.innerHTML = modelADescHTML;
+        modelATierDescription.replaceChildren(tpl.content);
+    } catch (e) {
+        modelATierDescription.innerHTML = modelADescHTML;
+    }
+    
     modelATierLabel.textContent = t('misc.tier', { tier: tier.tier });
     modelAP1Profit.textContent = formatBDTShort(pA_p1_profit);
     modelAP2Profit.textContent = formatBDTShort(pA_p2_profit);
@@ -1699,8 +1711,19 @@ const updateStaffingTier = (tierIndex) => {
     // Update occupancy modeler (which also updates Year 2+ projections)
     updateOccupancyMetrics();
 
-    // Update Year 2+ Projection Label
+    // Update Year 2+ Projection Label and description
     projTierLabel.textContent = t('misc.tier', { tier: currentStaffingTier.tier });
+    projOccupancyLabel.textContent = t('future.occupancy_label', { occupancy: currentOccupancy });
+    
+    // Update the full description paragraph with interpolated translation
+    const futureDescHTML = t('future.description.html', { tier: currentStaffingTier.tier, occupancy: currentOccupancy });
+    try {
+        const tpl = document.createElement('template');
+        tpl.innerHTML = futureDescHTML;
+        futureDescription.replaceChildren(tpl.content);
+    } catch (e) {
+        futureDescription.innerHTML = futureDescHTML;
+    }
 
     // Update Model A in Launch Projections
     updateLaunchProjections();
