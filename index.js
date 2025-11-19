@@ -78,14 +78,14 @@ const populateScenarioSelect = () => {
     const scenarios = getSavedScenarios();
     // Reset select using centralized transient element parsing
     try {
-        const frag = parseHtmlFragment('<option value="">%s</option>', 'scenario_manager.load_placeholder');
+        const frag = parseHtmlFragment('<option value="">%s</option>', 'scenario_manager.load.placeholder');
         scenarioSelect.replaceChildren(frag);
     } catch (e) {
         // Defensive fallback: clear and add a plain option node
         scenarioSelect.replaceChildren();
         const opt = document.createElement('option');
         opt.value = '';
-        opt.textContent = t('scenario_manager.load_placeholder');
+        opt.textContent = t('scenario_manager.load.placeholder');
         scenarioSelect.appendChild(opt);
     }
     scenarios.forEach((s) => {
@@ -142,7 +142,7 @@ const applySnapshot = (snap) => {
 
 const saveScenario = (name) => {
     if (!name) {
-        showToast(t('toasts.provide_name'), 'error');
+        showToast(t('toast.provide_name'), 'error');
         return;
     }
     const snap = getSnapshot();
@@ -158,7 +158,7 @@ const saveScenario = (name) => {
     populateScenarioSelect();
     localStorage.setItem(STORAGE_LAST_SELECTED_SCENARIO, name);
     if (scenarioSelect) scenarioSelect.value = name;
-    showToast(t('toasts.saved_scenario', { name }));
+    showToast(t('toast.saved_scenario', { name }));
 };
 
 const loadScenario = (name) => {
@@ -166,12 +166,12 @@ const loadScenario = (name) => {
     const scenarios = getSavedScenarios();
     const s = scenarios.find((sc) => sc.name === name);
     if (!s) {
-        showToast(t('toasts.scenario_not_found', { name }), 'error');
+        showToast(t('toast.scenario_not_found', { name }), 'error');
         return;
     }
     applySnapshot(s.snapshot);
     localStorage.setItem(STORAGE_LAST_SELECTED_SCENARIO, name);
-    showToast(t('toasts.loaded_scenario', { name }));
+    showToast(t('toast.loaded_scenario', { name }));
 };
 
 const deleteScenario = (name) => {
@@ -185,13 +185,13 @@ const deleteScenario = (name) => {
     if (scenarioSelect) {
         scenarioSelect.value = '';
     }
-    showToast(t('toasts.deleted_scenario', { name }));
+    showToast(t('toast.deleted_scenario', { name }));
 };
 
 const exportScenarios = () => {
     const scenarios = getSavedScenarios();
     if (scenarios.length === 0) {
-        showToast(t('toasts.no_scenarios_export'), 'error');
+        showToast(t('toast.no_scenarios_export'), 'error');
         return;
     }
 
@@ -217,7 +217,7 @@ const exportScenarios = () => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    showToast(t('toasts.exported_count', { count: scenarios.length }));
+    showToast(t('toast.exported_count', { count: scenarios.length }));
 };
 
 const exportCurrentScenario = () => {
@@ -248,7 +248,7 @@ const exportCurrentScenario = () => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    showToast(t('toasts.exported_current', { name: payload.name }));
+    showToast(t('toast.exported_current', { name: payload.name }));
 };
 const getSnapshot = () => {
     const priceRate = (() => {
@@ -318,7 +318,7 @@ const importScenarios = (file) => {
 
             // Validate structure
             if (!Array.isArray(importData.scenarios)) {
-                showToast(t('toasts.import_invalid_format'), 'error');
+                showToast(t('toast.import_invalid_format'), 'error');
                 return;
             }
 
@@ -351,18 +351,18 @@ const importScenarios = (file) => {
             populateScenarioSelect();
 
             if (importedCount > 0) {
-                showToast(t('toasts.imported_some', { count: importedCount }));
+                showToast(t('toast.imported_some', { count: importedCount }));
             } else {
-                showToast(t('toasts.no_new_scenarios_imported', { skipped: skippedCount }));
+                showToast(t('toast.no_new_scenarios_imported', { skipped: skippedCount }));
             }
         } catch (err) {
             console.error('Import error:', err);
-            showToast(t('toasts.import_error_json'), 'error');
+            showToast(t('toast.import_error_json'), 'error');
         }
     };
 
     reader.onerror = () => {
-        showToast(t('toasts.error_reading_file'), 'error');
+        showToast(t('toast.error_reading_file'), 'error');
     };
 
     reader.readAsText(file);
@@ -398,7 +398,7 @@ const resetDefaults = () => {
     } catch (err) {
         console.warn('Could not clear persisted defaults', err);
     }
-    showToast(t('toasts.reset_defaults'));
+    showToast(t('toast.reset_defaults'));
 };
 
 const clearSavedScenarios = () => {
@@ -406,10 +406,10 @@ const clearSavedScenarios = () => {
         localStorage.removeItem(STORAGE_SCENARIOS_KEY);
         localStorage.removeItem(STORAGE_LAST_SELECTED_SCENARIO);
         populateScenarioSelect();
-        showToast(t('toasts.cleared_saved_scenarios'));
+        showToast(t('toast.cleared_saved_scenarios'));
     } catch (err) {
         console.warn('Could not clear scenarios', err);
-        showToast(t('toasts.error_clearing_saved_scenarios'), 'error');
+        showToast(t('toast.error_clearing_saved_scenarios'), 'error');
     }
 };
 
@@ -658,15 +658,15 @@ const TIER_NAMES = [
 // Service coverage for each tier
 // Tier 2 = none, Tier 3 = partial + basic home care, Tier 4 = full + dedicated home care
 const TIER_SERVICE_COVERAGE = [
-    { weekend: 'coverage.none', earlyMorning: 'coverage.no', homeCare: 'coverage.no' },
-    { weekend: 'coverage.none', earlyMorning: 'coverage.no', homeCare: 'coverage.no' },
-    { weekend: 'coverage.none', earlyMorning: 'coverage.no', homeCare: 'coverage.no' },
-    { weekend: 'coverage.partial', earlyMorning: 'coverage.early_yes_time', homeCare: 'coverage.home_basic' },
-    { weekend: 'coverage.full', earlyMorning: 'coverage.early_yes_time', homeCare: 'coverage.home_dedicated' },
+    { weekend: 'staffing.coverage.none', earlyMorning: 'staffing.coverage.no', homeCare: 'staffing.coverage.no' },
+    { weekend: 'staffing.coverage.none', earlyMorning: 'staffing.coverage.no', homeCare: 'staffing.coverage.no' },
+    { weekend: 'staffing.coverage.none', earlyMorning: 'staffing.coverage.no', homeCare: 'staffing.coverage.no' },
+    { weekend: 'staffing.coverage.partial', earlyMorning: 'staffing.coverage.early_yes_time', homeCare: 'staffing.coverage.home_basic' },
+    { weekend: 'staffing.coverage.full', earlyMorning: 'staffing.coverage.early_yes_time', homeCare: 'staffing.coverage.home_dedicated' },
 ];
 
 // Helper mapping keys for translations used during rendering
-const TIER_NAME_KEYS = ['tiers.name.0', 'tiers.name.1', 'tiers.name.2', 'tiers.name.3', 'tiers.name.4'];
+const TIER_NAME_KEYS = ['staffing.tier.0.name', 'staffing.tier.1.name', 'staffing.tier.2.name', 'staffing.tier.3.name', 'staffing.tier.4.name'];
 
 // Convert readable names to a translation key: role or department
 const slugify = (s) =>
@@ -1118,10 +1118,10 @@ const renderVisitMixChart = () => {
         type: 'doughnut',
         data: {
             labels: [
-                tx('pricing.session_with_percent', t('pricing.foundation'), '20%'),
-                tx('pricing.session_with_percent', t('pricing.standard'), '50%'),
-                tx('pricing.session_with_percent', t('pricing.premium'), '25%'),
-                tx('pricing.session_with_percent', t('pricing.express'), '5%'),
+                tx('label.session_with_percent', t('pricing.visitmix.foundation'), '20%'),
+                tx('label.session_with_percent', t('pricing.visitmix.standard'), '50%'),
+                tx('label.session_with_percent', t('pricing.visitmix.premium'), '25%'),
+                tx('label.session_with_percent', t('pricing.visitmix.express'), '5%'),
             ],
             datasets: [
                 {
@@ -1161,12 +1161,12 @@ const renderStaffingTierChart = () => {
         type: 'bar',
         data: {
             labels: [
-                t('staffing.monthly_payroll') || 'Monthly Payroll',
-                t('financial.expected_revenue') || 'Expected Revenue',
+                t('staffing.metrics.monthly_payroll') || 'Monthly Payroll',
+                t('staffing.metrics.expected_revenue') || 'Expected Revenue',
             ],
             datasets: [
                 {
-                    label: t('chart.amount_bdt') || 'Amount (BDT)',
+                    label: t('label.chart.amount_bdt') || 'Amount (BDT)',
                     data: [data.payroll, data.revenue],
                     backgroundColor: [
                         '#854d0e', // brand-wood
@@ -1208,7 +1208,7 @@ const updateDynamicPayrollTable = (tierIndex) => {
         // Dept Header Row
         const deptRow = document.createElement('tr');
         deptRow.className = 'dept-row';
-        const deptLabelKey = toTranslationKey('department', dept.dept);
+        const deptLabelKey = toTranslationKey('payroll.table.department', dept.dept);
         const th = createTranslatedElement('th', deptLabelKey, dept.dept);
         th.className = 'px-6 py-3 text-left text-sm';
         th.setAttribute('colspan', '6');
@@ -1226,12 +1226,12 @@ const updateDynamicPayrollTable = (tierIndex) => {
             const blankTd = document.createElement('td');
             blankTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400';
             roleRow.appendChild(blankTd);
-            const roleTd = createTranslatedElement('td', toTranslationKey('role', role.name), role.name);
+            const roleTd = createTranslatedElement('td', toTranslationKey('payroll.table.role', role.name), role.name);
             roleTd.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white';
             roleRow.appendChild(roleTd);
             const typeTd = document.createElement('td');
             typeTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300';
-            typeTd.textContent = role.type === 'FT' ? t('staffing.full_time') : t('staffing.part_time');
+            typeTd.textContent = role.type === 'FT' ? t('staffing.metrics.full_time') : t('staffing.metrics.part_time');
             roleRow.appendChild(typeTd);
             const countTd = document.createElement('td');
             countTd.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 text-right';
@@ -1255,9 +1255,9 @@ const updateDynamicPayrollTable = (tierIndex) => {
         const deptSubtotalTd = document.createElement('td');
         deptSubtotalTd.className = 'px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300';
         deptSubtotalTd.setAttribute('colspan', '3');
-        deptSubtotalTd.setAttribute('data-i18n', 'labels.department_subtotal');
+        deptSubtotalTd.setAttribute('data-i18n', 'payroll.table.department_subtotal');
         // Use interpolation to include ft/pt counts; store final text as fallback
-        deptSubtotalTd.textContent = t('labels.department_subtotal', { ft: deptSubtotalFt, pt: deptSubtotalPt });
+        deptSubtotalTd.textContent = t('payroll.table.department_subtotal', { ft: deptSubtotalFt, pt: deptSubtotalPt });
         subtotalRow.appendChild(deptSubtotalTd);
 
         const deptSubtotalCountTd = document.createElement('td');
@@ -1287,8 +1287,8 @@ const updateDynamicPayrollTable = (tierIndex) => {
     const grandTotalLabelTd = document.createElement('td');
     grandTotalLabelTd.className = 'px-6 py-4 text-left';
     grandTotalLabelTd.setAttribute('colspan', '3');
-    grandTotalLabelTd.setAttribute('data-i18n', 'labels.grand_total');
-    grandTotalLabelTd.textContent = t('labels.grand_total', { ft: grandTotalFt, pt: grandTotalPt });
+    grandTotalLabelTd.setAttribute('data-i18n', 'payroll.table.grand_total');
+    grandTotalLabelTd.textContent = t('payroll.table.grand_total', { ft: grandTotalFt, pt: grandTotalPt });
     grandTotalRow.appendChild(grandTotalLabelTd);
 
     const grandTotalCountTd = document.createElement('td');
@@ -1363,7 +1363,7 @@ const updateLaunchProjections = () => {
     modelAP2Profit.textContent = formatBDTShort(pA_p2_profit);
     modelAP3Profit.textContent = formatBDTShort(pA_p3_profit);
     modelATotalProfit.textContent = formatBDTShort(pA_total_profit);
-    modelAAvgProfit.textContent = t('modelA.avg_profit', { avg: formatBDTShort(pA_total_profit / 12) });
+    modelAAvgProfit.textContent = t('launch.model_a.avg_label', { avg: formatBDTShort(pA_total_profit / 12) });
 
     // Update bars (as % of max possible profit in this model, pA_max_profit)
     modelAP1Bar.style.width = `${Math.max(0, pA_p1_profit / 3 / (pA_max_profit / 12)) * 100}%`;
@@ -1434,10 +1434,10 @@ const updateModelAssumptions = (tierIndex) => {
     const workingDaysEl = document.getElementById('model-working-days');
     if (workingDaysEl) {
         if (additionalDays > 0) {
-            const wdHtml = t('labels.days_parenthetical_html', {
+            const wdHtml = t('label.days_parenthetical_html', {
                 base: baseDays,
                 extra: additionalDays,
-                days: t('labels.days'),
+                days: t('label.days'),
             });
             try {
                 const frag = parseHtmlFragment(wdHtml);
@@ -1447,7 +1447,7 @@ const updateModelAssumptions = (tierIndex) => {
                 workingDaysEl.textContent = wdHtml.replace(/<[^>]+>/g, '');
             }
         } else {
-            workingDaysEl.textContent = `${operationalDays} ${t('labels.days')}`;
+            workingDaysEl.textContent = `${operationalDays} ${t('label.days')}`;
         }
     }
 
@@ -1484,13 +1484,13 @@ const updateModelAssumptions = (tierIndex) => {
             // Add new vBed count span with + sign colored same as count
             const vbedSpan = document.createElement('span');
             vbedSpan.className = 'text-brand-secondary font-semibold vbed-count';
-            vbedSpan.setAttribute('data-i18n', 'labels.vbed_count');
-            vbedSpan.textContent = t('labels.vbed_count', { count: vBedCount, vbed: t('labels.vbed') });
+            vbedSpan.setAttribute('data-i18n', 'label.vbed_count');
+            vbedSpan.textContent = t('label.vbed_count', { count: vBedCount, vbed: t('label.vbed') });
             bedCapacityEl.insertBefore(vbedSpan, tooltip);
             // Show tooltip only when there are vBeds
             if (tooltip) tooltip.classList.remove('hidden');
         } else {
-            textNode.textContent = `${baseBeds} ${t('labels.beds')}`;
+            textNode.textContent = `${baseBeds} ${t('label.beds')}`;
             const oldSpan = bedCapacityEl.querySelector('span.vbed-count');
             if (oldSpan) oldSpan.remove();
             // Hide tooltip when no vBeds
@@ -1521,7 +1521,7 @@ const updateModelAssumptions = (tierIndex) => {
                 'model_assumptions.max_daily_revenue_html',
                 formatBDT(MAX_DAILY_REVENUE),
                 formatBDT(totalBonus),
-                t('bdt')
+                t('label.bdt')
             );
             try {
                 const frag = parseHtmlFragment(maxDailyHtml);
@@ -1530,7 +1530,7 @@ const updateModelAssumptions = (tierIndex) => {
                 maxDailyRevenueEl.textContent = maxDailyHtml.replace(/<[^>]+>/g, '');
             }
         } else {
-            maxDailyRevenueEl.textContent = tx('labels.amount_bdt', formatBDT(MAX_DAILY_REVENUE), t('bdt'));
+            maxDailyRevenueEl.textContent = tx('label.amount_bdt', formatBDT(MAX_DAILY_REVENUE), t('label.bdt'));
         }
     }
 
@@ -1556,10 +1556,10 @@ const updateModelAssumptions = (tierIndex) => {
 
         // Update labels
         if (additionalDays > 0) {
-            const baseDaysHtml = t('labels.days_parenthetical_html', {
+            const baseDaysHtml = t('label.days_parenthetical_html', {
                 base: baseDays,
                 extra: additionalDays,
-                days: t('labels.days'),
+                days: t('label.days'),
             });
             try {
                 const frag = parseHtmlFragment(baseDaysHtml);
@@ -1568,9 +1568,9 @@ const updateModelAssumptions = (tierIndex) => {
                 baseMonthlyRevenueDaysLabelEl.textContent = baseDaysHtml.replace(/<[^>]+>/g, '');
             }
         } else {
-            baseMonthlyRevenueDaysLabelEl.textContent = t('labels.days_parenthetical', {
+            baseMonthlyRevenueDaysLabelEl.textContent = t('label.days_parenthetical', {
                 count: operationalDays,
-                days: t('labels.days'),
+                days: t('label.days'),
             });
         }
 
@@ -1586,13 +1586,13 @@ const updateModelAssumptions = (tierIndex) => {
             // Add new bonus span
             const bonusSpan = document.createElement('span');
             bonusSpan.className = 'text-brand-secondary font-semibold revenue-bonus';
-            bonusSpan.setAttribute('data-i18n', 'labels.bonus_bdt');
-            bonusSpan.textContent = t('labels.bonus_bdt', { amount: formatBDT(totalAdditionalRevenue), bdt: t('bdt') });
+            bonusSpan.setAttribute('data-i18n', 'label.bonus_bdt');
+            bonusSpan.textContent = t('label.bonus_bdt', { amount: formatBDT(totalAdditionalRevenue), bdt: t('label.bdt') });
             baseMonthlyRevenueEl.insertBefore(bonusSpan, tooltip);
             // Show tooltip only when there's additional revenue
             if (tooltip) tooltip.classList.remove('hidden');
         } else {
-            textNode.textContent = tx('labels.amount_bdt', formatBDT(tierMaxMonthlyRevenue), t('bdt'));
+            textNode.textContent = tx('label.amount_bdt', formatBDT(tierMaxMonthlyRevenue), t('label.bdt'));
             const oldSpan = baseMonthlyRevenueEl.querySelector('span.revenue-bonus');
             if (oldSpan) oldSpan.remove();
             // Hide tooltip when no additional revenue
@@ -1621,7 +1621,7 @@ const updateStaffingTier = (tierIndex) => {
     }
 
     // Update capacity overview
-    tierCapacityLabelEl.textContent = t('labels.percent_approx', { percent: currentStaffingTier.capacity });
+    tierCapacityLabelEl.textContent = t('label.percent_approx', { percent: currentStaffingTier.capacity });
 
     // Update service coverage badges
     const coverage = TIER_SERVICE_COVERAGE[tierIndex];
@@ -1648,11 +1648,11 @@ const updateStaffingTier = (tierIndex) => {
     }
 
     // Update tier financials
-    assumedOccupancyEl.textContent = t('labels.percent_approx', { percent: currentStaffingTier.capacity });
+    assumedOccupancyEl.textContent = t('label.percent_approx', { percent: currentStaffingTier.capacity });
     const netMargin = currentStaffingTier.revenue - currentStaffingTier.payroll;
     const marginPct = (netMargin / currentStaffingTier.revenue) * 100;
-    netMarginBdtEl.textContent = tx('labels.net_margin_bdt', formatBDT(netMargin));
-    netMarginPctEl.textContent = t('labels.percent_approx', { percent: marginPct.toFixed(1) });
+    netMarginBdtEl.textContent = tx('label.net_margin_bdt', formatBDT(netMargin));
+    netMarginPctEl.textContent = t('label.percent_approx', { percent: marginPct.toFixed(1) });
 
     // Update bar chart
     if (staffingTierChart) {
@@ -1733,7 +1733,7 @@ const updateOccupancyMetrics = () => {
     const annualProfit = monthlyProfit * MONTHS_PER_YEAR;
 
     // Update text readouts for Occupancy Modeler
-    occupancyValueEl.textContent = t('labels.percent', { percent: currentOccupancy });
+    occupancyValueEl.textContent = t('label.percent', { percent: currentOccupancy });
     dailyRevenueEl.textContent = formatBDT(dailyRevenue);
     monthlyRevenueEl.textContent = formatBDT(monthlyRevenue);
     monthlyProfitEl.textContent = formatProfit(monthlyProfit);
@@ -1742,7 +1742,7 @@ const updateOccupancyMetrics = () => {
     annualProfitEl.textContent = formatProfit(annualProfit);
 
     // Update recommendation text
-    occupancyRecommendationEl.textContent = t('occupancy.recommended.capacity', { capacity });
+    occupancyRecommendationEl.textContent = t('capacity.occupancy.recommended_capacity', { capacity });
 
     // Show/hide warning if above soft limit
     if (occupancyWarningEl) {
@@ -1797,7 +1797,7 @@ const updateOccupancyMetrics = () => {
     });
 
     // Update Year 2+ Projections
-    projOccupancyLabel.textContent = t('proj.occupancy', { occupancy: currentOccupancy });
+    projOccupancyLabel.textContent = t('future.occupancy_label', { occupancy: currentOccupancy });
     projMonthlyProfit.textContent = formatProfit(monthlyProfit);
     projAnnualRevenue.textContent = formatBDT(annualRevenue);
     projAnnualProfit.textContent = formatProfit(annualProfit);
@@ -2018,7 +2018,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'model_assumptions.max_daily_revenue_html',
                     formatBDT(MAX_DAILY_REVENUE),
                     formatBDT(totalBonus),
-                    t('bdt')
+                    t('label.bdt')
                 );
                 try {
                     const frag = parseHtmlFragment(maxDailyHtml);
@@ -2027,7 +2027,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     maxDailyRevenueEl.textContent = maxDailyHtml.replace(/<[^>]+>/g, '');
                 }
             } else {
-                maxDailyRevenueEl.textContent = tx('labels.amount_bdt', formatBDT(MAX_DAILY_REVENUE), t('bdt'));
+                maxDailyRevenueEl.textContent = tx('label.amount_bdt', formatBDT(MAX_DAILY_REVENUE), t('label.bdt'));
             }
         }
     });
@@ -2054,7 +2054,7 @@ document.addEventListener('DOMContentLoaded', () => {
         occupancyLockToggle.setAttribute('aria-pressed', isOccupancyLocked ? 'true' : 'false');
         occupancyLockToggle.setAttribute(
             'data-i18n-title',
-            isOccupancyLocked ? 'occupancy.lock.title.locked' : 'occupancy.lock.title.unlocked'
+            isOccupancyLocked ? 'capacity.occupancy.lock_tooltip_locked' : 'capacity.occupancy.lock_tooltip_unlocked'
         );
         if (window.i18n && typeof window.i18n.apply === 'function') window.i18n.apply(occupancyLockToggle);
     });
@@ -2072,7 +2072,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             // Update UI note
             if (priceToggleNoteEl) {
-                priceToggleNoteEl.textContent = t('toasts.saved_pricing_persist');
+                priceToggleNoteEl.textContent = t('toast.saved_pricing_persist');
             }
         });
     });
@@ -2094,7 +2094,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnDeleteScenario) {
         btnDeleteScenario.addEventListener('click', () => {
             const name = scenarioSelect?.value;
-            if (!name) return showToast(t('toasts.choose_scenario_delete'), 'error');
+            if (!name) return showToast(t('toast.choose_scenario_delete'), 'error');
             deleteScenario(name);
         });
     }
@@ -2233,13 +2233,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalEl = document.getElementById('visitmix-total');
         const errorEl = document.getElementById('visitmix-error');
 
-        if (foundationValueEl) foundationValueEl.textContent = t('labels.percent', { percent: f });
-        if (standardValueEl) standardValueEl.textContent = t('labels.percent', { percent: s });
-        if (premiumValueEl) premiumValueEl.textContent = t('labels.percent', { percent: p });
-        if (expressValueEl) expressValueEl.textContent = t('labels.percent', { percent: e });
+        if (foundationValueEl) foundationValueEl.textContent = t('label.percent', { percent: f });
+        if (standardValueEl) standardValueEl.textContent = t('label.percent', { percent: s });
+        if (premiumValueEl) premiumValueEl.textContent = t('label.percent', { percent: p });
+        if (expressValueEl) expressValueEl.textContent = t('label.percent', { percent: e });
 
         const finalTotal = f + s + p + e;
-        if (totalEl) totalEl.textContent = t('labels.percent', { percent: finalTotal });
+        if (totalEl) totalEl.textContent = t('label.percent', { percent: finalTotal });
 
         // Show/hide error message
         if (errorEl) {
@@ -2255,10 +2255,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (visitMixChart) {
             visitMixChart.data.datasets[0].data = arr;
             visitMixChart.data.labels = [
-                tx('pricing.session_with_percent', t('pricing.foundation'), t('labels.percent', { percent: f })),
-                tx('pricing.session_with_percent', t('pricing.standard'), t('labels.percent', { percent: s })),
-                tx('pricing.session_with_percent', t('pricing.premium'), t('labels.percent', { percent: p })),
-                tx('pricing.session_with_percent', t('pricing.express'), t('labels.percent', { percent: e })),
+                tx('label.session_with_percent', t('pricing.visitmix.foundation'), t('label.percent', { percent: f })),
+                tx('label.session_with_percent', t('pricing.visitmix.standard'), t('label.percent', { percent: s })),
+                tx('label.session_with_percent', t('pricing.visitmix.premium'), t('label.percent', { percent: p })),
+                tx('label.session_with_percent', t('pricing.visitmix.express'), t('label.percent', { percent: e })),
             ];
             visitMixChart.update();
         }
@@ -2381,7 +2381,7 @@ document.addEventListener('DOMContentLoaded', () => {
     occupancyLockToggle.setAttribute('aria-pressed', isOccupancyLocked ? 'true' : 'false');
     occupancyLockToggle.setAttribute(
         'data-i18n-title',
-        isOccupancyLocked ? 'occupancy.lock.title.locked' : 'occupancy.lock.title.unlocked'
+        isOccupancyLocked ? 'capacity.occupancy.lock_tooltip_locked' : 'capacity.occupancy.lock_tooltip_unlocked'
     );
     if (window.i18n && typeof window.i18n.apply === 'function') window.i18n.apply(occupancyLockToggle);
     // Use the centralized render path to set up initial dynamic content
@@ -2393,10 +2393,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const storedRate = localStorage.getItem('selectedPriceRate');
         if (storedRate !== null && !Number.isNaN(parseInt(storedRate, 10))) {
             updatePricingTable(parseInt(storedRate, 10) / 100);
-            if (priceToggleNoteEl) priceToggleNoteEl.textContent = t('toasts.saved_pricing_persist');
+            if (priceToggleNoteEl) priceToggleNoteEl.textContent = t('toast.saved_pricing_persist');
         } else {
             updatePricingTable(0); // Full Price
-            if (priceToggleNoteEl) priceToggleNoteEl.textContent = t('pricing.default_full_price');
+            if (priceToggleNoteEl) priceToggleNoteEl.textContent = t('pricing.pricing_modeler.note_default');
         }
     } catch (err) {
         updatePricingTable(0);
@@ -2512,7 +2512,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updatePricingTable(discount);
             if (priceToggleNoteEl)
                 priceToggleNoteEl.textContent =
-                    storedRate !== null ? t('toasts.saved_pricing_persist') : t('pricing.default_full_price');
+                    storedRate !== null ? t('toast.saved_pricing_persist') : t('pricing.pricing_modeler.note_default');
         } catch (e) {
             /* ignore */
         }
@@ -2571,11 +2571,11 @@ function updateOccupancyLockNote() {
     if (!occupancyLockNoteEl) return;
     if (isOccupancyLocked) {
         if (autoLockedOnRestore) {
-            occupancyLockNoteEl.textContent = t('occupancy.lock.note.restored');
+            occupancyLockNoteEl.textContent = t('capacity.occupancy.lock_note_restored');
         } else {
-            occupancyLockNoteEl.textContent = t('occupancy.lock.note.saved');
+            occupancyLockNoteEl.textContent = t('capacity.occupancy.lock_note_saved');
         }
     } else {
-        occupancyLockNoteEl.textContent = t('occupancy.lock.note.unlocked');
+        occupancyLockNoteEl.textContent = t('capacity.occupancy.lock_note_unlocked');
     }
 }
